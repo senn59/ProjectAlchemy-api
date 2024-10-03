@@ -6,11 +6,11 @@ namespace ProjectAlchemy.Persistence;
 public class AppDbContext(string connectionString) : DbContext
 {
     public DbSet<WorkItemEntity> WorkItems { get; set; }
-    private string _connectionString = connectionString;
+    private readonly string _connectionString = connectionString;
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder.UseSqlServer(connectionString);
+        optionsBuilder.UseSqlServer(_connectionString);
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
