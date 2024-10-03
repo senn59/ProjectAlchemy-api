@@ -1,0 +1,6 @@
+﻿services:
+  projectalchemy.web:
+    image: projectalchemy.web
+    build:
+      context: .
+      dockerfile: ProjectAlchemy.Web/Dockerfile
