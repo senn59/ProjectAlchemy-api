@@ -1,0 +1,33 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProjectAlchemy.Web", "ProjectAlchemy.Web\ProjectAlchemy.Web.csproj", "{56B94059-006F-49F1-AEF1-8E20275DF263}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{5E96CABC-3C71-4629-B6ED-8B6E366C71C5}"
+	ProjectSection(SolutionItems) = preProject
+		docker-compose.yml = docker-compose.yml
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProjectAlchemy.Core", "ProjectAlchemy.Core\ProjectAlchemy.Core.csproj", "{7FB1D9A5-0B18-42A0-A624-8F2ADBC38BC9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProjectAlchemy.Persistence", "ProjectAlchemy.Persistence\ProjectAlchemy.Persistence.csproj", "{79BD3492-72CF-4D8E-BE11-0D6BA25CF735}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{56B94059-006F-49F1-AEF1-8E20275DF263}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{56B94059-006F-49F1-AEF1-8E20275DF263}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{56B94059-006F-49F1-AEF1-8E20275DF263}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{56B94059-006F-49F1-AEF1-8E20275DF263}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7FB1D9A5-0B18-42A0-A624-8F2ADBC38BC9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7FB1D9A5-0B18-42A0-A624-8F2ADBC38BC9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7FB1D9A5-0B18-42A0-A624-8F2ADBC38BC9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7FB1D9A5-0B18-42A0-A624-8F2ADBC38BC9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{79BD3492-72CF-4D8E-BE11-0D6BA25CF735}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{79BD3492-72CF-4D8E-BE11-0D6BA25CF735}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{79BD3492-72CF-4D8E-BE11-0D6BA25CF735}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{79BD3492-72CF-4D8E-BE11-0D6BA25CF735}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
