@@ -40,6 +40,6 @@ public class WorkItemController : ControllerBase
     [HttpPut("{id:int}", Name = "Update work item")]
     public void Put(UpdateWorkItemRequest request, int id)
     {
-        throw new NotImplementedException();
+        _workItemService.Update(id, request);
     }
 }

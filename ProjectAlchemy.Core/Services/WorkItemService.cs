@@ -25,4 +25,9 @@ public class WorkItemService(IWorkItemRepository workItemRepository)
         var items = _workItemRepository.GetAll();
         return items.Select(WorkItemResponse.FromWorkItem).ToList();
     }
+
+    public void Update(int id, UpdateWorkItemRequest request)
+    {
+        _workItemRepository.Update(id, request);
+    }
 }
