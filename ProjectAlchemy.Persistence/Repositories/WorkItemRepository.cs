@@ -1,4 +1,5 @@
 using ProjectAlchemy.Core.Domain;
+using ProjectAlchemy.Core.Dtos;
 using ProjectAlchemy.Core.Interfaces;
 using ProjectAlchemy.Persistence.Entities;
 
@@ -28,5 +29,14 @@ public class WorkItemRepository: IWorkItemRepository
     public List<WorkItem> GetAll()
     {
         return _context.WorkItems.Select(WorkItemEntity.ToWorkItem).ToList();
+    }
+
+    public void Update(int id, UpdateWorkItemRequest updated)
+    {
+        var item = _context.WorkItems.First(w => w.Id == id);
+        //TODO: check for better alternative for this
+        item.Name = updated.Name;
+        item.Description = updated.Name;
+        _context.SaveChanges();
     }
 }
