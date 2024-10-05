@@ -2,14 +2,14 @@ using ProjectAlchemy.Core.Domain;
 
 namespace ProjectAlchemy.Web.Dtos;
 
-public class WorkItemResponse
+public class IssueResponse
 {
     public required string Name { get; set; }
     public required string? Description { get; set; }
     // public required string Key { get; set; }
-    public static WorkItemResponse FromWorkItem(WorkItem item)
+    public static IssueResponse FromIssue(Issue item)
     {
-        return new WorkItemResponse()
+        return new IssueResponse()
         {
             Name = item.Name,
             Description = item.Description,

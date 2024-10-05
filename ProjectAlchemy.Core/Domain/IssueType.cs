@@ -1,6 +1,6 @@
 namespace ProjectAlchemy.Core.Domain;
 
-public enum WorkItemType
+public enum IssueType
 {
     Task,
     UserStory,

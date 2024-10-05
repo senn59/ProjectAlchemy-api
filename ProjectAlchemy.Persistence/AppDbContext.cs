@@ -5,7 +5,7 @@ namespace ProjectAlchemy.Persistence;
 
 public class AppDbContext(string connectionString) : DbContext
 {
-    public DbSet<WorkItemEntity> WorkItems { get; set; }
+    public DbSet<IssueEntity> Issues { get; set; }
     private readonly string _connectionString = connectionString;
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -15,7 +15,7 @@ public class AppDbContext(string connectionString) : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<WorkItemEntity>()
+        modelBuilder.Entity<IssueEntity>()
             .Property(p => p.Id)
             .ValueGeneratedOnAdd();
     }
