@@ -4,8 +4,8 @@ using ProjectAlchemy.Core.Domain;
 
 namespace ProjectAlchemy.Persistence.Entities;
 
-[Table("WorkItems")]
-public class WorkItemEntity
+[Table("Issues")]
+public class IssueEntity
 {
     [Required]
     public int Id { get; set; }
@@ -15,14 +15,14 @@ public class WorkItemEntity
     [MaxLength(100)]
     public string? Description { get; set; }
 
-    public static WorkItem ToWorkItem(WorkItemEntity entity)
+    public static Issue ToIssue(IssueEntity entity)
     {
-        return new WorkItem(entity.Id, entity.Name, entity.Description);
+        return new Issue(entity.Id, entity.Name, entity.Description);
     }
 
-    public static WorkItemEntity FromWorkitem(WorkItem item)
+    public static IssueEntity FromIssue(Issue item)
     {
-        return new WorkItemEntity()
+        return new IssueEntity()
         {
             Id = item.Id,
             Name = item.Name,
