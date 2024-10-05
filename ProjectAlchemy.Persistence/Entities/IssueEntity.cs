@@ -10,23 +10,27 @@ public class IssueEntity
     [Required]
     public int Id { get; set; }
     [Required]
-    [MaxLength(30)]
+    [MaxLength(Issue.MaxNameLength)]
     public string Name { get; set; }
-    [MaxLength(100)]
+    [MaxLength(Issue.MaxDescriptionLength)]
     public string? Description { get; set; }
+    [Required]
+    public int Key { get; set; }
+    public IssueType Type { get; set; }
 
     public static Issue ToIssue(IssueEntity entity)
     {
-        return new Issue(entity.Id, entity.Name, entity.Description);
+        return new Issue(entity.Id, entity.Name, entity.Type, entity.Key, entity.Description);
     }
 
-    public static IssueEntity FromIssue(Issue item)
+    public static IssueEntity FromIssue(Issue issue)
     {
         return new IssueEntity()
         {
-            Id = item.Id,
-            Name = item.Name,
-            Description = item.Description,
+            Id = issue.Id,
+            Name = issue.Name,
+            Description = issue.Description,
+            Type = issue.Type
         };
     }
 }

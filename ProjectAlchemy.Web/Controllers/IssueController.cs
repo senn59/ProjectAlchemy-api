@@ -43,7 +43,7 @@ public class IssueController : ControllerBase
     [HttpPut("{id:int}", Name = "Update work item")]
     public IssueResponse Put(UpdateIssueRequest request, int id)
     {
-        var converted = new Issue(id, request.Name, request.Description);
+        var converted = new Issue(id, request.Name, request.Type, request.Description);
         var item = _IssueService.Update(converted);
         return IssueResponse.FromIssue(item);
     }
