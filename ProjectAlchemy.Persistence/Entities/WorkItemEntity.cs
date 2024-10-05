@@ -13,11 +13,11 @@ public class WorkItemEntity
     [MaxLength(30)]
     public string Name { get; set; }
     [MaxLength(100)]
-    public string Description { get; set; }
+    public string? Description { get; set; }
 
     public static WorkItem ToWorkItem(WorkItemEntity entity)
     {
-        return new WorkItem(entity.Name, entity.Description);
+        return new WorkItem(entity.Id, entity.Name, entity.Description);
     }
 
     public static WorkItemEntity FromWorkitem(WorkItem item)

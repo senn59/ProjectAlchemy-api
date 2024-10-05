@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
-using ProjectAlchemy.Core;
-using ProjectAlchemy.Core.Dtos;
+using ProjectAlchemy.Core.Domain;
 using ProjectAlchemy.Core.Services;
+using ProjectAlchemy.Web.Dtos;
 
 namespace ProjectAlchemy.Web.Controllers;
 
@@ -18,28 +18,33 @@ public class WorkItemController : ControllerBase
         _workItemService = workItemService;
     }
 
-
     [HttpGet(Name = "Get all work items")]
-    public List<WorkItemResponse> Get()
+    public IEnumerable<WorkItemResponse> Get()
     {
-        return _workItemService.GetAll();
+        var items = _workItemService.GetAll();
+        return items.Select(i => WorkItemResponse.FromWorkItem(i));
     }
 
     [HttpGet("{id:int}",Name = "Get work item")]
     public WorkItemResponse Get(int id)
     {
-        return _workItemService.GetById(id);
+        var item =  _workItemService.GetById(id);
+        return WorkItemResponse.FromWorkItem(item);
     }
 
     [HttpPost(Name = "Create work item")]
-    public void Post(CreateWorkItemRequest request)
+    public WorkItemResponse Post(CreateWorkItemRequest request)
     {
-        _workItemService.Create(request);
+        var converted = CreateWorkItemRequest.ToWorkItem(request);
+        var item = _workItemService.Create(converted);
+        return WorkItemResponse.FromWorkItem(item);
     }
 
     [HttpPut("{id:int}", Name = "Update work item")]
-    public void Put(UpdateWorkItemRequest request, int id)
+    public WorkItemResponse Put(UpdateWorkItemRequest request, int id)
     {
-        _workItemService.Update(id, request);
+        var converted = new WorkItem(id, request.Name, request.Description);
+        var item = _workItemService.Update(converted);
+        return WorkItemResponse.FromWorkItem(item);
     }
 }

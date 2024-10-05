@@ -1,5 +1,4 @@
 using ProjectAlchemy.Core.Domain;
-using ProjectAlchemy.Core.Dtos;
 using ProjectAlchemy.Core.Interfaces;
 
 namespace ProjectAlchemy.Core.Services;
@@ -8,26 +7,23 @@ public class WorkItemService(IWorkItemRepository workItemRepository)
 {
     private IWorkItemRepository _workItemRepository = workItemRepository;
 
-    public void Create(CreateWorkItemRequest request)
+    public WorkItem Create(WorkItem item)
     {
-        var item = new WorkItem(request.Name, "");
-        _workItemRepository.Create(item);
+        return _workItemRepository.Create(item);
     }
 
-    public WorkItemResponse GetById(int id)
+    public WorkItem GetById(int id)
     {
-        var item = _workItemRepository.GetById(id);
-        return WorkItemResponse.FromWorkItem(item);
+        return _workItemRepository.GetById(id);
     }
 
-    public List<WorkItemResponse> GetAll()
+    public List<WorkItem> GetAll()
     {
-        var items = _workItemRepository.GetAll();
-        return items.Select(WorkItemResponse.FromWorkItem).ToList();
+        return _workItemRepository.GetAll();
     }
 
-    public void Update(int id, UpdateWorkItemRequest request)
+    public WorkItem Update(WorkItem item)
     {
-        _workItemRepository.Update(id, request);
+        return _workItemRepository.Update(item);
     }
 }
