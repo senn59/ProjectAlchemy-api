@@ -1,5 +1,4 @@
 using ProjectAlchemy.Core.Domain;
-using ProjectAlchemy.Core.Dtos;
 using ProjectAlchemy.Core.Interfaces;
 using ProjectAlchemy.Persistence.Entities;
 
@@ -20,10 +19,11 @@ public class WorkItemRepository: IWorkItemRepository
         return WorkItemEntity.ToWorkItem(item);
     }
 
-    public void Create(WorkItem workItem)
+    public WorkItem Create(WorkItem item)
     {
-        _context.WorkItems.Add(WorkItemEntity.FromWorkitem(workItem));
+        var createdItem = _context.WorkItems.Add(WorkItemEntity.FromWorkitem(item));
         _context.SaveChanges();
+        return WorkItemEntity.ToWorkItem(createdItem.Entity);
     }
 
     public List<WorkItem> GetAll()
@@ -31,12 +31,10 @@ public class WorkItemRepository: IWorkItemRepository
         return _context.WorkItems.Select(WorkItemEntity.ToWorkItem).ToList();
     }
 
-    public void Update(int id, UpdateWorkItemRequest updated)
+    public WorkItem Update(WorkItem updated)
     {
-        var item = _context.WorkItems.First(w => w.Id == id);
-        //TODO: check for better alternative for this
-        item.Name = updated.Name;
-        item.Description = updated.Name;
+        var updatedItem = _context.Update(WorkItemEntity.FromWorkitem(updated));
         _context.SaveChanges();
+        return WorkItemEntity.ToWorkItem(updatedItem.Entity);
     }
 }
