@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using ProjectAlchemy.Core.Domain;
 using ProjectAlchemy.Core.Interfaces;
 using ProjectAlchemy.Persistence.Entities;
@@ -15,15 +16,15 @@ public class IssueRepository: IIssueRepository
 
     public Issue GetById(int id)
     {
-        var item = _context.Issues.First(w => w.Id == id);
-        return IssueEntity.ToIssue(item);
+        var issue = _context.Issues.First(i => i.Id == id);
+        return IssueEntity.ToIssue(issue);
     }
 
     public Issue Create(Issue item)
     {
-        var createdItem = _context.Issues.Add(IssueEntity.FromIssue(item));
+        var created = _context.Issues.Add(IssueEntity.FromIssue(item));
         _context.SaveChanges();
-        return IssueEntity.ToIssue(createdItem.Entity);
+        return IssueEntity.ToIssue(created.Entity);
     }
 
     public List<Issue> GetAll()
@@ -33,8 +34,14 @@ public class IssueRepository: IIssueRepository
 
     public Issue Update(Issue updated)
     {
-        var updatedItem = _context.Update(IssueEntity.FromIssue(updated));
+        var updatedIssue = _context.Update(IssueEntity.FromIssue(updated));
         _context.SaveChanges();
-        return IssueEntity.ToIssue(updatedItem.Entity);
+        return IssueEntity.ToIssue(updatedIssue.Entity);
+    }
+
+    public void DeleteById(int id)
+    {
+        var issue = _context.Issues.First(i => i.Id == id);
+        _context.Remove(issue);
     }
 }
