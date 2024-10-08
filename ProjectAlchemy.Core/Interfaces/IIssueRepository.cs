@@ -8,4 +8,5 @@ public interface IIssueRepository
     public Issue Create(Issue item);
     public List<Issue> GetAll();
     public Issue Update(Issue item);
+    public void DeleteById(int id);
 }
