@@ -26,4 +26,9 @@ public class IssueService(IIssueRepository issueRepository)
     {
         return _issueRepository.Update(item);
     }
+    
+    public void DeleteById(int id)
+    {
+        _issueRepository.DeleteById(id);
+    }
 }
