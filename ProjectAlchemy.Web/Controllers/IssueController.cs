@@ -19,33 +19,33 @@ public class IssueController : ControllerBase
     }
 
     [HttpGet(Name = "Get all issues")]
-    public IEnumerable<IssueResponse> Get()
+    public IEnumerable<IssuePreviewResponse> Get()
     {
         var items = _IssueService.GetAll();
-        return items.Select(i => IssueResponse.FromIssue(i));
+        return items.Select(IssuePreviewResponse.FromIssue);
     }
 
     [HttpGet("{id:int}",Name = "Get issue")]
-    public IssueResponse Get(int id)
+    public IssuePreview Get(int id)
     {
         var item =  _IssueService.GetById(id);
-        return IssueResponse.FromIssue(item);
+        return IssuePreview.FromIssue(item);
     }
 
     [HttpPost(Name = "Create issue")]
-    public IssueResponse Post(CreateIssueRequest request)
+    public IssuePreviewResponse Post(CreateIssueRequest request)
     {
         var converted = CreateIssueRequest.ToIssue(request);
         var item = _IssueService.Create(converted);
-        return IssueResponse.FromIssue(item);
+        return IssuePreviewResponse.FromIssue(item);
     }
 
     [HttpPut("{id:int}", Name = "Update issue")]
-    public IssueResponse Put(UpdateIssueRequest request, int id)
+    public IssuePreviewResponse Put(UpdateIssueRequest request, int id)
     {
         var converted = new Issue(id, request.Name, request.Type, request.Description);
         var item = _IssueService.Update(converted);
-        return IssueResponse.FromIssue(item);
+        return IssuePreviewResponse.FromIssue(item);
     }
     
     [HttpDelete("{id:int}", Name = "Delete issue")]
