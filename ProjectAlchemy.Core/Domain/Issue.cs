@@ -7,10 +7,10 @@ public class Issue
     
     public int Id { get; private set; }
     public string Name { get; private set; }
-    public string? Description { get; private set; }
+    public string Description { get; private set; } = "";
     public IssueType Type { get; private set; }
     
-    public Issue(int id, string name, IssueType type, string? description = null)
+    public Issue(int id, string name, IssueType type, string description)
     {
         Id = id;
         Name = name;
@@ -29,7 +29,7 @@ public class Issue
         Name = name;
     }
     
-    public void SetDescription(string? description)
+    public void SetDescription(string description)
     {
         Description = description;
     }

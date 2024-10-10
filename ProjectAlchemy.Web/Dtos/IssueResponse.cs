@@ -6,7 +6,7 @@ public class IssueResponse
 {
     public required int Id { get; set; }
     public required string Name { get; set; }
-    public required string? Description { get; set; }
+    public required string Description { get; set; }
     public required IssueType Type { get; set; }
     public static IssueResponse FromIssue(Issue issue)
     {

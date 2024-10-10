@@ -6,7 +6,6 @@ namespace ProjectAlchemy.Web.Dtos;
 public class CreateIssueRequest
 {
     public required string Name { get; set; }
-    
     public required IssueType Type { get; set; }
 
     public static Issue ToIssue(CreateIssueRequest request)
