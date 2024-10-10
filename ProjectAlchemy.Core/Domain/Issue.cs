@@ -9,7 +9,7 @@ public class Issue
     public string Name { get; private set; }
     public string? Description { get; private set; }
     public int Key { get; set; }
-    public IssueType Type { get; init; }
+    public IssueType Type { get; private set; }
     
     public Issue(int id, string name, IssueType type, int key, string? description = null)
     {
@@ -20,18 +20,9 @@ public class Issue
         Type = type;
     }
     
-    public Issue(int id, string name, IssueType type, string? description = null)
-    {
-        Id = id;
-        Name = name;
-        Description = description;
-        Type = type;
-    }
-    
-    public Issue(string name, IssueType type, string? description = null)
+    public Issue(string name, IssueType type)
     {
         Name = name;
-        Description = description;
         Type = type;
     }
 
@@ -40,8 +31,13 @@ public class Issue
         Name = name;
     }
     
-    public void SetDescription(string description)
+    public void SetDescription(string? description)
     {
         Description = description;
+    }
+
+    public void SetType(IssueType type)
+    {
+        Type = type;
     }
 }
