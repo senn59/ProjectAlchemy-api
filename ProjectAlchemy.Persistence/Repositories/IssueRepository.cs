@@ -34,6 +34,7 @@ public class IssueRepository: IIssueRepository
 
     public Issue Update(Issue updated)
     {
+        _context.ChangeTracker.Clear();
         var updatedIssue = _context.Update(IssueEntity.FromIssue(updated));
         _context.SaveChanges();
         return IssueEntity.ToIssue(updatedIssue.Entity);
