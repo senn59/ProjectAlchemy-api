@@ -6,7 +6,6 @@ public class IssuePreview
 {
     public required int Id { get; set; }
     public required string Name { get; set; }
-    // public required int Key { get; set; }
     public required IssueType Type { get; set; }
 
     public static IssuePreview FromIssue(Issue issue)
@@ -15,7 +14,6 @@ public class IssuePreview
         {
             Id = issue.Id,
             Name = issue.Name,
-            // Key = issue.Key,
             Type = issue.Type
         };
     }
