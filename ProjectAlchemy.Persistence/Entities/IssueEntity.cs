@@ -9,11 +9,10 @@ public class IssueEntity
 {
     [Required]
     public int Id { get; set; }
-    [Required]
     [MaxLength(Issue.MaxNameLength)]
-    public string Name { get; set; }
+    public required string Name { get; set; }
     [MaxLength(Issue.MaxDescriptionLength)]
-    public string? Description { get; set; }
+    public required string Description { get; set; } = "";
     public IssueType Type { get; set; }
 
     public static Issue ToIssue(IssueEntity entity)
