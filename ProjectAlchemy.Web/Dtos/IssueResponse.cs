@@ -7,7 +7,6 @@ public class IssueResponse
     public required int Id { get; set; }
     public required string Name { get; set; }
     public required string? Description { get; set; }
-    public required int Key { get; set; }
     public required IssueType Type { get; set; }
     public static IssueResponse FromIssue(Issue issue)
     {
@@ -16,7 +15,6 @@ public class IssueResponse
             Id = issue.Id,
             Name = issue.Name,
             Description = issue.Description,
-            Key = issue.Key,
             Type = issue.Type
         };
     }
