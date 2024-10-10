@@ -14,13 +14,11 @@ public class IssueEntity
     public string Name { get; set; }
     [MaxLength(Issue.MaxDescriptionLength)]
     public string? Description { get; set; }
-    [Required]
-    public int Key { get; set; }
     public IssueType Type { get; set; }
 
     public static Issue ToIssue(IssueEntity entity)
     {
-        return new Issue(entity.Id, entity.Name, entity.Type, entity.Key, entity.Description);
+        return new Issue(entity.Id, entity.Name, entity.Type, entity.Description);
     }
 
     public static IssueEntity FromIssue(Issue issue)
