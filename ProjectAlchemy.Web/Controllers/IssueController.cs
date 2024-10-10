@@ -19,33 +19,46 @@ public class IssueController : ControllerBase
     }
 
     [HttpGet(Name = "Get all issues")]
-    public IEnumerable<IssuePreviewResponse> Get()
+    public IEnumerable<IssuePreview> Get()
     {
         var items = _IssueService.GetAll();
-        return items.Select(IssuePreviewResponse.FromIssue);
+        return items.Select(IssuePreview.FromIssue);
     }
 
     [HttpGet("{id:int}",Name = "Get issue")]
-    public IssuePreview Get(int id)
+    public IssueResponse Get(int id)
     {
         var item =  _IssueService.GetById(id);
-        return IssuePreview.FromIssue(item);
+        return IssueResponse.FromIssue(item);
     }
 
     [HttpPost(Name = "Create issue")]
-    public IssuePreviewResponse Post(CreateIssueRequest request)
+    public IssuePreview Post(CreateIssueRequest request)
     {
         var converted = CreateIssueRequest.ToIssue(request);
         var item = _IssueService.Create(converted);
-        return IssuePreviewResponse.FromIssue(item);
+        return IssuePreview.FromIssue(item);
     }
 
     [HttpPut("{id:int}", Name = "Update issue")]
-    public IssuePreviewResponse Put(UpdateIssueRequest request, int id)
+    public IssuePreview Put(UpdateIssueRequest request, int id)
     {
-        var converted = new Issue(id, request.Name, request.Type, request.Description);
-        var item = _IssueService.Update(converted);
-        return IssuePreviewResponse.FromIssue(item);
+        var issue = _IssueService.GetById(id);
+        issue.SetName(request.Name);
+        issue.SetDescription(request.Description);
+        issue.SetType(request.Type);
+        var updated = _IssueService.Update(issue);
+        return IssuePreview.FromIssue(updated);
+    }
+    
+    [HttpPut("{id:int}/partial", Name = "Partially update issue")]
+    public IssuePreview Put(IssuePreview request, int id)
+    {
+        var issue = _IssueService.GetById(id);
+        issue.SetName(request.Name);
+        issue.SetType(request.Type);
+        var updated = _IssueService.Update(issue);
+        return IssuePreview.FromIssue(updated);
     }
     
     [HttpDelete("{id:int}", Name = "Delete issue")]
