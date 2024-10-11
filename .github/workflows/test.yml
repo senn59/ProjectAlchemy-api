@@ -11,8 +11,11 @@ jobs:
   test:
       runs-on: windows-latest
       steps:
-      - name: Display dotnet version
-        run: dotnet --version
-      - name: Unit Testing
-        uses: actions/checkout@v2.1.0
-        run: dotnet test
+        - name: checkout repository
+          uses: actions/checkout@v2.1.0
+
+        - name: Display dotnet version
+          run: dotnet --version
+
+        - name: Unit Testing
+          run: dotnet test
