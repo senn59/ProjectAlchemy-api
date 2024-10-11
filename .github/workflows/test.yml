@@ -1,0 +1,21 @@
+name: Tests
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+  workflow_dispatch:
+  
+jobs:
+  test:
+      runs-on: windows-latest
+      steps:
+        - name: checkout repository
+          uses: actions/checkout@v2.1.0
+
+        - name: Display dotnet version
+          run: dotnet --version
+
+        - name: Unit Testing
+          run: dotnet test
