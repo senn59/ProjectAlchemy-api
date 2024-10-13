@@ -1,5 +1,5 @@
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
-using ProjectAlchemy.Core.Domain;
 using ProjectAlchemy.Core.Services;
 using ProjectAlchemy.Web.Dtos;
 
@@ -51,12 +51,20 @@ public class IssueController : ControllerBase
         return IssuePreview.FromIssue(updated);
     }
     
-    [HttpPut("{id:int}/partial", Name = "Partially update issue")]
-    public IssuePreview Put(IssuePreview request, int id)
+    [HttpPatch("{id:int}", Name = "Patch issue")]
+    public IssuePreview Patch([FromBody] JsonPatchDocument<IssuePatch> patchDoc, int id)
     {
         var issue = _IssueService.GetById(id);
-        issue.SetName(request.Name);
-        issue.SetType(request.Type);
+        var issuePatch = new IssuePatch()
+        {
+            Name = issue.Name,
+            Description = issue.Description,
+            Type = issue.Type
+        };
+        patchDoc.ApplyTo(issuePatch, ModelState);
+        issue.SetName(issuePatch.Name);
+        issue.SetDescription(issuePatch.Description);
+        issue.SetType(issuePatch.Type);
         var updated = _IssueService.Update(issue);
         return IssuePreview.FromIssue(updated);
     }
