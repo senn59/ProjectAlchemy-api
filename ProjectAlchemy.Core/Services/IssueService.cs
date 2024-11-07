@@ -7,9 +7,9 @@ public class IssueService(IIssueRepository issueRepository)
 {
     private IIssueRepository _issueRepository = issueRepository;
 
-    public Issue Create(Issue item)
+    public async Task<Issue> Create(Issue item)
     {
-        return _issueRepository.Create(item);
+        return await _issueRepository.Create(item);
     }
 
     public Issue GetById(int id)
@@ -22,9 +22,9 @@ public class IssueService(IIssueRepository issueRepository)
         return _issueRepository.GetAll();
     }
 
-    public Issue Update(Issue item)
+    public async Task<Issue> Update(Issue item)
     {
-        return _issueRepository.Update(item);
+        return await _issueRepository.Update(item);
     }
     
     public void DeleteById(int id)

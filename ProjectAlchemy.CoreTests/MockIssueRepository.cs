@@ -16,7 +16,7 @@ public class MockIssueRepository: IIssueRepository
         return _issues.First(x => x.Id == id);
     }
 
-    public Issue Create(Issue item)
+    public async Task<Issue> Create(Issue item)
     {
         _issues.Add(item);
         return item;
@@ -27,7 +27,7 @@ public class MockIssueRepository: IIssueRepository
         throw new NotImplementedException();
     }
 
-    public Issue Update(Issue item)
+    public async Task<Issue> Update(Issue item)
     {
         return item;
     }

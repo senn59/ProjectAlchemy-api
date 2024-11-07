@@ -33,26 +33,26 @@ public class IssueController : ControllerBase
     }
 
     [HttpPost(Name = "Create issue")]
-    public PartialIssue Post(CreateIssueRequest request)
+    public async Task<PartialIssue> Post(CreateIssueRequest request)
     {
         var converted = CreateIssueRequest.ToIssue(request);
-        var item = _IssueService.Create(converted);
+        var item = await _IssueService.Create(converted);
         return PartialIssue.FromIssue(item);
     }
 
     [HttpPut("{id:int}", Name = "Update issue")]
-    public PartialIssue Put(UpdateIssueRequest request, int id)
+    public async Task<PartialIssue> Put(UpdateIssueRequest request, int id)
     {
         var issue = _IssueService.GetById(id);
         issue.SetName(request.Name);
         issue.SetDescription(request.Description);
         issue.SetType(request.Type);
-        var updated = _IssueService.Update(issue);
+        var updated = await _IssueService.Update(issue);
         return PartialIssue.FromIssue(updated);
     }
     
     [HttpPatch("{id:int}", Name = "Patch issue")]
-    public PartialIssue Patch([FromBody] JsonPatchDocument<IssuePatch> patchDoc, int id)
+    public async Task<PartialIssue> Patch([FromBody] JsonPatchDocument<IssuePatch> patchDoc, int id)
     {
         var issue = _IssueService.GetById(id);
         var issuePatch = new IssuePatch()
@@ -65,7 +65,7 @@ public class IssueController : ControllerBase
         issue.SetName(issuePatch.Name);
         issue.SetDescription(issuePatch.Description);
         issue.SetType(issuePatch.Type);
-        var updated = _IssueService.Update(issue);
+        var updated = await _IssueService.Update(issue);
         return PartialIssue.FromIssue(updated);
     }
     
