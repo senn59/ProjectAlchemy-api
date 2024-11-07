@@ -18,6 +18,7 @@ builder.Services.AddSwaggerGen();
 
 var connString = builder.Configuration.GetConnectionString("DefaultConnection");
 if (connString == null) throw new ArgumentNullException($"Connection string cannot be null");
+
 builder.Services.AddScoped<AppDbContext>(_ => new AppDbContext(connString));
 builder.Services.AddScoped<IIssueRepository>(s => new IssueRepository(s.GetRequiredService<AppDbContext>()));
 builder.Services.AddScoped<IssueService>(s => new IssueService(s.GetRequiredService<IIssueRepository>()));

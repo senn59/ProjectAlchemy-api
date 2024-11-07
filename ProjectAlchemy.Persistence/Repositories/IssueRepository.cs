@@ -20,10 +20,10 @@ public class IssueRepository: IIssueRepository
         return IssueEntity.ToIssue(issue);
     }
 
-    public Issue Create(Issue item)
+    public async Task<Issue> Create(Issue item)
     {
         var created = _context.Issues.Add(IssueEntity.FromIssue(item));
-        _context.SaveChanges();
+        await _context.SaveChangesAsync();
         return IssueEntity.ToIssue(created.Entity);
     }
 
@@ -32,11 +32,11 @@ public class IssueRepository: IIssueRepository
         return _context.Issues.Select(IssueEntity.ToIssue).ToList();
     }
 
-    public Issue Update(Issue updated)
+    public async Task<Issue> Update(Issue updated)
     {
         _context.ChangeTracker.Clear();
         var updatedIssue = _context.Update(IssueEntity.FromIssue(updated));
-        _context.SaveChanges();
+        await _context.SaveChangesAsync();
         return IssueEntity.ToIssue(updatedIssue.Entity);
     }
 
