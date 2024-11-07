@@ -19,10 +19,10 @@ public class IssueController : ControllerBase
     }
 
     [HttpGet(Name = "Get all issues")]
-    public IEnumerable<IssuePreview> Get()
+    public IEnumerable<PartialIssue> Get()
     {
         var items = _IssueService.GetAll();
-        return items.Select(IssuePreview.FromIssue);
+        return items.Select(PartialIssue.FromIssue);
     }
 
     [HttpGet("{id:int}",Name = "Get issue")]
@@ -33,26 +33,26 @@ public class IssueController : ControllerBase
     }
 
     [HttpPost(Name = "Create issue")]
-    public IssuePreview Post(CreateIssueRequest request)
+    public PartialIssue Post(CreateIssueRequest request)
     {
         var converted = CreateIssueRequest.ToIssue(request);
         var item = _IssueService.Create(converted);
-        return IssuePreview.FromIssue(item);
+        return PartialIssue.FromIssue(item);
     }
 
     [HttpPut("{id:int}", Name = "Update issue")]
-    public IssuePreview Put(UpdateIssueRequest request, int id)
+    public PartialIssue Put(UpdateIssueRequest request, int id)
     {
         var issue = _IssueService.GetById(id);
         issue.SetName(request.Name);
         issue.SetDescription(request.Description);
         issue.SetType(request.Type);
         var updated = _IssueService.Update(issue);
-        return IssuePreview.FromIssue(updated);
+        return PartialIssue.FromIssue(updated);
     }
     
     [HttpPatch("{id:int}", Name = "Patch issue")]
-    public IssuePreview Patch([FromBody] JsonPatchDocument<IssuePatch> patchDoc, int id)
+    public PartialIssue Patch([FromBody] JsonPatchDocument<IssuePatch> patchDoc, int id)
     {
         var issue = _IssueService.GetById(id);
         var issuePatch = new IssuePatch()
@@ -66,7 +66,7 @@ public class IssueController : ControllerBase
         issue.SetDescription(issuePatch.Description);
         issue.SetType(issuePatch.Type);
         var updated = _IssueService.Update(issue);
-        return IssuePreview.FromIssue(updated);
+        return PartialIssue.FromIssue(updated);
     }
     
     [HttpDelete("{id:int}", Name = "Delete issue")]
