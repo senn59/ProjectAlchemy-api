@@ -1,0 +1,12 @@
+using ProjectAlchemy.Core.Domain;
+
+namespace ProjectAlchemy.Core.Interfaces;
+
+public interface IIssueRepository
+{
+    public Issue GetById(int id);
+    public Task<Issue> Create(Issue item);
+    public List<Issue> GetAll();
+    public Task<Issue> Update(Issue item);
+    public void DeleteById(int id);
+}
