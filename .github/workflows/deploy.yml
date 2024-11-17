@@ -1,8 +1,6 @@
-name: Tests
+name: Deploy
 
 on:
-  pull_request:
-    branches: [ "main" ]
   workflow_dispatch:
   
 jobs:
@@ -12,5 +10,5 @@ jobs:
         - name: checkout repository
           uses: actions/checkout@v2.1.0
 
-        - name: Unit Testing
-          run: make test
+        - name: Deploy app
+          run: make prod
