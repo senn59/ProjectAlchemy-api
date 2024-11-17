@@ -20,7 +20,7 @@ This project is developed using .net core and makes use of the N-tier architectu
 This project can easily be run locally using [Docker](https://www.docker.com/) and [Make](https://www.gnu.org/software/make/) (optional)
 
 ## Setup
-Before running make sure you copy `ProjectAlchemy.Web/appsettings.json.EXAMPLE` to `ProjectAlchemy.Web/appsettings.json` and pass a connection string of a valid MySQL database.
+Before running make sure you copy [ProjectAlchemy.Web/appsettings.EXAMPLE.json](ProjectAlchemy.Web/appsettings.EXAMPLE.json) to `ProjectAlchemy.Web/appsettings.json` and pass a connection string of a valid MySQL database.
 
 ## Running
 If you do not have Make installed you can check [Makefile](/Makefile) for the corresponding docker commands.
