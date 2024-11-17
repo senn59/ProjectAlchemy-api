@@ -1,4 +1,5 @@
 using System.Text.Json.Serialization;
+using Microsoft.EntityFrameworkCore;
 using ProjectAlchemy.Core.Interfaces;
 using ProjectAlchemy.Core.Services;
 using ProjectAlchemy.Persistence;
@@ -23,7 +24,12 @@ builder.Services.AddScoped<AppDbContext>(_ => new AppDbContext(connString));
 builder.Services.AddScoped<IIssueRepository>(s => new IssueRepository(s.GetRequiredService<AppDbContext>()));
 builder.Services.AddScoped<IssueService>(s => new IssueService(s.GetRequiredService<IIssueRepository>()));
 
+
 var app = builder.Build();
+
+using var scope = app.Services.CreateScope();
+await using var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+await db.Database.MigrateAsync();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

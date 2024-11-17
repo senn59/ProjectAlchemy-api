@@ -1,6 +1,15 @@
 ﻿services:
-  projectalchemy.web:
+  api:
     image: projectalchemy.web
     build:
       context: .
       dockerfile: ProjectAlchemy.Web/Dockerfile
+    ports:
+      - "3000:8080"
+
+  test:
+    image: projectalchemy.coretests
+    build:
+      context: .
+      dockerfile: ProjectAlchemy.CoreTests/Dockerfile
+    command: dotnet test
