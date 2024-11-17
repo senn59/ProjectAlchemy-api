@@ -1,3 +1,4 @@
+[![Deploy](https://github.com/senn59/ProjectAlchemy-api/actions/workflows/deploy.yml/badge.svg)](https://github.com/senn59/ProjectAlchemy-api/actions/workflows/deploy.yml) [![Deploy](https://github.com/senn59/ProjectAlchemy-api/actions/workflows/deploy.yml/badge.svg)](https://github.com/senn59/ProjectAlchemy-api/actions/workflows/deploy.yml)
 # ProjectAlchemy-api
 This is the API for the ProjectAlchemy project, a tool for agile project management. See [ProjectAlchemy-client](https://github.com/senn59/ProjectAlchemy-client) for the frontend.
 
