@@ -20,5 +20,6 @@ jobs:
 
         - name: Check startup health
           run: | 
+            sleep 2
             chmod +x ./check_startup_health.sh
             ./check_startup_health.sh
