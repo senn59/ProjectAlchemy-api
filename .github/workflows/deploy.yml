@@ -11,9 +11,12 @@ jobs:
           uses: actions/checkout@v2.1.0
 
         - name: setup
-          run: echo $APPSETTINGS_JSON_BASE64 | base64 -d > ProjectAlchemy.Web/appsettings.json && sleep 1
+          run: |
+            cd ProjectAlchemy.Web
+            cp appsettings.EXAMPLE.json appsettings.json
+            jq '.ConnectionStrings.DefaultConnection=""' appsettings.json > /dev/null
           env:
-            APPSETTINGS_JSON: ${{secrets.APPSETTINGS.JSON_BASE64}}
+            CONNECTION_STRING: ${{secrets.CONNECTION_STRING_PROD}}
 
         - name: Deploy app
           run: make prod
