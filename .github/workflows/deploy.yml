@@ -10,16 +10,16 @@ jobs:
         - name: checkout repository
           uses: actions/checkout@v2.1.0
 
-          #- name: setup
-          #run: 'echo $APPSETTINGS_JSON > Projectalchemy.Web/appsettings.json'
-          #env:
-          #APPSETTINGS_JSON: ${{secrets.APPSETTINGS.JSON}}
+        - name: setup
+          run: 'echo $APPSETTINGS_JSON > Projectalchemy.Web/appsettings.json'
+          env:
+            APPSETTINGS_JSON: ${{secrets.APPSETTINGS.JSON}}
 
         - name: Deploy app
           run: make prod
 
         - name: Check startup health
           run: | 
-            sleep 2
+            sleep 1
             chmod +x ./check_startup_health.sh
             ./check_startup_health.sh
