@@ -19,4 +19,6 @@ jobs:
           run: make prod
 
         - name: Check startup health
-          run: ./check_startup_health.sh
+          run | 
+            chmod +x ./check_startup_health.sh
+            ./check_startup_health.sh
