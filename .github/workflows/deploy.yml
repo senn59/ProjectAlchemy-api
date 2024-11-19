@@ -14,7 +14,7 @@ jobs:
           run: |
             cd ProjectAlchemy.Web
             cp appsettings.EXAMPLE.json appsettings.json
-            jq '.ConnectionStrings.DefaultConnection=""' appsettings.json > /dev/null
+            jq '.ConnectionStrings.DefaultConnection="$CONNECTION_STRING"' appsettings.json > /dev/null
           env:
             CONNECTION_STRING: ${{secrets.CONNECTION_STRING_PROD}}
 
