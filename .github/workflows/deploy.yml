@@ -10,5 +10,18 @@ jobs:
         - name: checkout repository
           uses: actions/checkout@v2.1.0
 
+        - name: setup
+          run: |
+            cd ProjectAlchemy.Web
+            echo $CONNECTION_STRING | xargs -I {} jq '.ConnectionStrings.DefaultConnection="{}"' appsettings.EXAMPLE.json > appsettings.json
+          env:
+            CONNECTION_STRING: ${{secrets.CONNECTION_STRING_PROD}}
+
         - name: Deploy app
           run: make prod
+
+        - name: Check startup health
+          run: | 
+            sleep 3
+            chmod +x ./check_startup_health.sh
+            ./check_startup_health.sh
