@@ -13,8 +13,7 @@ jobs:
         - name: setup
           run: |
             cd ProjectAlchemy.Web
-            cp appsettings.EXAMPLE.json appsettings.json
-            echo $CONNECTION_STRING | xargs -I {} jq '.ConnectionStrings.DefaultConnection="{}"' appsettings.json > /dev/null
+            echo $CONNECTION_STRING | xargs -I {} jq '.ConnectionStrings.DefaultConnection="{}"' appsettings.EXAMPLE.json > appsettings.json
           env:
             CONNECTION_STRING: ${{secrets.CONNECTION_STRING_PROD}}
 
