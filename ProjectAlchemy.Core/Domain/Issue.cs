@@ -1,4 +1,4 @@
-﻿using ProjectAlchemy.Core.Helpers;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace ProjectAlchemy.Core.Domain;
 
@@ -8,8 +8,12 @@ public class Issue
     public const int MaxDescriptionLength = 30;
     
     public int Id { get; private set; }
+    [Required]
+    [StringLength(MaxNameLength, MinimumLength = 1)]
     public string Name { get; private set; } = null!;
+    [StringLength(MaxDescriptionLength)]
     public string Description { get; private set; } = "";
+    [Required]
     public IssueType Type { get; private set; }
     
     public Issue(int id, string name, IssueType type, string description)
@@ -29,15 +33,12 @@ public class Issue
     public void SetName(string name)
     {
         name = name.Trim();
-        Guard.StringAgainstNullOrEmpty(name, nameof(name));
-        Guard.StringAgainstLength(name, nameof(name), MaxNameLength);
         Name = name;
     }
     
     public void SetDescription(string description)
     {
         description = description.Trim();
-        Guard.StringAgainstLength(description, nameof(description), MaxNameLength);
         Description = description;
     }
 
