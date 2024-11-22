@@ -1,4 +1,5 @@
 using ProjectAlchemy.Core.Domain;
+using ProjectAlchemy.Core.Exceptions;
 using ProjectAlchemy.Core.Interfaces;
 
 namespace ProjectAlchemy.CoreTests;
@@ -11,9 +12,15 @@ public class MockIssueRepository: IIssueRepository
         
     }
     
-    public Issue GetById(int id)
+    public async Task<Issue> GetById(int id)
     {
-        return _issues.First(x => x.Id == id);
+        var issue = _issues.FirstOrDefault(x => x.Id == id);
+        if (issue == null)
+        {
+            throw new NotFoundException();
+        }
+
+        return issue;
     }
 
     public async Task<Issue> Create(Issue item)

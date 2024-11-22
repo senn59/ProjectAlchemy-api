@@ -26,9 +26,9 @@ public class IssueController : ControllerBase
     }
 
     [HttpGet("{id:int}",Name = "Get issue")]
-    public IssueResponse Get(int id)
+    public async Task<IssueResponse> Get(int id)
     {
-        var item =  _IssueService.GetById(id);
+        var item =  await _IssueService.GetById(id);
         return IssueResponse.FromIssue(item);
     }
 
@@ -43,7 +43,7 @@ public class IssueController : ControllerBase
     [HttpPut("{id:int}", Name = "Update issue")]
     public async Task<PartialIssue> Put(UpdateIssueRequest request, int id)
     {
-        var issue = _IssueService.GetById(id);
+        var issue = await _IssueService.GetById(id);
         issue.SetName(request.Name);
         issue.SetDescription(request.Description);
         issue.SetType(request.Type);
@@ -54,7 +54,7 @@ public class IssueController : ControllerBase
     [HttpPatch("{id:int}", Name = "Patch issue")]
     public async Task<PartialIssue> Patch([FromBody] JsonPatchDocument<IssuePatch> patchDoc, int id)
     {
-        var issue = _IssueService.GetById(id);
+        var issue = await _IssueService.GetById(id);
         var issuePatch = new IssuePatch()
         {
             Name = issue.Name,

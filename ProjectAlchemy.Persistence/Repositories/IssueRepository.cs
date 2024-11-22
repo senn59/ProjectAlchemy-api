@@ -14,15 +14,15 @@ public class IssueRepository: IIssueRepository
         _context = context;
     }
 
-    public Issue GetById(int id)
+    public async Task<Issue?> GetById(int id)
     {
-        var issue = _context.Issues.First(i => i.Id == id);
-        return IssueEntity.ToIssue(issue);
+        var issue = await _context.Issues.FirstOrDefaultAsync(i => i.Id == id);
+        return issue == null ? null : IssueEntity.ToIssue(issue);
     }
 
     public async Task<Issue> Create(Issue item)
     {
-        var created = _context.Issues.Add(IssueEntity.FromIssue(item));
+        var created = await _context.Issues.AddAsync(IssueEntity.FromIssue(item));
         await _context.SaveChangesAsync();
         return IssueEntity.ToIssue(created.Entity);
     }

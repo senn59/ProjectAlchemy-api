@@ -1,4 +1,5 @@
 using ProjectAlchemy.Core.Domain;
+using ProjectAlchemy.Core.Exceptions;
 
 namespace ProjectAlchemy.CoreTests;
 
@@ -11,7 +12,7 @@ public class Tests
         var repository = new MockIssueRepository();
         var issue = new Issue(0, "issue1", IssueType.Task, "a new issue");
         await repository.Create(issue);
-        var retrievedIssue = repository.GetById(0);
+        var retrievedIssue = await repository.GetById(0);
         Assert.That(retrievedIssue, Is.EqualTo(issue));
     }
     
@@ -19,6 +20,6 @@ public class Tests
     public void GettingNonExistentIssue()
     {
         var repository = new MockIssueRepository();
-        Assert.Throws<InvalidOperationException>(() => repository.GetById(0));
+        Assert.ThrowsAsync<NotFoundException>(() => repository.GetById(0));
     }
 }
