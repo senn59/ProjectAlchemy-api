@@ -10,4 +10,5 @@ public class UserEntity
     public string Username { get; set; }
     [Required]
     public string Password { get; set; }
+    public List<IssueEntity> Issues { get; set; }
 }
