@@ -1,5 +1,7 @@
+using Microsoft.EntityFrameworkCore;
 using ProjectAlchemy.Core.Domain;
 using ProjectAlchemy.Core.Interfaces;
+using ProjectAlchemy.Persistence.Entities;
 
 namespace ProjectAlchemy.Persistence.Repositories;
 
@@ -11,8 +13,23 @@ public class UserRepository: IUserRepository
     {
         _context = context;
     }
+
+    public async Task<bool> Exists(string username)
+    {
+        return await _context.Users.FirstOrDefaultAsync(u => u.Username == username) != null;
+    }
     
-    public User Register(string username, string password)
+    public async Task<User> Create(string username, string password)
+    {
+        var user = await _context.Users.AddAsync(new UserEntity()
+        {
+            Username = username,
+            Password = password
+        });
+        return UserEntity.ToUser(user.Entity);
+    }
+
+    public Task<User?> MatchAgainstPassword(string username, string password)
     {
         throw new NotImplementedException();
     }
