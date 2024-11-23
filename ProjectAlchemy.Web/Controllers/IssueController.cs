@@ -1,3 +1,5 @@
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using ProjectAlchemy.Core.Services;
@@ -18,6 +20,7 @@ public class IssueController : ControllerBase
         _IssueService = IssueService;
     }
 
+    [Authorize]
     [HttpGet(Name = "Get all issues")]
     public IEnumerable<PartialIssue> Get()
     {

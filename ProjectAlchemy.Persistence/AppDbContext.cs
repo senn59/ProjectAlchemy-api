@@ -6,7 +6,6 @@ namespace ProjectAlchemy.Persistence;
 public class AppDbContext(string connectionString) : DbContext
 {
     public DbSet<IssueEntity> Issues { get; set; }
-    public DbSet<UserEntity> Users { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
@@ -17,9 +16,6 @@ public class AppDbContext(string connectionString) : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<IssueEntity>()
-            .Property(p => p.Id)
-            .ValueGeneratedOnAdd();
-        modelBuilder.Entity<UserEntity>()
             .Property(p => p.Id)
             .ValueGeneratedOnAdd();
     }
