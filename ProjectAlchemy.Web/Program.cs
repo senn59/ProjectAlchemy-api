@@ -21,7 +21,6 @@ builder.Services.AddControllers().AddNewtonsoftJson(options =>
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-
 var connString = builder.Configuration.GetConnectionString("DefaultConnection");
 if (connString == null) throw new ArgumentNullException("Connection string not properly configured");
 
@@ -30,7 +29,6 @@ if (supabaseSettings == null || string.IsNullOrEmpty(supabaseSettings.Secret))
 {
     throw new ArgumentNullException("Supabase settings are not properly configured");
 }
-
 
 builder.Services.AddScoped<AppDbContext>(_ => new AppDbContext(connString));
 
