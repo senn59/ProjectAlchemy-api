@@ -13,9 +13,9 @@ jobs:
         - name: setup
           run: |
             cd ProjectAlchemy.Web
-            echo $CONNECTION_STRING | xargs -I {} jq '.ConnectionStrings.DefaultConnection="{}"' appsettings.EXAMPLE.json > appsettings.json
+            echo $APPSETTINGS_BASE64 | base64 -d > appsettings.json
           env:
-            CONNECTION_STRING: ${{secrets.CONNECTION_STRING_PROD}}
+            APPSETTINGS_BASE64: ${{secrets.APPSETTINGS_JSON_BASE64}}
 
         - name: Deploy app
           run: make prod
