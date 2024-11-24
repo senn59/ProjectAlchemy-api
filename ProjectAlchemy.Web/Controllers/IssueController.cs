@@ -20,7 +20,6 @@ public class IssueController : ControllerBase
         _IssueService = IssueService;
     }
 
-    [Authorize]
     [HttpGet(Name = "Get all issues")]
     public IEnumerable<PartialIssue> Get()
     {
