@@ -5,19 +5,21 @@ namespace ProjectAlchemy.Core.Domain;
 public class Project
 {
     public const int MaxNameLength = 30;
-    private List<Issue> _issues;
-    private List<Lane> _lanes;
-    private List<Member> _members;
+    private readonly List<Issue> _issues;
+    private readonly List<Lane> _lanes;
+    private readonly List<Member> _members;
     
-    [Required]
-    [StringLength(MaxNameLength, MinimumLength = 1)]
-    public string Name { get; set; }
+    public int Id { get; set; }
+    [Required(AllowEmptyStrings = false)]
+    [StringLength(MaxNameLength)]
+    public string Name { get; private set; }
     public IReadOnlyList<Issue> Issues => _issues.AsReadOnly();
     public IReadOnlyList<Lane> Lanes => _lanes.AsReadOnly();
     public IReadOnlyList<Member> Members => _members.AsReadOnly();
 
-    public Project(List<Issue> issues, List<Member> members, List<Lane> lanes)
+    public Project(string name, List<Issue> issues, List<Member> members, List<Lane> lanes)
     {
+        Name = name.Trim();
         _issues = issues;
         _members = members;
         _lanes = lanes;

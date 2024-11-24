@@ -28,7 +28,7 @@ public class ProjectService
     public async Task<Project> Add(string name, string userId)
     {
         var creator = new Member(userId, MemberType.Owner);
-        var project = new Project([], [creator], _defaultLanes);
+        var project = new Project(name, [], [creator], _defaultLanes);
         return await _repository.Create(project);
     }
 }
