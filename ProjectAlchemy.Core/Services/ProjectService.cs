@@ -1,5 +1,6 @@
 using ProjectAlchemy.Core.Domain;
 using ProjectAlchemy.Core.Dto;
+using ProjectAlchemy.Core.Exceptions;
 using ProjectAlchemy.Core.Interfaces;
 
 namespace ProjectAlchemy.Core.Services;
@@ -20,9 +21,21 @@ public class ProjectService
         return await _repository.GetAll(userid);
     }
 
-    public async Task<Project> Get(int projectId)
+    public async Task<Project> Get(int projectId, string userid)
     {
-        return await _repository.Get(projectId);
+        //TODO: Refactor so we first get the members before retrieving the entire entity
+        var project = await _repository.Get(projectId);
+        if (project == null)
+        {
+            throw new NotFoundException();
+        }
+
+        if (project.Members.Any(m => m.UserId == userid) == false)
+        {
+            throw new Exception("You do not have access to this project");
+        }
+
+        return project;
     }
 
     public async Task<Project> Add(string name, string userId)
