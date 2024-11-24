@@ -14,6 +14,9 @@ public class IssueEntity
     [MaxLength(Issue.MaxDescriptionLength)]
     public required string Description { get; set; } = "";
     public IssueType Type { get; set; }
+    public int ProjectId { get; set; }
+    
+    public ProjectEntity Project { get; set; }
 
     public static Issue ToIssue(IssueEntity entity)
     {
