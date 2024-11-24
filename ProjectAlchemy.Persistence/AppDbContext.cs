@@ -28,6 +28,9 @@ public class AppDbContext(string connectionString) : DbContext
         modelBuilder.Entity<LaneEntity>()
             .Property(p => p.Id)
             .ValueGeneratedOnAdd();
+        modelBuilder.Entity<MemberEntity>()
+            .Property(p => p.Id)
+            .ValueGeneratedOnAdd();
 
         modelBuilder.Entity<IssueEntity>()
             .HasOne(i => i.Project)
