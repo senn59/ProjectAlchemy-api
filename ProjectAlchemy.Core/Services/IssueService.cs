@@ -1,4 +1,5 @@
 using ProjectAlchemy.Core.Domain;
+using ProjectAlchemy.Core.Exceptions;
 using ProjectAlchemy.Core.Interfaces;
 
 namespace ProjectAlchemy.Core.Services;
@@ -12,9 +13,15 @@ public class IssueService(IIssueRepository issueRepository)
         return await _issueRepository.Create(item);
     }
 
-    public Issue GetById(int id)
+    public async Task<Issue> GetById(int id)
     {
-        return _issueRepository.GetById(id);
+        var issue = await _issueRepository.GetById(id);
+        if (issue == null)
+        {
+            throw new NotFoundException();
+        }
+
+        return issue;
     }
 
     public List<Issue> GetAll()
