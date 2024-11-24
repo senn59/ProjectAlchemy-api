@@ -22,4 +22,18 @@ public class Project
         _members = members;
         _lanes = lanes;
     }
+
+    public void AddMember(Member adder, Member toAdd)
+    {
+        if (!_members.Contains(adder))
+        {
+            throw new Exception("You cannot add a new member to this project.");
+        }
+        
+        if (adder.Type != MemberType.Owner)
+        {
+            throw new Exception("You do not have permission to add a new member to this project.");
+        }
+        _members.Add(toAdd);
+    }
 }
