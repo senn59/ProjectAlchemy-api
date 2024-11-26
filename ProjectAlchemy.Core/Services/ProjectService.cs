@@ -38,10 +38,15 @@ public class ProjectService
         return project;
     }
 
-    public async Task<Project> Add(string name, string userId)
+    public async Task<Project> Create(string name, string userId)
     {
         var creator = new Member(userId, MemberType.Owner);
         var project = new Project(name, [], [creator], _defaultLanes);
         return await _repository.Create(project);
+    }
+
+    public Issue AddIssue(Issue issue, string userId)
+    {
+        return issue;
     }
 }

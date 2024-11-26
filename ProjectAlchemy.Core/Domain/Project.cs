@@ -36,6 +36,21 @@ public class Project
         {
             throw new Exception("You do not have permission to add a new member to this project.");
         }
+
+        if (toAdd.Type == MemberType.Owner)
+        {
+            throw new Exception("You cannot add a member as owner");
+        }
+        
         _members.Add(toAdd);
+    }
+
+    public void CanAdd(Issue issue, Member member)
+    {
+        if (!_members.Contains(member))
+        {
+            throw new Exception("You are unauthorized to add new issues to this project.");
+        }
+        _issues.Add(issue);
     }
 }
