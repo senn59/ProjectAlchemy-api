@@ -4,17 +4,26 @@ using ProjectAlchemy.Core.Interfaces;
 
 namespace ProjectAlchemy.Core.Services;
 
-public class IssueService(IIssueRepository issueRepository)
+public class IssueService
 {
-    private IIssueRepository _issueRepository = issueRepository;
+    private readonly IIssueRepository _issueRepository;
+    private readonly AuthorizationService _authService;
 
-    public async Task<Issue> Create(Issue item)
+    public IssueService(IIssueRepository issueRepository, AuthorizationService authService)
     {
-        return await _issueRepository.Create(item);
+        _issueRepository = issueRepository;
+        _authService = authService;
     }
 
-    public async Task<Issue> GetById(int id)
+    public async Task<Issue> Create(Issue item, string userId, string projectId)
     {
+        _authService.AuthorizeProjectAccess(userId, projectId);
+        return await _issueRepository.Create(item, projectId);
+    }
+
+    public async Task<Issue> GetById(int id, string userId, string projectId )
+    {
+        _authService.AuthorizeProjectAccess(userId, projectId);
         var issue = await _issueRepository.GetById(id);
         if (issue == null)
         {
@@ -34,8 +43,10 @@ public class IssueService(IIssueRepository issueRepository)
         return await _issueRepository.Update(item);
     }
     
-    public void DeleteById(int id)
+    public void DeleteById(int id, string userId, string projectId)
     {
+        _authService.AuthorizeProjectAccess(userId, projectId);
+        
         _issueRepository.DeleteById(id);
     }
 }
