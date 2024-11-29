@@ -5,8 +5,8 @@ namespace ProjectAlchemy.Core.Interfaces;
 public interface IIssueRepository
 {
     public Task<Issue?> GetById(int id);
-    public Task<Issue> Create(Issue item, string projectId);
-    public Task<Issue> Update(Issue item);
+    public Task Create(Issue item, string projectId);
+    public Task Update(Issue item);
     public Task<bool> IsInProject(int issueId, string projectId);
     public void DeleteById(int id);
 }

@@ -17,27 +17,29 @@ public class IssueRepository: IIssueRepository
     public async Task<Issue?> GetById(int id)
     {
         var issue = await _context.Issues.FirstOrDefaultAsync(i => i.Id == id);
-        return issue == null ? null : IssueEntity.ToIssue(issue);
+        var lane = await _context.Lanes.FirstOrDefaultAsync(l => issue != null && l.ProjectId == issue.ProjectId);
+
+        return lane == null || issue == null ? null : IssueEntity.ToIssue(issue, LaneEntity.ToLane(lane));
     }
 
-    public async Task<Issue> Create(Issue item)
+    public async Task Create(Issue item, string projectId)
     {
-        var created = await _context.Issues.AddAsync(IssueEntity.FromIssue(item));
+        var record = IssueEntity.FromIssue(item);
+        record.ProjectId = projectId;
+        await _context.Issues.AddAsync(IssueEntity.FromIssue(item));
         await _context.SaveChangesAsync();
-        return IssueEntity.ToIssue(created.Entity);
     }
 
-    public List<Issue> GetAll()
-    {
-        return _context.Issues.Select(IssueEntity.ToIssue).ToList();
-    }
-
-    public async Task<Issue> Update(Issue updated)
+    public async Task Update(Issue updated)
     {
         _context.ChangeTracker.Clear();
-        var updatedIssue = _context.Update(IssueEntity.FromIssue(updated));
+        _context.Update(IssueEntity.FromIssue(updated)); 
         await _context.SaveChangesAsync();
-        return IssueEntity.ToIssue(updatedIssue.Entity);
+    }
+
+    public async Task<bool> IsInProject(int issueId, string projectId)
+    {
+        return await _context.Issues.AnyAsync(i => i.Id == issueId && i.ProjectId == projectId);
     }
 
     public void DeleteById(int id)
