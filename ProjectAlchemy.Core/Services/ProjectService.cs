@@ -17,15 +17,10 @@ public class ProjectService
         _repository = repository;
         _authService = authService;
     }
-    
-    public async Task<List<ProjectOverview>> GetUserProjectsList(string userid)
-    {
-        return await _repository.GetAll(userid);
-    }
 
     public async Task<Project> Get(string projectId, string userid)
     {
-        _authService.AuthorizeProjectAccess(userid, projectId);
+        await _authService.AuthorizeProjectAccess(userid, projectId);
         var project = await _repository.Get(projectId);
         if (project == null)
         {

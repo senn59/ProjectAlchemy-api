@@ -1,12 +1,11 @@
 using ProjectAlchemy.Core.Domain;
-using ProjectAlchemy.Core.Dto;
 
 namespace ProjectAlchemy.Core.Interfaces;
 
 public interface IProjectRepository
 {
-    public Task<List<ProjectOverview>> GetAll(string userId);
     public Task<Project?> Get(string id);
     public Task<Project> Create(Project project);
-    public Task<List<Member>> GetMembers(string projectId);
+    public Task<bool> HasMember(string projectId, string userId);
+    public Task<Member> GetMember(string projectId, string userId);
 }
