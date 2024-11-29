@@ -14,13 +14,14 @@ public class IssueEntity
     [MaxLength(Issue.MaxDescriptionLength)]
     public required string Description { get; set; } = "";
     public IssueType Type { get; set; }
-    public int ProjectId { get; set; }
+    public string ProjectId { get; set; }
+    public int LaneId { get; set; }
     
     public ProjectEntity Project { get; set; }
 
-    public static Issue ToIssue(IssueEntity entity)
+    public static Issue ToIssue(IssueEntity entity, Lane lane)
     {
-        return new Issue(entity.Id, entity.Name, entity.Type, entity.Description);
+        return new Issue(entity.Id, entity.Name, entity.Type, entity.Description, lane);
     }
 
     public static IssueEntity FromIssue(Issue issue)

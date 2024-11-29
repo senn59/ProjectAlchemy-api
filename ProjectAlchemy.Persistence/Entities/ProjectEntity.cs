@@ -6,7 +6,7 @@ namespace ProjectAlchemy.Persistence.Entities;
 public class ProjectEntity
 {
     [Required]
-    public int Id { get; set; }
+    public string Id { get; set; }
     [Required]
     [StringLength(Project.MaxNameLength, MinimumLength = 1)]
     public string Name { get; set; }
