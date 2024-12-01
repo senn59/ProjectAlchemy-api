@@ -10,4 +10,9 @@ public class MemberEntity
     public string ProjectId { get; init; }
     
     public ProjectEntity Project { get; init; }
+
+    public static Member ToMember(MemberEntity entity)
+    {
+        return new Member(entity.userId, entity.Type);
+    }
 }

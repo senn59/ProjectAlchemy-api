@@ -31,7 +31,8 @@ public class IssueEntity
             Id = issue.Id,
             Name = issue.Name,
             Description = issue.Description,
-            Type = issue.Type
+            Type = issue.Type,
+            LaneId = issue.Lane.Id
         };
     }
 }
