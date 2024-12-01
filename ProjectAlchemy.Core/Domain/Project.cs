@@ -9,7 +9,7 @@ public class Project
     private readonly List<Lane> _lanes;
     private readonly List<Member> _members;
     
-    public int Id { get; set; }
+    public string Id { get; set; }
     [Required(AllowEmptyStrings = false)]
     [StringLength(MaxNameLength)]
     public string Name { get; private set; }

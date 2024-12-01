@@ -15,4 +15,13 @@ public class MemberEntity
     {
         return new Member(entity.userId, entity.Type);
     }
+
+    public static MemberEntity FromMember(Member member)
+    {
+        return new MemberEntity()
+        {
+            userId = member.UserId,
+            Type = member.Type
+        };
+    }
 }

@@ -22,7 +22,17 @@ public class ProjectEntity
             .Select(i => IssueEntity.ToIssue(i, lanes.First(l => l.Id == i.LaneId)));
         var members = entity.Members.Select(MemberEntity.ToMember);
         return new Project(entity.Name, issues.ToList(), members.ToList(), lanes.ToList());
-
     }
     
+    public static ProjectEntity FromProject(Project project)
+    {
+        return new ProjectEntity()
+        {
+            Id = project.Id,
+            Name = project.Name,
+            Issues = project.Issues.Select(IssueEntity.FromIssue).ToList(),
+            Lanes = project.Lanes.Select(LaneEntity.FromLane).ToList(),
+            Members = project.Members.Select(MemberEntity.FromMember).ToList(),
+        };
+    }
 }

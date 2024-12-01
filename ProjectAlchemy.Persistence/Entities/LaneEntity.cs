@@ -17,4 +17,13 @@ public class LaneEntity
     {
         return new Lane(entity.Id, entity.Name);
     }
+
+    public static LaneEntity FromLane(Lane lane)
+    {
+        return new LaneEntity()
+        {
+            Id = lane.Id,
+            Name = lane.Name
+        };
+    }
 }
