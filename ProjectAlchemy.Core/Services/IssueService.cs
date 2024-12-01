@@ -30,7 +30,7 @@ public class IssueService
         await AssertIssueInProject(issueId, projectId);
         
         var member = await _projectRepository.GetMember(projectId, userId);
-        if (!member.CanUpdateIssues())
+        if (member == null || !member.CanUpdateIssues())
         {
             throw new NotAuthorizedException();
         }
@@ -50,7 +50,7 @@ public class IssueService
         await AssertIssueInProject(item.Id, projectId);
         
         var member = await _projectRepository.GetMember(projectId, userId);
-        if (!member.CanUpdateIssues())
+        if (member == null || !member.CanUpdateIssues())
         {
             throw new NotAuthorizedException();
         }
@@ -63,7 +63,7 @@ public class IssueService
         await AssertIssueInProject(issueId, projectId);
         
         var member = await _projectRepository.GetMember(projectId, userId);
-        if (!member.CanDeleteIssues())
+        if (member == null || !member.CanDeleteIssues())
         {
             throw new NotAuthorizedException();
         }

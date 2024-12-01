@@ -11,7 +11,7 @@ public class MemberEntity
     
     public ProjectEntity Project { get; init; }
 
-    public static Member ToMember(MemberEntity entity)
+    public static Member? ToMember(MemberEntity entity)
     {
         return new Member(entity.userId, entity.Type);
     }
