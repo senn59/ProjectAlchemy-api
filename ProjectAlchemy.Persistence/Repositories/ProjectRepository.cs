@@ -16,7 +16,7 @@ public class ProjectRepository: IProjectRepository
     
     public async Task<Project?> Get(string id)
     {
-        var project = await _context.Projects.FirstOrDefaultAsync(p => p.Id == id);
+        var project = await _context.Projects.FindAsync(id);
         return project == null ? null : ProjectEntity.ToProject(project);
     }
 

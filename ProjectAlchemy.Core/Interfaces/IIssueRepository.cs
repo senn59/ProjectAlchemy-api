@@ -8,5 +8,5 @@ public interface IIssueRepository
     public Task Create(Issue item, string projectId);
     public Task Update(Issue item);
     public Task<bool> IsInProject(int issueId, string projectId);
-    public void DeleteById(int id);
+    public Task DeleteById(int id);
 }

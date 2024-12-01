@@ -16,8 +16,8 @@ public class IssueRepository: IIssueRepository
 
     public async Task<Issue?> GetById(int id)
     {
-        var issue = await _context.Issues.FirstOrDefaultAsync(i => i.Id == id);
-        var lane = await _context.Lanes.FirstOrDefaultAsync(l => issue != null && l.ProjectId == issue.ProjectId);
+        var issue = await _context.Issues.FindAsync(id);
+        var lane = await _context.Lanes.FirstOrDefaultAsync(l => issue != null && l.Id == issue.LaneId);
 
         return lane == null || issue == null ? null : IssueEntity.ToIssue(issue, LaneEntity.ToLane(lane));
     }
@@ -42,9 +42,12 @@ public class IssueRepository: IIssueRepository
         return await _context.Issues.AnyAsync(i => i.Id == issueId && i.ProjectId == projectId);
     }
 
-    public void DeleteById(int id)
+    public async Task DeleteById(int id)
     {
-        var issue = _context.Issues.First(i => i.Id == id);
-        _context.Remove(issue);
+        var issue = await _context.Issues.FindAsync(id);
+        if (issue != null)
+        {
+            _context.Remove(issue);
+        }
     }
 }
