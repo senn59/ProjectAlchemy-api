@@ -22,18 +22,30 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var connString = builder.Configuration.GetConnectionString("DefaultConnection");
-if (connString == null) throw new ArgumentNullException("Connection string not properly configured");
+if (connString == null)
+{
+    Console.Error.WriteLine("Connection string not properly configured");
+    Environment.Exit(1);
+}
 
 var supabaseSettings = builder.Configuration.GetSection("Supabase").Get<SupabaseSettings>();
 if (supabaseSettings == null || string.IsNullOrEmpty(supabaseSettings.Secret))
 {
-    throw new ArgumentNullException("Supabase settings are not properly configured");
+    Console.Error.WriteLine("Supabase settings are not properly configured");
+    Environment.Exit(1);
 }
 
-builder.Services.AddScoped<AppDbContext>(_ => new AppDbContext(connString));
+builder.Services.AddDbContext<AppDbContext>(options =>
+{
+    options.UseMySql(connString, ServerVersion.AutoDetect(connString));
+});
 
-builder.Services.AddScoped<IIssueRepository>(s => new IssueRepository(s.GetRequiredService<AppDbContext>()));
-builder.Services.AddScoped<IssueService>(s => new IssueService(s.GetRequiredService<IIssueRepository>()));
+builder.Services.AddScoped<IIssueRepository, IssueRepository>();
+builder.Services.AddScoped<IProjectRepository, ProjectRepository>();
+builder.Services.AddScoped<IMemberRepository, MemberRepository>();
+builder.Services.AddScoped<AuthorizationService>();
+builder.Services.AddScoped<IssueService>();
+builder.Services.AddScoped<ProjectService>();
 
 builder.Services.AddAuthentication(o =>
     {
