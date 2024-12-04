@@ -28,7 +28,7 @@ public class ProjectController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<IEnumerable<ProjectOverview>> Get()
+    public async Task<IEnumerable<ProjectOverview>> GetProjectList()
     {
         var userId = JwtHelper.GetId(User);
         var projects = await _userService.GetUserProjectsList(userId);
@@ -36,7 +36,7 @@ public class ProjectController : ControllerBase
     }
 
     [HttpGet("{id}")]
-    public async Task<ProjectView> Get(string id)
+    public async Task<ProjectView> GetProject(string id)
     {
         var userId = JwtHelper.GetId(User);
         var project = await _projectService.Get(id, userId);
