@@ -7,9 +7,10 @@ public class CreateIssueRequest
 {
     public required string Name { get; set; }
     public required IssueType Type { get; set; }
+    public required int laneId { get; set; }
 
-    public static Issue ToIssue(CreateIssueRequest request)
+    public static Issue ToIssue(CreateIssueRequest request, Lane lane)
     {
-        return new Issue(request.Name, request.Type);
+        return new Issue(request.Name, request.Type, lane);
     }
 }
