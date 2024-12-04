@@ -46,6 +46,7 @@ builder.Services.AddScoped<IMemberRepository, MemberRepository>();
 builder.Services.AddScoped<AuthorizationService>();
 builder.Services.AddScoped<IssueService>();
 builder.Services.AddScoped<ProjectService>();
+builder.Services.AddScoped<UserService>();
 
 builder.Services.AddAuthentication(o =>
     {
