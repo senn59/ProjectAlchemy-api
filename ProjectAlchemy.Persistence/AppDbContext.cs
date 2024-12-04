@@ -4,18 +4,12 @@ using ProjectAlchemy.Persistence.Entities;
 
 namespace ProjectAlchemy.Persistence;
 
-public class AppDbContext(string connectionString) : DbContext
+public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(options)
 {
     public DbSet<IssueEntity> Issues { get; set; }
     public DbSet<ProjectEntity> Projects { get; set; }
     public DbSet<LaneEntity> Lanes { get; set; }
     public DbSet<MemberEntity> Members { get; set; }
-
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    {
-        optionsBuilder
-            .UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
-    }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
