@@ -6,12 +6,13 @@ namespace ProjectAlchemy.Persistence.Entities;
 public class LaneEntity
 {
     [Required]
-    public int Id { get; set; }
+    public required int Id { get; init; }
     [MaxLength(10)]
-    public string Name { get; set; }
-    public string ProjectId { get; set; }
+    public required string Name { get; init; }
     
-    public ProjectEntity Project { get; set; }
+    [MaxLength(200)]
+    public string? ProjectId { get; init; }
+    public ProjectEntity? Project { get; init; }
 
     public static Lane ToLane(LaneEntity entity)
     {

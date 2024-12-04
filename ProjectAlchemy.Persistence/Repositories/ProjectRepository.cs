@@ -28,13 +28,13 @@ public class ProjectRepository: IProjectRepository
 
     public async Task<bool> HasMember(string projectId, string userId)
     {
-        return await _context.Members.AnyAsync(m => m.ProjectId == projectId && m.userId == userId);
+        return await _context.Members.AnyAsync(m => m.ProjectId == projectId && m.UserId == userId);
     }
 
     public async Task<Member?> GetMember(string projectId, string userId)
     {
         var member = await _context.Members
-            .FirstOrDefaultAsync(m => m.ProjectId == projectId && m.userId == userId);
+            .FirstOrDefaultAsync(m => m.ProjectId == projectId && m.UserId == userId);
         return member == null ? null : MemberEntity.ToMember(member);
     }
 }

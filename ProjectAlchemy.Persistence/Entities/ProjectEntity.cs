@@ -6,14 +6,13 @@ namespace ProjectAlchemy.Persistence.Entities;
 
 public class ProjectEntity
 {
-    [Required]
-    public string Id { get; set; }
-    [Required]
+    public required string Id { get; init; }
+    
     [StringLength(Project.MaxNameLength, MinimumLength = 1)]
-    public string Name { get; set; }
-    public ICollection<IssueEntity> Issues { get; set; } = new List<IssueEntity>();
-    public ICollection<LaneEntity> Lanes { get; set; } = new List<LaneEntity>();
-    public ICollection<MemberEntity> Members { get; set; } = new List<MemberEntity>();
+    public required string Name { get; init; }
+    public ICollection<IssueEntity> Issues { get; init; } = new List<IssueEntity>();
+    public ICollection<LaneEntity> Lanes { get; init; } = new List<LaneEntity>();
+    public ICollection<MemberEntity> Members { get; init; } = new List<MemberEntity>();
 
     public static Project ToProject(ProjectEntity entity)
     {

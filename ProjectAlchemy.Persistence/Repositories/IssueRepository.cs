@@ -7,7 +7,7 @@ namespace ProjectAlchemy.Persistence.Repositories;
 
 public class IssueRepository: IIssueRepository
 {
-    private AppDbContext _context;
+    private readonly AppDbContext _context;
     
     public IssueRepository(AppDbContext context)
     {

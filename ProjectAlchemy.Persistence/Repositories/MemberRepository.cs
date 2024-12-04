@@ -16,16 +16,16 @@ public class MemberRepository: IMemberRepository
     public async Task<List<ProjectOverview>> GetProjects(string userId)
     {
         return await _context.Members
-            .Where(m => m.userId == userId)
+            .Where(m => m.UserId == userId)
             .Join(
                 _context.Projects,
                 m => m.ProjectId,
                 project => project.Id,
                 (m, project) => new ProjectOverview()
                 {
-                    ProjectId = m.ProjectId,
+                    ProjectId = m.ProjectId!,
                     ProjectName = project.Name,
-                    MemberType = m.Type,
+                    MemberType = m.Type
                 }).ToListAsync();
     }
 }
