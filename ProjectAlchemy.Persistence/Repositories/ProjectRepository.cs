@@ -24,12 +24,13 @@ public class ProjectRepository: IProjectRepository
         return project == null ? null : ProjectEntity.ToProject(project);
     }
 
-    public async Task Create(Project project)
+    public async Task<Project> Create(Project project)
     {
         project.Id = Guid.NewGuid().ToString();
         var entity = ProjectEntity.FromProject(project);
         await _context.Projects.AddAsync(entity);
         await _context.SaveChangesAsync();
+        return ProjectEntity.ToProject(entity);
     }
 
     public async Task<bool> HasMember(string projectId, string userId)

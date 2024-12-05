@@ -20,8 +20,7 @@ public class IssueService
     public async Task<Issue> Create(Issue item, string userId, string projectId)
     {
         await _authService.AuthorizeProjectAccess(userId, projectId);
-        await _issueRepository.Create(item, projectId);
-        return item;
+        return await _issueRepository.Create(item, projectId);
     }
 
     public async Task<Issue> GetById(int issueId, string userId, string projectId )
@@ -54,8 +53,7 @@ public class IssueService
         {
             throw new NotAuthorizedException();
         }
-        await _issueRepository.Update(item);
-        return item;
+        return await _issueRepository.Update(item);
     }
     
     public async Task DeleteById(int issueId, string userId, string projectId)

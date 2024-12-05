@@ -34,7 +34,6 @@ public class ProjectService
     {
         var creator = new Member(userId, MemberType.Owner);
         var project = new Project(name, [], [creator], _defaultLanes);
-        await _repository.Create(project);
-        return project;
+        return await _repository.Create(project);
     }
 }
