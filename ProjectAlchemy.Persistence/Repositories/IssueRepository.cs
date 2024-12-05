@@ -51,6 +51,7 @@ public class IssueRepository: IIssueRepository
         if (issue != null)
         {
             _context.Remove(issue);
+            await _context.SaveChangesAsync();
         }
     }
 }
