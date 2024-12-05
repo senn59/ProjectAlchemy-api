@@ -54,7 +54,7 @@ public class IssueService
         {
             throw new NotAuthorizedException();
         }
-        await _issueRepository.Update(item, projectId);
+        await _issueRepository.Update(item);
         return item;
     }
     

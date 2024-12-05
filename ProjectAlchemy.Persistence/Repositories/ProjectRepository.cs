@@ -22,8 +22,10 @@ public class ProjectRepository: IProjectRepository
 
     public async Task Create(Project project)
     {
+        project.Id = Guid.NewGuid().ToString();
         var entity = ProjectEntity.FromProject(project);
         await _context.Projects.AddAsync(entity);
+        await _context.SaveChangesAsync();
     }
 
     public async Task<bool> HasMember(string projectId, string userId)

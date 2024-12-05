@@ -31,7 +31,7 @@ public class ProjectEntity
             Name = project.Name,
             Issues = project.Issues.Select(IssueEntity.FromIssue).ToList(),
             Lanes = project.Lanes.Select(LaneEntity.FromLane).ToList(),
-            Members = project.Members.Select(MemberEntity.FromMember).ToList(),
+            Members = project.Members.Select(MemberEntity.FromMember).ToList()
         };
     }
 }

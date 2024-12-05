@@ -25,22 +25,25 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
             .Property(p => p.Id)
             .ValueGeneratedOnAdd();
 
-        modelBuilder.Entity<IssueEntity>()
-            .HasOne(i => i.Project)
-            .WithMany(p => p.Issues)
+        modelBuilder.Entity<ProjectEntity>()
+            .HasMany(p => p.Issues)
+            .WithOne(i => i.Project)
             .HasForeignKey(i => i.ProjectId)
+            .OnDelete(DeleteBehavior.Cascade)
             .IsRequired();
         
-        modelBuilder.Entity<LaneEntity>()
-            .HasOne(i => i.Project)
-            .WithMany(p => p.Lanes)
+        modelBuilder.Entity<ProjectEntity>()
+            .HasMany(p => p.Lanes)
+            .WithOne(i => i.Project)
             .HasForeignKey(i => i.ProjectId)
+            .OnDelete(DeleteBehavior.Cascade)
             .IsRequired();
         
-        modelBuilder.Entity<MemberEntity>()
-            .HasOne(i => i.Project)
-            .WithMany(p => p.Members)
-            .HasForeignKey(i => i.ProjectId)
+        modelBuilder.Entity<ProjectEntity>()
+            .HasMany(p => p.Members)
+            .WithOne(i => i.Project)
+            .HasForeignKey(m => m.ProjectId)
+            .OnDelete(DeleteBehavior.Cascade)
             .IsRequired();
     }
 }

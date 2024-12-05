@@ -26,7 +26,7 @@ public class IssueRepository: IIssueRepository
     {
         var record = IssueEntity.FromIssue(item);
         record.ProjectId = projectId;
-        await _context.Issues.AddAsync(IssueEntity.FromIssue(item));
+        await _context.Issues.AddAsync(record);
         await _context.SaveChangesAsync();
     }
 
