@@ -54,6 +54,7 @@ public class IssueService
         {
             throw new NotAuthorizedException();
         }
+        await _issueRepository.Update(item, projectId);
         return item;
     }
     
@@ -67,7 +68,7 @@ public class IssueService
         {
             throw new NotAuthorizedException();
         }
-        _issueRepository.DeleteById(issueId);
+        await _issueRepository.DeleteById(issueId);
     }
 
     private async Task AssertIssueInProject(int issueId, string projectId)
