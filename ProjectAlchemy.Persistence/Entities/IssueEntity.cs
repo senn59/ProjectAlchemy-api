@@ -8,9 +8,11 @@ namespace ProjectAlchemy.Persistence.Entities;
 public class IssueEntity
 {
     [Required]
-    public int Id { get; init; }
-    [MaxLength(Issue.MaxNameLength)]
+    public required int Id { get; init; }
+    [Required]
+    [StringLength(Issue.MaxNameLength, MinimumLength = 1)]
     public required string Name { get; init; }
+    [Required]
     [MaxLength(Issue.MaxDescriptionLength)]
     public required string Description { get; init; } = "";
     public IssueType Type { get; init; }

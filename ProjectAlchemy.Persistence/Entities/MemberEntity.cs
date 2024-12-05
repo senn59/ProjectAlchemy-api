@@ -5,8 +5,9 @@ namespace ProjectAlchemy.Persistence.Entities;
 
 public class MemberEntity
 {
+    [StringLength(200)]
     public int Id { get; init; }
-    [MaxLength(200)]
+    [StringLength(200)]
     public required string UserId { get; init; }
     public required MemberType Type { get; init; }
     

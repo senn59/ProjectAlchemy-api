@@ -6,8 +6,10 @@ namespace ProjectAlchemy.Persistence.Entities;
 
 public class ProjectEntity
 {
+    [Required]
+    [StringLength(200)]
     public required string Id { get; init; }
-    
+    [Required]
     [StringLength(Project.MaxNameLength, MinimumLength = 1)]
     public required string Name { get; init; }
     public ICollection<IssueEntity> Issues { get; init; } = new List<IssueEntity>();
@@ -20,7 +22,9 @@ public class ProjectEntity
         var issues = entity.Issues
             .Select(i => IssueEntity.ToIssue(i, lanes.First(l => l.Id == i.LaneId)));
         var members = entity.Members.Select(MemberEntity.ToMember);
-        return new Project(entity.Name, issues.ToList(), members.ToList(), lanes.ToList());
+        var project = new Project(entity.Name, issues.ToList(), members.ToList(), lanes.ToList());
+        project.Id = entity.Id;
+        return project;
     }
     
     public static ProjectEntity FromProject(Project project)

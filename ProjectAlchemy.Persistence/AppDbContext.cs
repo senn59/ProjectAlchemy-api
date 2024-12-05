@@ -14,7 +14,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<ProjectEntity>()
-            .Property(p => p.Id);
+            .HasKey(p => p.Id);
         modelBuilder.Entity<IssueEntity>()
             .Property(p => p.Id)
             .ValueGeneratedOnAdd();
