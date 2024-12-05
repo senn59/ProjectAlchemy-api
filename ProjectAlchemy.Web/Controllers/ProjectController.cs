@@ -1,8 +1,4 @@
-using System.Security.Claims;
-using Azure.Core;
-using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
-using ProjectAlchemy.Core.Domain;
 using ProjectAlchemy.Core.Dto;
 using ProjectAlchemy.Core.Services;
 using ProjectAlchemy.Web.Dtos;
@@ -11,7 +7,7 @@ using ProjectAlchemy.Web.Utilities;
 namespace ProjectAlchemy.Web.Controllers;
 
 [ApiController]
-[Route("api/[controller]")]
+[Route("api/projects")]
 public class ProjectController : ControllerBase
 {
     private readonly ILogger<IssueController> _logger;

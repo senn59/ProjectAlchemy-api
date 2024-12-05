@@ -7,17 +7,18 @@ using ProjectAlchemy.Web.Utilities;
 namespace ProjectAlchemy.Web.Controllers;
 
 [ApiController]
-[Route("api/projects/{projectId}/[controller]")]
+[Route("api/projects/{projectId}/issues")]
 public class IssueController : ControllerBase
 {
     private readonly ILogger<IssueController> _logger;
     private readonly IssueService _issueService;
     private readonly LaneService _laneService;
 
-    public IssueController(ILogger<IssueController> logger, IssueService issueService)
+    public IssueController(ILogger<IssueController> logger, IssueService issueService, LaneService laneService)
     {
         _logger = logger;
         _issueService = issueService;
+        _laneService = laneService;
     }
 
     [HttpGet("{id:int}")]
