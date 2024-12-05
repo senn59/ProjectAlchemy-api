@@ -16,7 +16,11 @@ public class ProjectRepository: IProjectRepository
     
     public async Task<Project?> Get(string id)
     {
-        var project = await _context.Projects.FindAsync(id);
+        var project = await _context.Projects
+            .Include(p => p.Members)
+            .Include(p => p.Issues)
+            .Include(p => p.Lanes)
+            .FirstOrDefaultAsync(p => p.Id == id);
         return project == null ? null : ProjectEntity.ToProject(project);
     }
 
