@@ -1,4 +1,4 @@
-using ProjectAlchemy.Core.Dto;
+using ProjectAlchemy.Core.Domain;
 using ProjectAlchemy.Core.Interfaces;
 
 namespace ProjectAlchemy.Core.Services;

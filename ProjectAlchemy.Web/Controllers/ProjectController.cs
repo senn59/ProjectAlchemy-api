@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
-using ProjectAlchemy.Core.Dto;
+using ProjectAlchemy.Core.Domain;
 using ProjectAlchemy.Core.Services;
 using ProjectAlchemy.Web.Dtos;
 using ProjectAlchemy.Web.Utilities;

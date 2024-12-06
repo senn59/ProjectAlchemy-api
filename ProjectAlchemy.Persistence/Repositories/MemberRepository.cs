@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using ProjectAlchemy.Core.Dto;
+using ProjectAlchemy.Core.Domain;
 using ProjectAlchemy.Core.Interfaces;
 
 namespace ProjectAlchemy.Persistence.Repositories;
