@@ -7,7 +7,7 @@ public class LaneEntity
 {
     [Required]
     public required int Id { get; init; }
-    [MaxLength(20)]
+    [MaxLength(Lane.MaxNameLength)]
     public required string Name { get; init; }
     
     [MaxLength(200)]

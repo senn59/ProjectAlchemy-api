@@ -1,4 +1,4 @@
-using System.ComponentModel.DataAnnotations;
+using ProjectAlchemy.Core.Helpers;
 
 namespace ProjectAlchemy.Core.Domain;
 
@@ -8,18 +8,18 @@ public class Project
     private readonly List<Issue> _issues;
     private readonly List<Lane> _lanes;
     private readonly List<Member> _members;
-    
-    public string Id { get; set; }
-    [Required(AllowEmptyStrings = false)]
-    [StringLength(MaxNameLength)]
+
+    public string Id { get; private set; }
     public string Name { get; private set; }
     public IReadOnlyList<Issue> Issues => _issues.AsReadOnly();
     public IReadOnlyList<Lane> Lanes => _lanes.AsReadOnly();
     public IReadOnlyList<Member> Members => _members.AsReadOnly();
 
-    public Project(string name, List<Issue> issues, List<Member> members, List<Lane> lanes)
+    public Project(string name, List<Issue> issues, List<Member> members, List<Lane> lanes, string? id = null)
     {
-        Name = name.Trim();
+        Id = id ?? Guid.NewGuid().ToString();
+        Name = name;
+        SetName(name);
         _issues = issues;
         _members = members;
         _lanes = lanes;
@@ -52,5 +52,13 @@ public class Project
             throw new Exception("You are unauthorized to add new issues to this project.");
         }
         _issues.Add(issue);
+    }
+    
+    public void SetName(string name)
+    {
+        name = name.Trim();
+        Guard.AgainstNullOrEmpty(name, nameof(name));
+        Guard.AgainstLength(name, nameof(name), MaxNameLength);
+        Name = name;
     }
 }

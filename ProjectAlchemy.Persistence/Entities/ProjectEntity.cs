@@ -22,8 +22,7 @@ public class ProjectEntity
         var issues = entity.Issues
             .Select(i => IssueEntity.ToIssue(i, lanes.First(l => l.Id == i.LaneId)));
         var members = entity.Members.Select(MemberEntity.ToMember);
-        var project = new Project(entity.Name, issues.ToList(), members.ToList(), lanes.ToList());
-        project.Id = entity.Id;
+        var project = new Project(entity.Name, issues.ToList(), members.ToList(), lanes.ToList(), entity.Id);
         return project;
     }
     
