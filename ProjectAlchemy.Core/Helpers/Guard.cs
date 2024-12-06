@@ -2,7 +2,7 @@ using ProjectAlchemy.Core.Exceptions;
 
 namespace ProjectAlchemy.Core.Helpers;
 
-public class Guard
+public static class Guard
 {
     public static void AgainstLength(string argument, string argumentName, int maxLength, int minLength = 0)
     {
