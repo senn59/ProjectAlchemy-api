@@ -16,7 +16,7 @@ jobs:
           run: make test
         
         - name: Get Coverage
-          run: bash <(curl -ls https://coverage.codacy.com/get.sh) report -r coverage/report.lcov
+          run: docker run -e CODACY_PROJECT_TOKEN=$CODACY_PROJECT_TOKEN -v $PWD:/code codacy/codacy-coverage-reporter:latest report -r coverage/result.lcov
           env:
             CODACY_PROJECT_TOKEN: ${{secrets.CODACY_PROJECT_TOKEN}}
           
