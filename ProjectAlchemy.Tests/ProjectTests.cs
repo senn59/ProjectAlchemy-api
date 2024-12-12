@@ -1,20 +1,18 @@
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
-using ProjectAlchemy.Core.Domain;
-using ProjectAlchemy.Core.Exceptions;
 using ProjectAlchemy.Core.Services;
 using ProjectAlchemy.Persistence;
 using ProjectAlchemy.Persistence.Repositories;
+using Xunit;
 
-namespace ProjectAlchemy.CoreTests;
+namespace ProjectAlchemy.Tests;
 
-public class Tests
+public class ProjectTests: IDisposable
 {
-    private AppDbContext _context;
-    private ProjectService _service;
+    private readonly AppDbContext _context;
+    private readonly ProjectService _service;
     
-    [SetUp]
-    public void Init()
+    public ProjectTests()
     {
         var options = new DbContextOptionsBuilder<AppDbContext>()
             .UseInMemoryDatabase("db")
@@ -24,14 +22,13 @@ public class Tests
         _service = new ProjectService(projectRepository, new AuthorizationService(projectRepository));
     }
 
-    [TearDown]
-    public void Cleanup()
+    public void Dispose()
     {
         _context.Database.EnsureDeleted();
         _context.Dispose();
     }
     
-    [Test]
+    [Fact]
     public async Task TryingToAccessProjectWhereUserIsNotAMemberThrowsUnauthorizedException()
     {
         var memberOneProject = await _service.Create("test", "1");

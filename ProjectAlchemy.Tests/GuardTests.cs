@@ -1,12 +1,13 @@
 using FluentAssertions;
 using ProjectAlchemy.Core.Exceptions;
 using ProjectAlchemy.Core.Helpers;
+using Xunit;
 
 namespace ProjectAlchemy.CoreTests;
 
 public class GuardTests
 {
-    [Test]
+    [Fact]
     public void TooShortStringThrowsError()
     {
         const string str = "12345";
@@ -14,7 +15,7 @@ public class GuardTests
         action.Should().Throw<InvalidArgument>();
     }
     
-    [Test]
+    [Fact]
     public void TooLongStringThrowsError()
     {
         const string str = "12345";
@@ -22,7 +23,7 @@ public class GuardTests
         action.Should().Throw<InvalidArgument>();
     }
     
-    [Test]
+    [Fact]
     public void EmptyStringThrowsError()
     {
         const string str = "";
@@ -30,7 +31,7 @@ public class GuardTests
         action.Should().Throw<InvalidArgument>();
     }
     
-    [Test]
+    [Fact]
     public void NullThrowsError()
     {
         const string? str = null;
@@ -38,7 +39,7 @@ public class GuardTests
         action.Should().Throw<InvalidArgument>();
     }
     
-    [Test]
+    [Fact]
     public void DefaultMinimumLengthIs0()
     {
         const string str = "1";

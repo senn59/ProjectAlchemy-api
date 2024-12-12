@@ -11,7 +11,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProjectAlchemy.Core", "Proj
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProjectAlchemy.Persistence", "ProjectAlchemy.Persistence\ProjectAlchemy.Persistence.csproj", "{79BD3492-72CF-4D8E-BE11-0D6BA25CF735}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProjectAlchemy.CoreTests", "ProjectAlchemy.CoreTests\ProjectAlchemy.CoreTests.csproj", "{41BFF8E8-62E3-4AC2-8374-A3F3876969DE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProjectAlchemy.Tests", "ProjectAlchemy.Tests\ProjectAlchemy.Tests.csproj", "{7E531A50-5257-4D97-8C42-7226BED067FB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -31,9 +31,9 @@ Global
 		{79BD3492-72CF-4D8E-BE11-0D6BA25CF735}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{79BD3492-72CF-4D8E-BE11-0D6BA25CF735}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{79BD3492-72CF-4D8E-BE11-0D6BA25CF735}.Release|Any CPU.Build.0 = Release|Any CPU
-		{41BFF8E8-62E3-4AC2-8374-A3F3876969DE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{41BFF8E8-62E3-4AC2-8374-A3F3876969DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{41BFF8E8-62E3-4AC2-8374-A3F3876969DE}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{41BFF8E8-62E3-4AC2-8374-A3F3876969DE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7E531A50-5257-4D97-8C42-7226BED067FB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7E531A50-5257-4D97-8C42-7226BED067FB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7E531A50-5257-4D97-8C42-7226BED067FB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7E531A50-5257-4D97-8C42-7226BED067FB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
