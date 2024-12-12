@@ -1,3 +1,4 @@
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/85115c680be74f8e9fa6fcc0a3ebb73e)](https://app.codacy.com/gh/senn59/ProjectAlchemy-api?utm_source=github.com&utm_medium=referral&utm_content=senn59/ProjectAlchemy-api&utm_campaign=Badge_Grade)
 [![Deploy](https://github.com/senn59/ProjectAlchemy-api/actions/workflows/deploy.yml/badge.svg)](https://github.com/senn59/ProjectAlchemy-api/actions/workflows/deploy.yml) [![Deploy](https://github.com/senn59/ProjectAlchemy-api/actions/workflows/deploy.yml/badge.svg)](https://github.com/senn59/ProjectAlchemy-api/actions/workflows/deploy.yml)
 # ProjectAlchemy-api
 This is the API for the ProjectAlchemy project, a tool for agile project management. See [ProjectAlchemy-client](https://github.com/senn59/ProjectAlchemy-client) for the frontend.
