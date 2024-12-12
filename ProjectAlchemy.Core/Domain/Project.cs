@@ -25,33 +25,24 @@ public class Project
         _lanes = lanes;
     }
 
-    public void AddMember(Member adder, Member toAdd)
+    public void TryAddMember(Member adder, Member toAdd)
     {
         if (!_members.Contains(adder))
         {
-            throw new Exception("You cannot add a new member to this project.");
+            throw new UnauthorizedAccessException("You cannot add a new member to this project.");
         }
         
         if (adder.Type != MemberType.Owner)
         {
-            throw new Exception("You do not have permission to add a new member to this project.");
+            throw new UnauthorizedAccessException("You do not have permission to add a new member to this project.");
         }
 
         if (toAdd.Type == MemberType.Owner)
         {
-            throw new Exception("You cannot add a member as owner");
+            throw new UnauthorizedAccessException("You cannot add a member as owner");
         }
         
         _members.Add(toAdd);
-    }
-
-    public void CanAdd(Issue issue, Member member)
-    {
-        if (!_members.Contains(member))
-        {
-            throw new Exception("You are unauthorized to add new issues to this project.");
-        }
-        _issues.Add(issue);
     }
     
     public void SetName(string name)
