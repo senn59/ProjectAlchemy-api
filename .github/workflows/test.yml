@@ -14,3 +14,9 @@ jobs:
 
         - name: Unit Testing
           run: make test
+        
+        - name: Get Coverage
+          run: bash <(curl -Ls https://coverage.codacy.com/get.sh)
+          env:
+            CODACY_PROJECT_TOKEN: ${{secrets.CODACY_PROJECT_TOKEN}}
+          
