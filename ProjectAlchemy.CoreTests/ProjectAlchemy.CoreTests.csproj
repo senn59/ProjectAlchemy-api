@@ -21,6 +21,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\ProjectAlchemy.Core\ProjectAlchemy.Core.csproj" />
+      <ProjectReference Include="..\ProjectAlchemy.Persistence\ProjectAlchemy.Persistence.csproj" />
     </ItemGroup>
 
 </Project>
