@@ -13,7 +13,9 @@ jobs:
           uses: actions/checkout@v2.1.0
 
         - name: Unit Testing
-          run: make test
+          run: |
+            mkdir coverage # Make sure folder exists with user permissions for sending the coverage
+            make test
         
         - name: Get Coverage
           run: docker run -e CODACY_PROJECT_TOKEN=$CODACY_PROJECT_TOKEN -v $PWD:/code codacy/codacy-coverage-reporter:latest report -r coverage/result.lcov
