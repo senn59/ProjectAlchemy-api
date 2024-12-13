@@ -1,5 +1,6 @@
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
+using ProjectAlchemy.Core.Domain;
 using ProjectAlchemy.Core.Exceptions;
 using ProjectAlchemy.Core.Services;
 using ProjectAlchemy.Persistence;
@@ -7,19 +8,22 @@ using ProjectAlchemy.Persistence.Repositories;
 
 namespace ProjectAlchemy.Tests.Integration;
 
-public class ProjectServiceTests: IDisposable
+public class UserServiceTests: IDisposable
 {
     private readonly AppDbContext _context;
-    private readonly ProjectService _service;
+    private readonly UserService _userService;
+    private readonly ProjectService _projectService;
     
-    public ProjectServiceTests()
+    public UserServiceTests()
     {
         var options = new DbContextOptionsBuilder<AppDbContext>()
             .UseInMemoryDatabase("db")
             .Options;
         _context = new AppDbContext(options);
-        var projectRepository = new ProjectRepository(_context);
-        _service = new ProjectService(projectRepository, new AuthorizationService(projectRepository));
+        var memberRepo = new MemberRepository(_context);
+        var projectRepo = new ProjectRepository(_context);
+        _userService = new UserService(memberRepo);
+        _projectService = new ProjectService(projectRepo, new AuthorizationService(projectRepo));
     }
 
     public void Dispose()
@@ -27,23 +31,34 @@ public class ProjectServiceTests: IDisposable
         _context.Database.EnsureDeleted();
         _context.Dispose();
     }
-    
-    [Fact]
-    public async Task TryingToAccessProjectWhereUserIsNotAMemberThrowsUnauthorizedException()
-    {
-        var memberOneProject = await _service.Create("test", "1");
-        //ensure a 2nd member exists
-        await _service.Create("test2", "2");
 
-        var action = () => _service.Get(memberOneProject.Id, "2");
-        await action.Should().ThrowAsync<NotAuthorizedException>();
+    [Fact]
+    public async Task RequestingProjectsOfUnknownMemberReturnsEmptyList()
+    {
+        var projects = await _userService.GetUserProjectsList("1");
+        projects.Should().BeEmpty();
     }
     
     [Fact]
-    public async Task UserCanCreateProjectAndAccessItLaterOn()
+    public async Task MemberListOfKnownMemberWithProjectsReturnsValidList()
     {
-        var project = await _service.Create("test", "1");
-        var retrieved = await _service.Get(project.Id, "2");
-        retrieved.Should().BeEquivalentTo(project);
+        var firstProject = await _projectService.Create("test", "1");
+        var secondProject = await _projectService.Create("project2", "1");
+        var projects = await _userService.GetUserProjectsList("1");
+        var firstProjectOverview = new ProjectOverview()
+        {
+            ProjectId = firstProject.Id,
+            MemberType = MemberType.Owner,
+            ProjectName = "test"
+        };
+        
+        var secondProjectOverview = new ProjectOverview()
+        {
+            ProjectId = secondProject.Id,
+            MemberType = MemberType.Owner,
+            ProjectName = "project2"
+        };
+        
+        projects.Should().BeEquivalentTo([firstProjectOverview, secondProjectOverview]);
     }
 }
