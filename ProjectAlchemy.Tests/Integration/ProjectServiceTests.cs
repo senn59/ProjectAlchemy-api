@@ -1,5 +1,6 @@
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
+using ProjectAlchemy.Core.Exceptions;
 using ProjectAlchemy.Core.Services;
 using ProjectAlchemy.Persistence;
 using ProjectAlchemy.Persistence.Repositories;
@@ -35,6 +36,14 @@ public class ProjectServiceTests: IDisposable
         await _service.Create("test2", "2");
 
         var action = () => _service.Get(memberOneProject.Id, "2");
-        await action.Should().ThrowAsync<UnauthorizedAccessException>();
+        await action.Should().ThrowAsync<NotAuthorizedException>();
+    }
+    
+    [Fact]
+    public async Task UserCanCreateProjectAndAccessItLaterOn()
+    {
+        var project = await _service.Create("test", "1");
+        var retrieved = await _service.Get(project.Id, "2");
+        retrieved.Should().BeEquivalentTo(project);
     }
 }
