@@ -44,7 +44,7 @@ public class Project
 
         if (toAdd.Type == MemberType.Owner)
         {
-            throw new NotAuthorizedException("You cannot add a member as owner");
+            throw new ArgumentException("You cannot add a member as owner");
         }
         
         _members.Add(toAdd);
