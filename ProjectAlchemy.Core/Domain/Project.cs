@@ -1,3 +1,4 @@
+using ProjectAlchemy.Core.Exceptions;
 using ProjectAlchemy.Core.Helpers;
 
 namespace ProjectAlchemy.Core.Domain;
@@ -17,6 +18,10 @@ public class Project
 
     public Project(string name, List<Issue> issues, List<Member> members, List<Lane> lanes, string? id = null)
     {
+        if (members.All(m => m.Type != MemberType.Owner))
+        {
+            throw new ArgumentException("No project owner given");
+        }
         Id = id ?? Guid.NewGuid().ToString();
         Name = name;
         SetName(name);
@@ -29,17 +34,17 @@ public class Project
     {
         if (!_members.Contains(adder))
         {
-            throw new UnauthorizedAccessException("You cannot add a new member to this project.");
+            throw new NotAuthorizedException("You cannot add a new member to this project.");
         }
         
         if (adder.Type != MemberType.Owner)
         {
-            throw new UnauthorizedAccessException("You do not have permission to add a new member to this project.");
+            throw new NotAuthorizedException("You do not have permission to add a new member to this project.");
         }
 
         if (toAdd.Type == MemberType.Owner)
         {
-            throw new UnauthorizedAccessException("You cannot add a member as owner");
+            throw new NotAuthorizedException("You cannot add a member as owner");
         }
         
         _members.Add(toAdd);
