@@ -3,9 +3,8 @@ using Microsoft.EntityFrameworkCore;
 using ProjectAlchemy.Core.Services;
 using ProjectAlchemy.Persistence;
 using ProjectAlchemy.Persistence.Repositories;
-using Xunit;
 
-namespace ProjectAlchemy.Tests;
+namespace ProjectAlchemy.Tests.Integration;
 
 public class ProjectTests: IDisposable
 {

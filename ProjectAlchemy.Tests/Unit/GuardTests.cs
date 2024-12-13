@@ -1,9 +1,8 @@
 using FluentAssertions;
 using ProjectAlchemy.Core.Exceptions;
 using ProjectAlchemy.Core.Helpers;
-using Xunit;
 
-namespace ProjectAlchemy.CoreTests;
+namespace ProjectAlchemy.Tests.Unit;
 
 public class GuardTests
 {

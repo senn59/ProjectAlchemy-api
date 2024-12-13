@@ -1,4 +1,4 @@
-namespace ProjectAlchemy.CoreTests;
+namespace ProjectAlchemy.Tests.Unit;
 
 public class ProjectTests
 {
