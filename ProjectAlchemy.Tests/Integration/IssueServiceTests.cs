@@ -65,4 +65,31 @@ public class IssueServiceTests: IDisposable
 
         await action.Should().ThrowAsync<NotFoundException>();
     }
+    
+    [Fact]
+    public async Task DeletingExistingIssueAndRetrievingItThrowsNotFound()
+    {
+        var issue = new Issue("test", IssueType.Task, _project.Lanes.First());
+        var created = await _issueService.Create(issue, UserId, _project.Id);
+        await _issueService.DeleteById(created.Id, UserId, _project.Id);
+        
+        var action = () => _issueService.GetById(created.Id, UserId, _project.Id);
+        
+        await action.Should().ThrowAsync<NotFoundException>();
+    }
+    
+    [Fact]
+    public async Task UpdatingIssueSucceeds()
+    {
+        var issue = new Issue("test", IssueType.Task, _project.Lanes.First());
+        var created = await _issueService.Create(issue, UserId, _project.Id);
+        
+        created.SetName("nottest");
+        created.SetDescription("not empty");
+        created.SetType(IssueType.Bug);
+        var updated = await _issueService.Update(created, UserId, _project.Id);
+        
+        created.Should().BeEquivalentTo(updated);
+        updated.Should().NotBeEquivalentTo(issue, options => options.Excluding(i => i.Id));
+    }
 }
