@@ -29,10 +29,10 @@ public class ProjectService
         return project;
     }
 
-    public async Task<Project> Create(string name, string userId)
+    public async Task<Project> Create(string projectName, string userId)
     {
         var creator = new Member(userId, MemberType.Owner);
-        var project = new Project(name, [], [creator], _defaultLanes);
+        var project = new Project(projectName, [], [creator], _defaultLanes);
         return await _repository.Create(project);
     }
 }
