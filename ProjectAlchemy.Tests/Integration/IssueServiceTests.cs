@@ -13,7 +13,7 @@ public class IssueServiceTests: IDisposable
     private readonly AppDbContext _context;
     private readonly IssueService _issueService;
     private readonly ProjectService _projectService;
-    private Project _project;
+    private Project _project = null!;
     private const string UserId = "1";
     
     public IssueServiceTests()

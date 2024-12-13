@@ -33,7 +33,7 @@ public class IssueController : ControllerBase
     public async Task<PartialIssue> Post(CreateIssueRequest request, string projectId)
     {
         var userId = JwtHelper.GetId(User);
-        var lane = await _laneService.GetLaneById(request.laneId, projectId, userId);
+        var lane = await _laneService.GetById(request.laneId, projectId, userId);
         var issue = CreateIssueRequest.ToIssue(request, lane);
         var createdIssue = await _issueService.Create(issue, userId, projectId);
         return PartialIssue.FromIssue(createdIssue);

@@ -16,13 +16,28 @@ public class Project
     public IReadOnlyList<Lane> Lanes => _lanes.AsReadOnly();
     public IReadOnlyList<Member> Members => _members.AsReadOnly();
 
-    public Project(string name, List<Issue> issues, List<Member> members, List<Lane> lanes, string? id = null)
+    public Project(string name, List<Issue> issues, List<Member> members, List<Lane> lanes)
     {
         if (members.All(m => m.Type != MemberType.Owner))
         {
             throw new ArgumentException("No project owner given");
         }
-        Id = id ?? Guid.NewGuid().ToString();
+        Id = Guid.NewGuid().ToString();
+        Name = name;
+        SetName(name);
+        _issues = issues;
+        _members = members;
+        _lanes = lanes;
+    }
+    
+    public Project(string name, List<Issue> issues, List<Member> members, List<Lane> lanes, string id)
+    {
+        if (members.All(m => m.Type != MemberType.Owner))
+        {
+            throw new ArgumentException("No project owner given");
+        }
+
+        Id = id;
         Name = name;
         SetName(name);
         _issues = issues;
@@ -32,10 +47,7 @@ public class Project
 
     public void TryAddMember(Member adder, Member toAdd)
     {
-        if (!_members.Contains(adder))
-        {
-            throw new NotAuthorizedException("You cannot add a new member to this project.");
-        }
+        ValidateMember(adder);
         
         if (adder.Type != MemberType.Owner)
         {
@@ -49,12 +61,20 @@ public class Project
         
         _members.Add(toAdd);
     }
-    
-    public void SetName(string name)
+
+    private void SetName(string name)
     {
         name = name.Trim();
         Guard.AgainstNullOrEmpty(name, nameof(name));
         Guard.AgainstLength(name, nameof(name), MaxNameLength);
         Name = name;
+    }
+
+    private void ValidateMember(Member member)
+    {
+        if (!_members.Contains(member))
+        {
+            throw new NotAuthorizedException("You cannot add a new member to this project.");
+        }
     }
 }

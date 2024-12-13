@@ -2,7 +2,7 @@ using System.Security.Claims;
 
 namespace ProjectAlchemy.Web.Utilities;
 
-public class JwtHelper
+public static class JwtHelper
 {
     public static string GetId(ClaimsPrincipal user)
     {

@@ -1,19 +1,13 @@
 namespace ProjectAlchemy.Core.Domain;
 
-public class Member
+public class Member(string userId, MemberType type)
 {
-    public string UserId { get; private set; }
-    public MemberType Type { get; private set; }
+    public string UserId { get; private set; } = userId;
+    public MemberType Type { get; } = type;
 
 
     private readonly ICollection<MemberType> _canDelete = [MemberType.Owner];
     private readonly ICollection<MemberType> _canUpdate = [MemberType.Owner, MemberType.Collaborator];
-
-    public Member(string userId, MemberType type)
-    {
-        UserId = userId;
-        Type = type;
-    }
 
     public bool CanDeleteIssues()
     {

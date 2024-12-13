@@ -3,16 +3,10 @@ using ProjectAlchemy.Core.Interfaces;
 
 namespace ProjectAlchemy.Core.Services;
 
-public class UserService
+public class UserService(IMemberRepository repository)
 {
-    private readonly IMemberRepository _repository;
-    public UserService(IMemberRepository repository)
-    {
-        _repository = repository;
-    }
-    
     public async Task<List<ProjectOverview>> GetUserProjectsList(string userid)
     {
-        return await _repository.GetProjects(userid);
+        return await repository.GetProjects(userid);
     }
 }
