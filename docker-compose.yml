@@ -12,6 +12,6 @@
     build:
       context: .
       dockerfile: ProjectAlchemy.CoreTests/Dockerfile
-    command: dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=lcov /p:CoverletOutput="result.lcov"
+    command: dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=lcov /p:CoverletOutput="/c/result.lcov"
     volumes:
-      - .:/coverage
+      - .:/c
