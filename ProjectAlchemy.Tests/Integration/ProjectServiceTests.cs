@@ -6,12 +6,12 @@ using ProjectAlchemy.Persistence.Repositories;
 
 namespace ProjectAlchemy.Tests.Integration;
 
-public class ProjectTests: IDisposable
+public class ProjectServiceTests: IDisposable
 {
     private readonly AppDbContext _context;
     private readonly ProjectService _service;
     
-    public ProjectTests()
+    public ProjectServiceTests()
     {
         var options = new DbContextOptionsBuilder<AppDbContext>()
             .UseInMemoryDatabase("db")

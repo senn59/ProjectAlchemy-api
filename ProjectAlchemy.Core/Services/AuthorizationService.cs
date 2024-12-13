@@ -1,4 +1,5 @@
 using ProjectAlchemy.Core.Domain;
+using ProjectAlchemy.Core.Exceptions;
 using ProjectAlchemy.Core.Interfaces;
 
 namespace ProjectAlchemy.Core.Services;
@@ -16,7 +17,7 @@ public class AuthorizationService
     {
         if (! await _projectRepository.HasMember(projectId, userId))
         {
-            throw new UnauthorizedAccessException();
+            throw new NotAuthorizedException();
         }
     }
 }
