@@ -30,6 +30,6 @@ public class MemberTests
     public void CollaboratorCanDeleteIssuesReturnsFalse()
     {
         var member = new Member("1", MemberType.Collaborator);
-        member.CanUpdateIssues().Should().BeFalse();
+        member.CanDeleteIssues().Should().BeFalse();
     }
 }

@@ -15,7 +15,7 @@ public class ProjectServiceTests: IDisposable
     public ProjectServiceTests()
     {
         var options = new DbContextOptionsBuilder<AppDbContext>()
-            .UseInMemoryDatabase("db")
+            .UseInMemoryDatabase("projectServiceTests")
             .Options;
         _context = new AppDbContext(options);
         var projectRepository = new ProjectRepository(_context);
@@ -43,7 +43,7 @@ public class ProjectServiceTests: IDisposable
     public async Task UserCanCreateProjectAndAccessItLaterOn()
     {
         var project = await _service.Create("test", "1");
-        var retrieved = await _service.Get(project.Id, "2");
+        var retrieved = await _service.Get(project.Id, "1");
         retrieved.Should().BeEquivalentTo(project);
     }
 }
