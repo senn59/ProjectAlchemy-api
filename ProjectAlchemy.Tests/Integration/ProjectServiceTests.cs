@@ -32,10 +32,10 @@ public class ProjectServiceTests: IDisposable
     public async Task TryingToAccessProjectWhereUserIsNotAMemberThrowsUnauthorizedException()
     {
         var memberOneProject = await _service.Create("test", "1");
-        //ensure a 2nd member exists
         await _service.Create("test2", "2");
 
         var action = () => _service.Get(memberOneProject.Id, "2");
+        
         await action.Should().ThrowAsync<NotAuthorizedException>();
     }
     
@@ -44,6 +44,7 @@ public class ProjectServiceTests: IDisposable
     {
         var project = await _service.Create("test", "1");
         var retrieved = await _service.Get(project.Id, "1");
+        
         retrieved.Should().BeEquivalentTo(project);
     }
 }

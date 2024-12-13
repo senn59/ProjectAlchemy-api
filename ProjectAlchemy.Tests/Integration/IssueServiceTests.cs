@@ -14,7 +14,7 @@ public class IssueServiceTests: IDisposable
     private readonly IssueService _issueService;
     private readonly ProjectService _projectService;
     private Project _project;
-    private const string userId = "1";
+    private const string UserId = "1";
     
     public IssueServiceTests()
     {
@@ -46,9 +46,9 @@ public class IssueServiceTests: IDisposable
     {
         var issue = new Issue("test", IssueType.Task, _project.Lanes.First());
         
-        var created = await _issueService.Create(issue, userId, _project.Id);
-        var retrieved = await _issueService.GetById(created.Id, userId, _project.Id);
-        var project = await _projectService.Get(_project.Id, userId);
+        var created = await _issueService.Create(issue, UserId, _project.Id);
+        var retrieved = await _issueService.GetById(created.Id, UserId, _project.Id);
+        var project = await _projectService.Get(_project.Id, UserId);
         
         created.Should().BeEquivalentTo(issue, options => options.Excluding(i => i.Id));
         retrieved.Should().BeEquivalentTo(created);
@@ -59,9 +59,9 @@ public class IssueServiceTests: IDisposable
     public async Task DeletingNonExistingIssueThrowsNotFound()
     {
         var issue = new Issue("test", IssueType.Task, _project.Lanes.First());
-        await _issueService.Create(issue, userId, _project.Id);
+        await _issueService.Create(issue, UserId, _project.Id);
         
-        var action = () => _issueService.DeleteById(9999, userId, _project.Id);
+        var action = () => _issueService.DeleteById(9999, UserId, _project.Id);
 
         await action.Should().ThrowAsync<NotFoundException>();
     }

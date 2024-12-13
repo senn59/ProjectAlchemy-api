@@ -37,7 +37,9 @@ public class LaneServiceTests: IDisposable
     {
         var project = await _projectService.Create("test", "1");
         var lane = project.Lanes.First();
+        
         var action = () => _laneService.GetLaneById(lane.Id, project.Id, "2");
+        
         await action.Should().ThrowAsync<NotAuthorizedException>();
     }
     
@@ -45,8 +47,10 @@ public class LaneServiceTests: IDisposable
     public async Task RetrievingLaneFromValidProjectWhereUserIsAMemberSucceeds()
     {
         var project = await _projectService.Create("test", "1");
+        
         var laneFromReturn = project.Lanes.First();
         var lane = await _laneService.GetLaneById(laneFromReturn.Id, project.Id, "1");
+        
         lane.Should().BeEquivalentTo(laneFromReturn);
     }
 }

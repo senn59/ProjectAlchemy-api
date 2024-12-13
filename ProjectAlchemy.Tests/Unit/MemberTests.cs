@@ -9,6 +9,7 @@ public class MemberTests
     public void OwnerCanUpdateIssuesReturnsTrue()
     {
         var member = new Member("1", MemberType.Owner);
+        
         member.CanUpdateIssues().Should().BeTrue();
     }
 
@@ -16,6 +17,7 @@ public class MemberTests
     public void OwnerCanDeleteIssuesReturnsTrue()
     {
         var member = new Member("1", MemberType.Owner);
+        
         member.CanDeleteIssues().Should().BeTrue();
     }
 
@@ -23,6 +25,7 @@ public class MemberTests
     public void CollaboratorCanUpdateIssuesReturnsTrue()
     {
         var member = new Member("1", MemberType.Collaborator);
+        
         member.CanUpdateIssues().Should().BeTrue();
     }
 
@@ -30,6 +33,7 @@ public class MemberTests
     public void CollaboratorCanDeleteIssuesReturnsFalse()
     {
         var member = new Member("1", MemberType.Collaborator);
+        
         member.CanDeleteIssues().Should().BeFalse();
     }
 }

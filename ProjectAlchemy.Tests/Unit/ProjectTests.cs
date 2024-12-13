@@ -10,6 +10,7 @@ public class ProjectTests
     public void CreatingAProjectWithNoMemberSpecifiedThrowsError()
     {
         var action = () => new Project("test", [], [], []);
+        
         action.Should().Throw<ArgumentException>();
     }
     
@@ -17,7 +18,9 @@ public class ProjectTests
     public void CreatingAProjectWithNoOwnersThrowsError()
     {
         List<Member> members = [new Member("1", MemberType.Collaborator), new Member("2", MemberType.Collaborator)];
+        
         var action = () => new Project("test", [], members, []);
+        
         action.Should().Throw<ArgumentException>();
     }
     
@@ -25,8 +28,10 @@ public class ProjectTests
     public void CreatingProjectWithOwnerSucceeds()
     {
         var owner = new Member("1", MemberType.Owner); 
+        
         var project = new Project("test", [], [owner], []);
-        project.Name.Should().BeEquivalentTo("test");
+        
+        project.Name.Should().Be("test");
         project.Members.Should().BeEquivalentTo([owner]);
         project.Issues.Should().BeEmpty();
         project.Lanes.Should().BeEmpty();
@@ -38,7 +43,9 @@ public class ProjectTests
         var owner = new Member("1", MemberType.Owner);
         var collaborator = new Member("2", MemberType.Collaborator);
         var project = new Project("test", [], [owner, collaborator], []);
+        
         var action = () => project.TryAddMember(collaborator, new Member("3", MemberType.Collaborator));
+        
         action.Should().Throw<NotAuthorizedException>();
     }
     
@@ -48,7 +55,9 @@ public class ProjectTests
         var owner = new Member("1", MemberType.Owner);
         var collaborator = new Member("2", MemberType.Collaborator);
         var project = new Project("test", [], [owner], []);
+        
         project.TryAddMember(owner, collaborator);
+        
         project.Members.Should().BeEquivalentTo([owner, collaborator]);
     }
     
@@ -58,7 +67,9 @@ public class ProjectTests
         var owner = new Member("1", MemberType.Owner);
         var secondOwner = new Member("2", MemberType.Owner);
         var project = new Project("test", [], [owner], []);
+        
         var action = () => project.TryAddMember(owner, secondOwner);
+        
         action.Should().Throw<ArgumentException>();
     }
 }
