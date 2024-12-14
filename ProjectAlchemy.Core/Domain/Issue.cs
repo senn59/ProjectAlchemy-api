@@ -1,4 +1,5 @@
-﻿using ProjectAlchemy.Core.Helpers;
+﻿using ProjectAlchemy.Core.Enums;
+using ProjectAlchemy.Core.Helpers;
 
 namespace ProjectAlchemy.Core.Domain;
 

@@ -1,4 +1,5 @@
 using ProjectAlchemy.Core.Domain;
+using ProjectAlchemy.Core.Enums;
 using ProjectAlchemy.Core.Exceptions;
 using ProjectAlchemy.Core.Interfaces;
 

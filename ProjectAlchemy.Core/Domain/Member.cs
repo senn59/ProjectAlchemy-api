@@ -1,3 +1,5 @@
+using ProjectAlchemy.Core.Enums;
+
 namespace ProjectAlchemy.Core.Domain;
 
 public class Member(string userId, MemberType type)

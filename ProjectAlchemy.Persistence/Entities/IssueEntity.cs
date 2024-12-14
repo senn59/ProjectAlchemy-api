@@ -1,6 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using ProjectAlchemy.Core.Domain;
+using ProjectAlchemy.Core.Enums;
 
 namespace ProjectAlchemy.Persistence.Entities;
 

@@ -1,4 +1,5 @@
 using ProjectAlchemy.Core.Domain;
+using ProjectAlchemy.Core.Enums;
 
 namespace ProjectAlchemy.Web.Dtos;
 

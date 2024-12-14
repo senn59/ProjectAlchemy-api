@@ -1,5 +1,6 @@
 using FluentAssertions;
 using ProjectAlchemy.Core.Domain;
+using ProjectAlchemy.Core.Enums;
 
 namespace ProjectAlchemy.Tests.Unit;
 
