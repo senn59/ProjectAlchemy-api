@@ -9,7 +9,7 @@ public class CreateIssueRequest
     [MaxLength(Issue.MaxNameLength)]
     public required string Name { get; set; }
     public required IssueType Type { get; set; }
-    public required int laneId { get; set; }
+    public required int LaneId { get; set; }
 
     public static Issue ToIssue(CreateIssueRequest request, Lane lane)
     {

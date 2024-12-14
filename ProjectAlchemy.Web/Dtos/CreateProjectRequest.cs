@@ -1,6 +1,11 @@
+using System.ComponentModel.DataAnnotations;
+using ProjectAlchemy.Core.Domain;
+
 namespace ProjectAlchemy.Web.Dtos;
 
 public class CreateProjectRequest
 {
-    public string Name { get; set; }
+    [Required(AllowEmptyStrings = false)]
+    [MaxLength(Project.MaxNameLength)]
+    public required string Name { get; init; }
 }

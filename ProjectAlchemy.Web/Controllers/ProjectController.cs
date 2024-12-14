@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using ProjectAlchemy.Core.Domain;
+using ProjectAlchemy.Core.Exceptions;
 using ProjectAlchemy.Core.Services;
 using ProjectAlchemy.Web.Dtos;
 using ProjectAlchemy.Web.Utilities;
@@ -8,42 +9,32 @@ namespace ProjectAlchemy.Web.Controllers;
 
 [ApiController]
 [Route("api/projects")]
-public class ProjectController : ControllerBase
+public class ProjectController(ProjectService projectService, UserService userService) : ControllerBase
 {
-    private readonly ILogger<IssueController> _logger;
-    private readonly IssueService _issueService;
-    private readonly ProjectService _projectService;
-    private readonly UserService _userService;
-
-    public ProjectController(ILogger<IssueController> logger, IssueService issueService, ProjectService projectService, UserService userService)
-    {
-        _logger = logger;
-        _issueService = issueService;
-        _projectService = projectService;
-        _userService = userService;
-    }
-
     [HttpGet]
     public async Task<IEnumerable<ProjectOverview>> GetProjectList()
     {
+        if (!ModelState.IsValid) throw new InvalidArgumentException();
         var userId = JwtHelper.GetId(User);
-        var projects = await _userService.GetUserProjectsList(userId);
+        var projects = await userService.GetUserProjectsList(userId);
         return projects;
     }
 
     [HttpGet("{id}")]
     public async Task<ProjectView> GetProject(string id)
     {
+        if (!ModelState.IsValid) throw new InvalidArgumentException();
         var userId = JwtHelper.GetId(User);
-        var project = await _projectService.Get(id, userId);
+        var project = await projectService.Get(id, userId);
         return ProjectView.FromProject(project);
     }
 
     [HttpPost]
     public async Task<ProjectView> CreateProject(CreateProjectRequest request)
     {
+        if (!ModelState.IsValid) throw new InvalidArgumentException();
         var userId = JwtHelper.GetId(User);
-        var project = await _projectService.Create(request.Name, userId);
+        var project = await projectService.Create(request.Name, userId);
         return ProjectView.FromProject(project);
     }
 }

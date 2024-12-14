@@ -6,8 +6,9 @@ namespace ProjectAlchemy.Web.Dtos;
 public class IssuePatch
 {
     [MaxLength(Issue.MaxNameLength), MinLength(1)]
-    public string Name { get; set; }
+    public required string Name { get; init; }
     [MaxLength(Issue.MaxDescriptionLength)]
-    public string Description { get; set; }
-    public IssueType Type { get; set; }
+    public required string Description { get; init; }
+    public required IssueType Type { get; init; }
+    public required Lane Lane { get; init; }
 }
