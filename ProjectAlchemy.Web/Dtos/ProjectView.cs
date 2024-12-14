@@ -4,10 +4,10 @@ namespace ProjectAlchemy.Web.Dtos;
 
 public class ProjectView
 {
-    public string Id { get; init; }
-    public string Name { get; init; }
-    public IEnumerable<LaneView> Lanes { get; init; }
-    public IEnumerable<PartialIssue> Issues { get; init; }
+    public required string Id { get; init; }
+    public required string Name { get; init; }
+    public required IEnumerable<LaneView> Lanes { get; init; }
+    public required IEnumerable<PartialIssue> Issues { get; init; }
     
     public static ProjectView FromProject(Project p)
     {

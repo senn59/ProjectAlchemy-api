@@ -32,7 +32,7 @@ public class IssueController(IssueService issueService, LaneService laneService)
     }
     
     [HttpPatch("{id:int}")]
-    public async Task<PartialIssue> Patch([FromBody] JsonPatchDocument<IssuePatch> patchDoc, int id, string projectId)
+    public async Task<IssueResponse> Patch([FromBody] JsonPatchDocument<IssuePatch> patchDoc, int id, string projectId)
     {
         if (!ModelState.IsValid) throw new InvalidArgumentException();
         var userId = JwtHelper.GetId(User); 
@@ -50,7 +50,7 @@ public class IssueController(IssueService issueService, LaneService laneService)
         issue.SetType(issuePatch.Type);
         issue.SetLane(issuePatch.Lane);
         var updated = await issueService.Update(issue, userId, projectId);
-        return PartialIssue.FromIssue(updated);
+        return IssueResponse.FromIssue(updated);
     }
     
     [HttpDelete("{id:int}")]
