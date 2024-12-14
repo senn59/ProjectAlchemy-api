@@ -3,7 +3,10 @@ using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.Models;
+using ProjectAlchemy.Core.Domain;
+using ProjectAlchemy.Core.Enums;
 using ProjectAlchemy.Core.Interfaces;
 using ProjectAlchemy.Core.Services;
 using ProjectAlchemy.Persistence;
@@ -49,6 +52,8 @@ builder.Services.AddSwaggerGen(o =>
         }
     });
 });
+builder.Services.AddSwaggerGenNewtonsoftSupport();
+
 
 var connString = builder.Configuration.GetConnectionString("DefaultConnection");
 if (connString == null)
