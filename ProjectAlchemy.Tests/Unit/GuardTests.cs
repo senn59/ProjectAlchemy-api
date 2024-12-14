@@ -13,7 +13,7 @@ public class GuardTests
         
         var action = () => Guard.AgainstLength(str, nameof(str), 40, 8);
         
-        action.Should().Throw<InvalidArgument>();
+        action.Should().Throw<InvalidArgumentException>();
     }
     
     [Fact]
@@ -23,7 +23,7 @@ public class GuardTests
         
         var action = () => Guard.AgainstLength(str, nameof(str), 2);
         
-        action.Should().Throw<InvalidArgument>();
+        action.Should().Throw<InvalidArgumentException>();
     }
     
     [Fact]
@@ -33,7 +33,7 @@ public class GuardTests
         
         var action = () => Guard.AgainstNullOrEmpty(str, nameof(str));
         
-        action.Should().Throw<InvalidArgument>();
+        action.Should().Throw<InvalidArgumentException>();
     }
     
     [Fact]
@@ -43,7 +43,7 @@ public class GuardTests
         
         var action = () => Guard.AgainstNullOrEmpty(str, nameof(str));
         
-        action.Should().Throw<InvalidArgument>();
+        action.Should().Throw<InvalidArgumentException>();
     }
     
     [Fact]

@@ -8,7 +8,7 @@ public static class Guard
     {
         if (argument.Length > maxLength)
         {
-            throw new InvalidArgument($"{argumentName} has a maximum length of {maxLength}.");
+            throw new InvalidArgumentException($"{argumentName} has a maximum length of {maxLength}.");
         }
     }
     
@@ -16,7 +16,7 @@ public static class Guard
     {
         if (argument.Length < minLength || argument.Length > maxLength)
         {
-            throw new InvalidArgument($"{argumentName} must be between {minLength} and {maxLength}");
+            throw new InvalidArgumentException($"{argumentName} must be between {minLength} and {maxLength}");
         }
     }
     
@@ -24,7 +24,7 @@ public static class Guard
     {
         if (string.IsNullOrEmpty(argument))
         {
-            throw new InvalidArgument(argumentName);
+            throw new InvalidArgumentException(argumentName);
         }
     }
 }
