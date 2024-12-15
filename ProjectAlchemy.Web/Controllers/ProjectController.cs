@@ -14,7 +14,10 @@ public class ProjectController(ProjectService projectService, UserService userSe
     [HttpGet]
     public async Task<IEnumerable<ProjectOverview>> GetProjectList()
     {
-        if (!ModelState.IsValid) throw new InvalidArgumentException();
+        if (!ModelState.IsValid)
+        {
+            throw new InvalidArgumentException();
+        }
         var userId = JwtHelper.GetId(User);
         var projects = await userService.GetUserProjectsList(userId);
         return projects;
@@ -23,7 +26,11 @@ public class ProjectController(ProjectService projectService, UserService userSe
     [HttpGet("{id}")]
     public async Task<ProjectView> GetProject(string id)
     {
-        if (!ModelState.IsValid) throw new InvalidArgumentException();
+
+        if (!ModelState.IsValid)
+        {
+            throw new InvalidArgumentException();
+        }
         var userId = JwtHelper.GetId(User);
         var project = await projectService.Get(id, userId);
         return ProjectView.FromProject(project);
@@ -32,7 +39,10 @@ public class ProjectController(ProjectService projectService, UserService userSe
     [HttpPost]
     public async Task<ProjectView> CreateProject(CreateProjectRequest request)
     {
-        if (!ModelState.IsValid) throw new InvalidArgumentException();
+        if (!ModelState.IsValid)
+        {
+            throw new InvalidArgumentException();
+        }
         var userId = JwtHelper.GetId(User);
         var project = await projectService.Create(request.Name, userId);
         return ProjectView.FromProject(project);
