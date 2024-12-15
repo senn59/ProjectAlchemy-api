@@ -4,18 +4,29 @@ using ProjectAlchemy.Core.Interfaces;
 
 namespace ProjectAlchemy.Core.Services;
 
-public class IssueService(IIssueRepository issueRepository)
+public class IssueService(
+    IIssueRepository issueRepository,
+    AuthorizationService authService,
+    IProjectRepository projectRepository)
 {
-    private IIssueRepository _issueRepository = issueRepository;
-
-    public async Task<Issue> Create(Issue item)
+    public async Task<Issue> Create(Issue item, string userId, string projectId)
     {
-        return await _issueRepository.Create(item);
+        await authService.AuthorizeProjectAccess(userId, projectId);
+        return await issueRepository.Create(item, projectId);
     }
 
-    public async Task<Issue> GetById(int id)
+    public async Task<Issue> GetById(int issueId, string userId, string projectId )
     {
-        var issue = await _issueRepository.GetById(id);
+        await authService.AuthorizeProjectAccess(userId, projectId);
+        await AssertIssueInProject(issueId, projectId);
+        
+        var member = await projectRepository.GetMember(projectId, userId);
+        if (member == null || !member.CanUpdateIssues())
+        {
+            throw new NotAuthorizedException();
+        }
+        
+        var issue = await issueRepository.GetById(issueId);
         if (issue == null)
         {
             throw new NotFoundException();
@@ -24,18 +35,37 @@ public class IssueService(IIssueRepository issueRepository)
         return issue;
     }
 
-    public List<Issue> GetAll()
+    public async Task<Issue> Update(Issue item, string userId, string projectId)
     {
-        return _issueRepository.GetAll();
-    }
-
-    public async Task<Issue> Update(Issue item)
-    {
-        return await _issueRepository.Update(item);
+        await authService.AuthorizeProjectAccess(userId, projectId);
+        await AssertIssueInProject(item.Id, projectId);
+        
+        var member = await projectRepository.GetMember(projectId, userId);
+        if (member == null || !member.CanUpdateIssues())
+        {
+            throw new NotAuthorizedException();
+        }
+        return await issueRepository.Update(item);
     }
     
-    public void DeleteById(int id)
+    public async Task DeleteById(int issueId, string userId, string projectId)
     {
-        _issueRepository.DeleteById(id);
+        await authService.AuthorizeProjectAccess(userId, projectId);
+        await AssertIssueInProject(issueId, projectId);
+        
+        var member = await projectRepository.GetMember(projectId, userId);
+        if (member == null || !member.CanDeleteIssues())
+        {
+            throw new NotAuthorizedException();
+        }
+        await issueRepository.DeleteById(issueId);
+    }
+
+    private async Task AssertIssueInProject(int issueId, string projectId)
+    {
+        if (! await issueRepository.IsInProject(issueId, projectId))
+        {
+            throw new NotFoundException();
+        }
     }
 }

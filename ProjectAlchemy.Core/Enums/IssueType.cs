@@ -1,4 +1,4 @@
-namespace ProjectAlchemy.Core.Domain;
+namespace ProjectAlchemy.Core.Enums;
 
 public enum IssueType
 {

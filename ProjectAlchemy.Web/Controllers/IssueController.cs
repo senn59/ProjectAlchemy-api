@@ -1,79 +1,75 @@
-using System.Security.Claims;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
+using ProjectAlchemy.Core.Exceptions;
 using ProjectAlchemy.Core.Services;
 using ProjectAlchemy.Web.Dtos;
+using ProjectAlchemy.Web.Utilities;
 
 namespace ProjectAlchemy.Web.Controllers;
 
 [ApiController]
-[Route("api/issues")]
-public class IssueController : ControllerBase
+[Route("api/projects/{projectId}/issues")]
+public class IssueController(IssueService issueService, LaneService laneService) : ControllerBase
 {
-    private readonly ILogger<IssueController> _logger;
-    private readonly IssueService _IssueService;
-
-    public IssueController(ILogger<IssueController> logger, IssueService IssueService)
+    [HttpGet("{id:int}")]
+    public async Task<IssueResponse> Get(string projectId, int id)
     {
-        _logger = logger;
-        _IssueService = IssueService;
-    }
-
-    [HttpGet(Name = "Get all issues")]
-    public IEnumerable<PartialIssue> Get()
-    {
-        var items = _IssueService.GetAll();
-        return items.Select(PartialIssue.FromIssue);
-    }
-
-    [HttpGet("{id:int}",Name = "Get issue")]
-    public async Task<IssueResponse> Get(int id)
-    {
-        var item =  await _IssueService.GetById(id);
+        if (!ModelState.IsValid)
+        {
+            throw new InvalidArgumentException();
+        }
+        var userId = JwtHelper.GetId(User);
+        var item =  await issueService.GetById(id, userId, projectId);
         return IssueResponse.FromIssue(item);
     }
 
-    [HttpPost(Name = "Create issue")]
-    public async Task<PartialIssue> Post(CreateIssueRequest request)
+    [HttpPost]
+    public async Task<PartialIssue> Post(CreateIssueRequest request, string projectId)
     {
-        var converted = CreateIssueRequest.ToIssue(request);
-        var item = await _IssueService.Create(converted);
-        return PartialIssue.FromIssue(item);
-    }
-
-    [HttpPut("{id:int}", Name = "Update issue")]
-    public async Task<PartialIssue> Put(UpdateIssueRequest request, int id)
-    {
-        var issue = await _IssueService.GetById(id);
-        issue.SetName(request.Name);
-        issue.SetDescription(request.Description);
-        issue.SetType(request.Type);
-        var updated = await _IssueService.Update(issue);
-        return PartialIssue.FromIssue(updated);
+        if (!ModelState.IsValid)
+        {
+            throw new InvalidArgumentException();
+        }
+        var userId = JwtHelper.GetId(User);
+        var lane = await laneService.GetById(request.LaneId, projectId, userId);
+        var issue = CreateIssueRequest.ToIssue(request, lane);
+        var createdIssue = await issueService.Create(issue, userId, projectId);
+        return PartialIssue.FromIssue(createdIssue);
     }
     
-    [HttpPatch("{id:int}", Name = "Patch issue")]
-    public async Task<PartialIssue> Patch([FromBody] JsonPatchDocument<IssuePatch> patchDoc, int id)
+    [HttpPatch("{id:int}")]
+    public async Task<IssueResponse> Patch([FromBody] JsonPatchDocument<IssuePatch> patchDoc, int id, string projectId)
     {
-        var issue = await _IssueService.GetById(id);
+        if (!ModelState.IsValid)
+        {
+            throw new InvalidArgumentException();
+        }
+        var userId = JwtHelper.GetId(User); 
+        var issue = await issueService.GetById(id, userId, projectId);
         var issuePatch = new IssuePatch()
         {
             Name = issue.Name,
             Description = issue.Description,
-            Type = issue.Type
+            Type = issue.Type,
+            Lane = issue.Lane
         };
         patchDoc.ApplyTo(issuePatch, ModelState);
         issue.SetName(issuePatch.Name);
         issue.SetDescription(issuePatch.Description);
         issue.SetType(issuePatch.Type);
-        var updated = await _IssueService.Update(issue);
-        return PartialIssue.FromIssue(updated);
+        issue.SetLane(issuePatch.Lane);
+        var updated = await issueService.Update(issue, userId, projectId);
+        return IssueResponse.FromIssue(updated);
     }
     
-    [HttpDelete("{id:int}", Name = "Delete issue")]
-    public void Delete(int id)
+    [HttpDelete("{id:int}")]
+    public async Task Delete(int id, string projectId)
     {
-        _IssueService.DeleteById(id);
+        if (!ModelState.IsValid)
+        {
+            throw new InvalidArgumentException();
+        }
+        var userId = JwtHelper.GetId(User);
+        await issueService.DeleteById(id, userId, projectId);
     }
 }

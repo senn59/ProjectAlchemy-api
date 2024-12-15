@@ -1,4 +1,5 @@
 using ProjectAlchemy.Core.Domain;
+using ProjectAlchemy.Core.Enums;
 
 namespace ProjectAlchemy.Web.Dtos;
 
@@ -7,6 +8,7 @@ public class PartialIssue
     public required int Id { get; set; }
     public required string Name { get; set; }
     public required IssueType Type { get; set; }
+    public required LaneView Lane { get; set; }
 
     public static PartialIssue FromIssue(Issue issue)
     {
@@ -14,7 +16,8 @@ public class PartialIssue
         {
             Id = issue.Id,
             Name = issue.Name,
-            Type = issue.Type
+            Type = issue.Type,
+            Lane = LaneView.FromLane(issue.Lane)
         };
     }
 }

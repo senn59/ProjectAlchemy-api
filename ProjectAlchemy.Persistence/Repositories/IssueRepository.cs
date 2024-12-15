@@ -7,7 +7,7 @@ namespace ProjectAlchemy.Persistence.Repositories;
 
 public class IssueRepository: IIssueRepository
 {
-    private AppDbContext _context;
+    private readonly AppDbContext _context;
     
     public IssueRepository(AppDbContext context)
     {
@@ -16,33 +16,42 @@ public class IssueRepository: IIssueRepository
 
     public async Task<Issue?> GetById(int id)
     {
-        var issue = await _context.Issues.FirstOrDefaultAsync(i => i.Id == id);
-        return issue == null ? null : IssueEntity.ToIssue(issue);
+        var issue = await _context.Issues.FindAsync(id);
+        var lane = await _context.Lanes.FirstOrDefaultAsync(l => issue != null && l.Id == issue.LaneId);
+
+        return lane == null || issue == null ? null : IssueEntity.ToIssue(issue, LaneEntity.ToLane(lane));
     }
 
-    public async Task<Issue> Create(Issue item)
+    public async Task<Issue> Create(Issue item, string projectId)
     {
-        var created = await _context.Issues.AddAsync(IssueEntity.FromIssue(item));
+        var entity = IssueEntity.FromIssue(item);
+        entity.ProjectId = projectId;
+        await _context.Issues.AddAsync(entity);
         await _context.SaveChangesAsync();
-        return IssueEntity.ToIssue(created.Entity);
-    }
-
-    public List<Issue> GetAll()
-    {
-        return _context.Issues.Select(IssueEntity.ToIssue).ToList();
+        return IssueEntity.ToIssue(entity, item.Lane);
     }
 
     public async Task<Issue> Update(Issue updated)
     {
+        var entity = IssueEntity.FromIssue(updated);
         _context.ChangeTracker.Clear();
-        var updatedIssue = _context.Update(IssueEntity.FromIssue(updated));
+        _context.Update(IssueEntity.FromIssue(updated)); 
         await _context.SaveChangesAsync();
-        return IssueEntity.ToIssue(updatedIssue.Entity);
+        return IssueEntity.ToIssue(entity, updated.Lane);
     }
 
-    public void DeleteById(int id)
+    public async Task<bool> IsInProject(int issueId, string projectId)
     {
-        var issue = _context.Issues.First(i => i.Id == id);
-        _context.Remove(issue);
+        return await _context.Issues.AnyAsync(i => i.Id == issueId && i.ProjectId == projectId);
+    }
+
+    public async Task DeleteById(int id)
+    {
+        var issue = await _context.Issues.FindAsync(id);
+        if (issue != null)
+        {
+            _context.Remove(issue);
+            await _context.SaveChangesAsync();
+        }
     }
 }

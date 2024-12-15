@@ -1,13 +1,15 @@
 using System.ComponentModel.DataAnnotations;
 using ProjectAlchemy.Core.Domain;
+using ProjectAlchemy.Core.Enums;
 
 namespace ProjectAlchemy.Web.Dtos;
 
 public class IssuePatch
 {
-    [MaxLength(Issue.MaxNameLength)]
-    public string Name { get; set; }
+    [MaxLength(Issue.MaxNameLength), MinLength(1)]
+    public required string Name { get; init; }
     [MaxLength(Issue.MaxDescriptionLength)]
-    public string Description { get; set; }
-    public IssueType Type { get; set; }
+    public required string Description { get; init; }
+    public required IssueType Type { get; init; }
+    public required Lane Lane { get; init; }
 }
