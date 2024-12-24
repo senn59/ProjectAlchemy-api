@@ -31,11 +31,12 @@ public class IssueRepository: IIssueRepository
         return IssueEntity.ToIssue(entity, item.Lane);
     }
 
-    public async Task<Issue> Update(Issue updated)
+    public async Task<Issue> Update(Issue updated, string projectId)
     {
         var entity = IssueEntity.FromIssue(updated);
+        entity.ProjectId = projectId;
         _context.ChangeTracker.Clear();
-        _context.Update(IssueEntity.FromIssue(updated)); 
+        _context.Update(entity); 
         await _context.SaveChangesAsync();
         return IssueEntity.ToIssue(entity, updated.Lane);
     }

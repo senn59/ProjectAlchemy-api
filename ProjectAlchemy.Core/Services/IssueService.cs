@@ -45,7 +45,7 @@ public class IssueService(
         {
             throw new NotAuthorizedException();
         }
-        return await issueRepository.Update(item);
+        return await issueRepository.Update(item, projectId);
     }
     
     public async Task DeleteById(int issueId, string userId, string projectId)
