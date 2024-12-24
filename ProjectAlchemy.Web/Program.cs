@@ -54,6 +54,16 @@ builder.Services.AddSwaggerGen(o =>
 });
 builder.Services.AddSwaggerGenNewtonsoftSupport();
 
+builder.Services.AddCors(o =>
+{
+    o.AddPolicy("AllowSpecificOrigin", b =>
+    {
+        b.WithOrigins("http://localhost:5173")
+            .AllowAnyHeader()
+            .AllowAnyMethod();
+    });
+});
+
 
 var connString = builder.Configuration.GetConnectionString("DefaultConnection");
 if (connString == null)
@@ -110,6 +120,7 @@ builder.Services.AddAuthentication(o =>
     });
 
 var app = builder.Build();
+app.UseCors("AllowSpecificOrigin");
 
 using var scope = app.Services.CreateScope();
 await using var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
