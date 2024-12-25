@@ -9,6 +9,6 @@ public class LaneService(ILaneRepository laneRepository, AuthorizationService au
     public async Task<Lane> GetById(int laneId, string projectId, string userId)
     {
         await authService.AuthorizeProjectAccess(userId, projectId);
-        return await laneRepository.GetLaneById(laneId, projectId) ?? throw new NotFoundException();
+        return await laneRepository.GetLaneById(laneId, projectId) ?? throw new NotFoundException("Not a valid lane in project");
     }
 }
