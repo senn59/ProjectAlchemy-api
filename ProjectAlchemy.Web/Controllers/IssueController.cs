@@ -14,10 +14,6 @@ public class IssueController(IssueService issueService, LaneService laneService)
     [HttpGet("{id:int}")]
     public async Task<IssueResponse> Get(string projectId, int id)
     {
-        if (!ModelState.IsValid)
-        {
-            throw new InvalidArgumentException();
-        }
         var userId = JwtHelper.GetId(User);
         var item =  await issueService.GetById(id, userId, projectId);
         return IssueResponse.FromIssue(item);
@@ -26,10 +22,6 @@ public class IssueController(IssueService issueService, LaneService laneService)
     [HttpPost]
     public async Task<PartialIssue> Post(CreateIssueRequest request, string projectId)
     {
-        if (!ModelState.IsValid)
-        {
-            throw new InvalidArgumentException();
-        }
         var userId = JwtHelper.GetId(User);
         var lane = await laneService.GetById(request.LaneId, projectId, userId);
         var issue = CreateIssueRequest.ToIssue(request, lane);
@@ -40,10 +32,6 @@ public class IssueController(IssueService issueService, LaneService laneService)
     [HttpPatch("{id:int}")]
     public async Task<IssueResponse> Patch([FromBody] JsonPatchDocument<IssuePatch> patchDoc, int id, string projectId)
     {
-        if (!ModelState.IsValid)
-        {
-            throw new InvalidArgumentException();
-        }
         var userId = JwtHelper.GetId(User); 
         var issue = await issueService.GetById(id, userId, projectId);
         var issuePatch = new IssuePatch()
@@ -65,10 +53,6 @@ public class IssueController(IssueService issueService, LaneService laneService)
     [HttpDelete("{id:int}")]
     public async Task Delete(int id, string projectId)
     {
-        if (!ModelState.IsValid)
-        {
-            throw new InvalidArgumentException();
-        }
         var userId = JwtHelper.GetId(User);
         await issueService.DeleteById(id, userId, projectId);
     }
