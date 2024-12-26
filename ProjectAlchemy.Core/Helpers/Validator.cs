@@ -3,7 +3,7 @@ using ProjectAlchemy.Core.Exceptions;
 
 namespace ProjectAlchemy.Core.Helpers;
 
-public class ValidationHelper
+public static class ValidationHelper
 {
     public static void Validate(object obj)
     {
