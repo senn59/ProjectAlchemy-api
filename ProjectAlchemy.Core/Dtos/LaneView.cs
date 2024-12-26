@@ -1,6 +1,6 @@
 using ProjectAlchemy.Core.Domain;
 
-namespace ProjectAlchemy.Web.Dtos;
+namespace ProjectAlchemy.Core.Dtos;
 
 public class LaneView
 {

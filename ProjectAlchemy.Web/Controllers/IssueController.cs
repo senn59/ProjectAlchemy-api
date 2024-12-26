@@ -1,8 +1,7 @@
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
-using ProjectAlchemy.Core.Exceptions;
+using ProjectAlchemy.Core.Dtos;
 using ProjectAlchemy.Core.Services;
-using ProjectAlchemy.Web.Dtos;
 using ProjectAlchemy.Web.Utilities;
 
 namespace ProjectAlchemy.Web.Controllers;

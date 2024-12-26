@@ -1,21 +1,22 @@
 using ProjectAlchemy.Core.Domain;
 using ProjectAlchemy.Core.Enums;
 
-namespace ProjectAlchemy.Web.Dtos;
+namespace ProjectAlchemy.Core.Dtos;
 
-public class PartialIssue
+public class IssueResponse
 {
     public required int Id { get; set; }
     public required string Name { get; set; }
+    public required string Description { get; set; }
     public required IssueType Type { get; set; }
     public required LaneView Lane { get; set; }
-
-    public static PartialIssue FromIssue(Issue issue)
+    public static IssueResponse FromIssue(Issue issue)
     {
-        return new PartialIssue()
+        return new IssueResponse()
         {
             Id = issue.Id,
             Name = issue.Name,
+            Description = issue.Description,
             Type = issue.Type,
             Lane = LaneView.FromLane(issue.Lane)
         };

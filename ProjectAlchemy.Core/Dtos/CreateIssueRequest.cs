@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 using ProjectAlchemy.Core.Domain;
 using ProjectAlchemy.Core.Enums;
 
-namespace ProjectAlchemy.Web.Dtos;
+namespace ProjectAlchemy.Core.Dtos;
 
 public class CreateIssueRequest
 {
