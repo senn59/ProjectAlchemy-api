@@ -87,7 +87,7 @@ builder.Services.AddScoped<IIssueRepository, IssueRepository>();
 builder.Services.AddScoped<IProjectRepository, ProjectRepository>();
 builder.Services.AddScoped<IMemberRepository, MemberRepository>();
 builder.Services.AddScoped<ILaneRepository, LaneRepository>();
-builder.Services.AddScoped<AuthorizationService>();
+builder.Services.AddScoped<IAuthorizationService, AuthorizationService>();
 builder.Services.AddScoped<IssueService>();
 builder.Services.AddScoped<ProjectService>();
 builder.Services.AddScoped<UserService>();
