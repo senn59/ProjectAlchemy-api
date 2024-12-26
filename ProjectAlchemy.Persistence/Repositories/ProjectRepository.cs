@@ -37,9 +37,9 @@ public class ProjectRepository: IProjectRepository
         return await _context.Members.AnyAsync(m => m.ProjectId == projectId && m.UserId == userId);
     }
 
-    public Task<bool> HasIssue(string projectId, int issueId)
+    public async Task<bool> HasIssue(string projectId, int issueId)
     {
-        throw new NotImplementedException();
+        return await _context.Issues.AnyAsync(i => i.ProjectId == projectId && i.Id == issueId); 
     }
 
     public async Task<Member?> GetMember(string projectId, string userId)
