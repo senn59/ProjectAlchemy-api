@@ -4,7 +4,7 @@ using ProjectAlchemy.Core.Interfaces;
 
 namespace ProjectAlchemy.Core.Services;
 
-public class IssueService(IIssueRepository issueRepository, AuthorizationService authService)
+public class IssueService(IIssueRepository issueRepository, IAuthorizationService authService)
 {
     public const int MaxNameLength = 30;
     public const int MaxDescriptionLength = 200;

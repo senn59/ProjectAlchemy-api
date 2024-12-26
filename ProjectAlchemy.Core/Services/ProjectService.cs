@@ -5,7 +5,7 @@ using ProjectAlchemy.Core.Interfaces;
 
 namespace ProjectAlchemy.Core.Services;
 
-public class ProjectService(IProjectRepository repository, AuthorizationService authService)
+public class ProjectService(IProjectRepository repository, IAuthorizationService authService)
 {
     public const int MaxNameLength = 30;
     private readonly IReadOnlyList<Lane> _defaultLanes = [

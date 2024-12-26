@@ -4,7 +4,7 @@ using ProjectAlchemy.Core.Interfaces;
 
 namespace ProjectAlchemy.Core.Services;
 
-public class AuthorizationService(IProjectRepository projectRepository)
+public class AuthorizationService(IProjectRepository projectRepository): IAuthorizationService
 {
     public async Task AuthorizeProjectAccess(string userId, string projectId)
     {
