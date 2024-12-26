@@ -21,7 +21,7 @@ public class AuthorizationService(IProjectRepository projectRepository): IAuthor
             throw new NotFoundException();
         }
         
-        var member = await projectRepository.GetMember(userId, projectId);
+        var member = await projectRepository.GetMember(projectId, userId);
         if (member == null)
         {
             throw new NotAuthorizedException();
@@ -53,7 +53,7 @@ public class AuthorizationService(IProjectRepository projectRepository): IAuthor
             throw new NotFoundException();
         }
         
-        var member = await projectRepository.GetMember(userId, projectId);
+        var member = await projectRepository.GetMember(projectId, userId);
         if (member == null)
         {
             throw new NotAuthorizedException();
