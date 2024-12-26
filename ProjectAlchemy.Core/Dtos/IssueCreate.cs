@@ -2,9 +2,9 @@ using System.ComponentModel.DataAnnotations;
 using ProjectAlchemy.Core.Enums;
 using ProjectAlchemy.Core.Services;
 
-namespace ProjectAlchemy.Core.Dtos.Issue;
+namespace ProjectAlchemy.Core.Dtos;
 
-public class CreateIssue
+public class IssueCreate
 {
     [Required(AllowEmptyStrings = false)]
     [MaxLength(IssueService.MaxNameLength)]

@@ -1,9 +1,9 @@
 using System.ComponentModel.DataAnnotations;
 using ProjectAlchemy.Core.Services;
 
-namespace ProjectAlchemy.Core.Dtos.Project;
+namespace ProjectAlchemy.Core.Dtos;
 
-public class CreateProjectRequest
+public class ProjectCreate
 {
     [Required(AllowEmptyStrings = false)]
     [MaxLength(ProjectService.MaxNameLength)]

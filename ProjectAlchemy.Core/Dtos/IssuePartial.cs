@@ -1,8 +1,8 @@
 using ProjectAlchemy.Core.Enums;
 
-namespace ProjectAlchemy.Core.Dtos.Issue;
+namespace ProjectAlchemy.Core.Dtos;
 
-public class PartialIssue
+public class IssuePartial
 {
     public required int Id { get; set; }
     public required string Name { get; set; }

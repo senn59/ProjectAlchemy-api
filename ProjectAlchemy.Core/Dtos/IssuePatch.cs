@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 using ProjectAlchemy.Core.Enums;
 using ProjectAlchemy.Core.Services;
 
-namespace ProjectAlchemy.Core.Dtos.Issue;
+namespace ProjectAlchemy.Core.Dtos;
 
 public class IssuePatch
 {
