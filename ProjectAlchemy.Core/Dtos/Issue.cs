@@ -11,7 +11,7 @@ public class Issue
     [StringLength(IssueService.MaxNameLength)]
     public required string Name { get; set; }
     [StringLength(IssueService.MaxDescriptionLength)]
-    public string Description { get; private set; } = "";
+    public string Description { get;  set; } = "";
     public required IssueType Type { get; set; }
     public required Lane Lane { get; set; }
 }

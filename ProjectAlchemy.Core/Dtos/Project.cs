@@ -9,7 +9,7 @@ public class Project
     [Required(AllowEmptyStrings = false)]
     [MaxLength(ProjectService.MaxNameLength)]
     public required string Name { get; set; }
-    public required IReadOnlyList<IssuePartial> Issues { get; init; }
-    public required IReadOnlyList<Lane> Lanes { get; init; }
-    public required IReadOnlyList<Member> Members { get; init; }
+    public required IEnumerable<IssuePartial> Issues { get; init; }
+    public required IEnumerable<Lane> Lanes { get; init; }
+    public required IEnumerable<Member> Members { get; init; }
 }
