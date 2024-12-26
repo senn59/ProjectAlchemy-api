@@ -4,10 +4,7 @@ using ProjectAlchemy.Core.Interfaces;
 
 namespace ProjectAlchemy.Core.Services;
 
-public class IssueService(
-    IIssueRepository issueRepository,
-    AuthorizationService authService,
-    IProjectRepository projectRepository)
+public class IssueService(IIssueRepository issueRepository, AuthorizationService authService)
 {
     public async Task<Issue> Create(Issue item, string userId, string projectId)
     {
@@ -17,14 +14,7 @@ public class IssueService(
 
     public async Task<Issue> GetById(int issueId, string userId, string projectId )
     {
-        await authService.AuthorizeProjectAccess(userId, projectId);
-        await AssertIssueInProject(issueId, projectId);
-        
-        var member = await projectRepository.GetMember(projectId, userId);
-        if (member == null || !member.CanUpdateIssues())
-        {
-            throw new NotAuthorizedException();
-        }
+        await authService.AuthorizeIssueAccess(userId, projectId, issueId);
         
         var issue = await issueRepository.GetById(issueId);
         if (issue == null)
@@ -37,35 +27,13 @@ public class IssueService(
 
     public async Task<Issue> Update(Issue item, string userId, string projectId)
     {
-        await authService.AuthorizeProjectAccess(userId, projectId);
-        await AssertIssueInProject(item.Id, projectId);
-        
-        var member = await projectRepository.GetMember(projectId, userId);
-        if (member == null || !member.CanUpdateIssues())
-        {
-            throw new NotAuthorizedException();
-        }
+        await authService.AuthorizeIssueUpdate(userId, projectId, item.Id);
         return await issueRepository.Update(item, projectId);
     }
     
     public async Task DeleteById(int issueId, string userId, string projectId)
     {
-        await authService.AuthorizeProjectAccess(userId, projectId);
-        await AssertIssueInProject(issueId, projectId);
-        
-        var member = await projectRepository.GetMember(projectId, userId);
-        if (member == null || !member.CanDeleteIssues())
-        {
-            throw new NotAuthorizedException();
-        }
+        await authService.AuthorizeIssueDeletion(userId, projectId, issueId);
         await issueRepository.DeleteById(issueId);
-    }
-
-    private async Task AssertIssueInProject(int issueId, string projectId)
-    {
-        if (! await issueRepository.IsInProject(issueId, projectId))
-        {
-            throw new NotFoundException();
-        }
     }
 }

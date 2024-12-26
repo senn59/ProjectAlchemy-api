@@ -9,5 +9,6 @@ public interface IProjectRepository
     public Task<Project?> Get(string id);
     public Task<Project> Create(Project project);
     public Task<bool> HasMember(string projectId, string userId);
+    public Task<bool> HasIssue(string projectId, int issueId);
     public Task<Member?> GetMember(string projectId, string userId);
 }

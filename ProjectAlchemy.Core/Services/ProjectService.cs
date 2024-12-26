@@ -26,7 +26,12 @@ public class ProjectService(IProjectRepository repository, AuthorizationService 
 
     public async Task<Project> Create(string projectName, string userId)
     {
-        var creator = new Member(userId, MemberType.Owner);
+        var creator = new Member
+        {
+            UserId = userId,
+            Type = MemberType.Owner
+        };
+        
         var project = new Project
         {
             Id = Guid.NewGuid().ToString(),
@@ -35,6 +40,7 @@ public class ProjectService(IProjectRepository repository, AuthorizationService 
             Lanes = _defaultLanes,
             Members = [creator]
         };
+        
         return await repository.Create(project);
     }
 }
