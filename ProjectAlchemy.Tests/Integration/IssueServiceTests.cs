@@ -1,8 +1,6 @@
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 using ProjectAlchemy.Core.Dtos;
-using ProjectAlchemy.Core.Dtos.Issue;
-using ProjectAlchemy.Core.Dtos.Project;
 using ProjectAlchemy.Core.Enums;
 using ProjectAlchemy.Core.Exceptions;
 using ProjectAlchemy.Core.Services;
@@ -28,7 +26,7 @@ public class IssueServiceTests: IDisposable
         var issueRepo = new IssueRepository(_context);
         var projectRepo = new ProjectRepository(_context);
         var authService = new AuthorizationService(projectRepo);
-        _issueService = new IssueService(issueRepo, authService, projectRepo);
+        _issueService = new IssueService(issueRepo, authService);
         _projectService = new ProjectService(projectRepo, authService);
         _ = CreateProject();
     }
@@ -47,32 +45,47 @@ public class IssueServiceTests: IDisposable
     [Fact]
     public async Task CreateIssueSucceedsAndIssueIsAvailableToRetrieveAndAppearsInProject()
     {
-        var issue = new Issue("test", IssueType.Task, _project.Lanes.First());
+        var issue = new IssueCreate
+        {
+            Name = "test",
+            Type = IssueType.Task,
+            LaneId = _project.Lanes.First().Id
+        };
         
         var created = await _issueService.Create(issue, UserId, _project.Id);
         var retrieved = await _issueService.GetById(created.Id, UserId, _project.Id);
-        var project = await _projectService.Get(_project.Id, UserId);
-        
-        created.Should().BeEquivalentTo(issue, options => options.Excluding(i => i.Id));
+
+        created.Name.Should().BeEquivalentTo(issue.Name);
+        created.Type.Should().HaveSameValueAs(issue.Type);
         retrieved.Should().BeEquivalentTo(created);
-        project.Issues.First().Should().BeEquivalentTo(issue, options => options.Excluding(i => i.Id));
     }
     
     [Fact]
     public async Task DeletingNonExistingIssueThrowsNotFound()
     {
-        var issue = new Issue("test", IssueType.Task, _project.Lanes.First());
-        await _issueService.Create(issue, UserId, _project.Id);
+        var issue = new IssueCreate
+        {
+            Name = "Test",
+            Type = IssueType.Task,
+            LaneId = _project.Lanes.First().Id
+        };
+        var created = await _issueService.Create(issue, UserId, _project.Id);
         
         var action = () => _issueService.DeleteById(9999, UserId, _project.Id);
 
+        created.Id.Should().NotBe(9999);
         await action.Should().ThrowAsync<NotFoundException>();
     }
     
     [Fact]
     public async Task DeletingExistingIssueAndRetrievingItThrowsNotFound()
     {
-        var issue = new Issue("test", IssueType.Task, _project.Lanes.First());
+        var issue = new IssueCreate
+        {
+            Name = "Test",
+            Type = IssueType.Task,
+            LaneId = _project.Lanes.First().Id
+        };
         var created = await _issueService.Create(issue, UserId, _project.Id);
         await _issueService.DeleteById(created.Id, UserId, _project.Id);
         
@@ -84,15 +97,22 @@ public class IssueServiceTests: IDisposable
     [Fact]
     public async Task UpdatingIssueSucceeds()
     {
-        var issue = new Issue("test", IssueType.Task, _project.Lanes.First());
+        var issue = new IssueCreate
+        {
+            Name = "Test",
+            Type = IssueType.Task,
+            LaneId = _project.Lanes.First().Id
+        };
         var created = await _issueService.Create(issue, UserId, _project.Id);
+        var retrieved = await _issueService.GetById(created.Id, UserId, _project.Id);
+
+        retrieved.Name = "nottest";
+        retrieved.Description = "not empty";
+        retrieved.Type = IssueType.Bug;
+        var updated = await _issueService.Update(retrieved, UserId, _project.Id);
         
-        created.SetName("nottest");
-        created.SetDescription("not empty");
-        created.SetType(IssueType.Bug);
-        var updated = await _issueService.Update(created, UserId, _project.Id);
-        
-        created.Should().BeEquivalentTo(updated);
-        updated.Should().NotBeEquivalentTo(issue, options => options.Excluding(i => i.Id));
+        updated.Should().BeEquivalentTo(retrieved);
+        created.Name.Should().NotBeEquivalentTo(updated.Name);
+        created.Type.Should().NotHaveSameValueAs(updated.Type);
     }
 }

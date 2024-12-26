@@ -1,7 +1,6 @@
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 using ProjectAlchemy.Core.Dtos;
-using ProjectAlchemy.Core.Dtos.Project;
 using ProjectAlchemy.Core.Enums;
 using ProjectAlchemy.Core.Exceptions;
 using ProjectAlchemy.Core.Services;
