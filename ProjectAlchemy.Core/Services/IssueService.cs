@@ -9,7 +9,7 @@ public class IssueService(IIssueRepository issueRepository, IAuthorizationServic
     public const int MaxNameLength = 30;
     public const int MaxDescriptionLength = 200;
     
-    public async Task<Issue> Create(IssueCreate issue, string userId, string projectId)
+    public async Task<IssuePartial> Create(IssueCreate issue, string userId, string projectId)
     {
         await authService.AuthorizeProjectAccess(userId, projectId);
         return await issueRepository.Create(issue, projectId);

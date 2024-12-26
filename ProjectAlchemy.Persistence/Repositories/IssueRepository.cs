@@ -22,14 +22,14 @@ public class IssueRepository: IIssueRepository
         return lane == null || issue == null ? null : IssueEntity.ToIssue(issue, LaneEntity.ToLane(lane));
     }
 
-    public async Task<Issue> Create(IssueCreate issue, string projectId)
+    public async Task<IssuePartial> Create(IssueCreate issue, string projectId)
     {
         var entity = IssueEntity.FromIssueCreate(issue);
         entity.ProjectId = projectId;
         await _context.Issues.AddAsync(entity);
         await _context.SaveChangesAsync();
         var lane = await _context.Lanes.FindAsync(entity.LaneId);
-        return IssueEntity.ToIssue(entity, LaneEntity.ToLane(lane!));
+        return IssueEntity.ToPartial(entity, LaneEntity.ToLane(lane!));
     }
 
     public async Task<Issue> Update(Issue updated, string projectId)
