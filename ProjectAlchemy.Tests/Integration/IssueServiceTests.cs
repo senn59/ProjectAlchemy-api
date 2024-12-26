@@ -1,8 +1,10 @@
+using System.ComponentModel.DataAnnotations;
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 using ProjectAlchemy.Core.Dtos;
 using ProjectAlchemy.Core.Enums;
 using ProjectAlchemy.Core.Exceptions;
+using ProjectAlchemy.Core.Helpers;
 using ProjectAlchemy.Core.Services;
 using ProjectAlchemy.Persistence;
 using ProjectAlchemy.Persistence.Repositories;
@@ -109,6 +111,7 @@ public class IssueServiceTests: IDisposable
         retrieved.Name = "nottest";
         retrieved.Description = "not empty";
         retrieved.Type = IssueType.Bug;
+        ValidationHelper.Validate(retrieved);
         var updated = await _issueService.Update(retrieved, UserId, _project.Id);
         
         updated.Should().BeEquivalentTo(retrieved);
