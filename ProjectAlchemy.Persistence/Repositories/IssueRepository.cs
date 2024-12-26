@@ -1,6 +1,5 @@
 using Microsoft.EntityFrameworkCore;
 using ProjectAlchemy.Core.Dtos;
-using ProjectAlchemy.Core.Dtos.Issue;
 using ProjectAlchemy.Core.Interfaces;
 using ProjectAlchemy.Persistence.Entities;
 
@@ -23,13 +22,14 @@ public class IssueRepository: IIssueRepository
         return lane == null || issue == null ? null : IssueEntity.ToIssue(issue, LaneEntity.ToLane(lane));
     }
 
-    public async Task<Issue> Create(Issue item, string projectId)
+    public async Task<Issue> Create(IssueCreate issue, string projectId)
     {
-        var entity = IssueEntity.FromIssue(item);
+        var entity = IssueEntity.FromIssueCreate(issue);
         entity.ProjectId = projectId;
         await _context.Issues.AddAsync(entity);
         await _context.SaveChangesAsync();
-        return IssueEntity.ToIssue(entity, item.Lane);
+        var lane = await _context.Lanes.FindAsync(entity.LaneId);
+        return IssueEntity.ToIssue(entity, LaneEntity.ToLane(lane!));
     }
 
     public async Task<Issue> Update(Issue updated, string projectId)
@@ -40,11 +40,6 @@ public class IssueRepository: IIssueRepository
         _context.Update(entity); 
         await _context.SaveChangesAsync();
         return IssueEntity.ToIssue(entity, updated.Lane);
-    }
-
-    public async Task<bool> IsInProject(int issueId, string projectId)
-    {
-        return await _context.Issues.AnyAsync(i => i.Id == issueId && i.ProjectId == projectId);
     }
 
     public async Task DeleteById(int id)
