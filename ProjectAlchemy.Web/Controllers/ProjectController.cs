@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
 using ProjectAlchemy.Core.Dtos;
-using ProjectAlchemy.Core.Dtos.Project;
 using ProjectAlchemy.Core.Services;
 using ProjectAlchemy.Web.Utilities;
 
@@ -27,7 +26,7 @@ public class ProjectController(ProjectService projectService, UserService userSe
     }
 
     [HttpPost]
-    public async Task<ProjectView> CreateProject(CreateProjectRequest request)
+    public async Task<ProjectView> CreateProject(ProjectCreate request)
     {
         var userId = JwtHelper.GetId(User);
         var project = await projectService.Create(request.Name, userId);

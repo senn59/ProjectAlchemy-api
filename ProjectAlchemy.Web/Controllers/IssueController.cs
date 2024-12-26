@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using ProjectAlchemy.Core.Dtos;
-using ProjectAlchemy.Core.Dtos.Issue;
 using ProjectAlchemy.Core.Services;
 using ProjectAlchemy.Web.Utilities;
 
@@ -12,28 +11,26 @@ namespace ProjectAlchemy.Web.Controllers;
 public class IssueController(IssueService issueService, LaneService laneService) : ControllerBase
 {
     [HttpGet("{id:int}")]
-    public async Task<IssueResponse> Get(string projectId, int id)
+    public async Task<Issue> Get(string projectId, int id)
     {
         var userId = JwtHelper.GetId(User);
-        var item =  await issueService.GetById(id, userId, projectId);
-        return IssueResponse.FromIssue(item);
+        var issue =  await issueService.GetById(id, userId, projectId);
+        return issue;
     }
 
     [HttpPost]
-    public async Task<PartialIssue> Post(CreateIssue request, string projectId)
+    public async Task<IssuePartial> Post(IssueCreate request, string projectId)
     {
         var userId = JwtHelper.GetId(User);
-        var lane = await laneService.GetById(request.LaneId, projectId, userId);
-        var issue = CreateIssue.ToIssue(request, lane);
-        var createdIssue = await issueService.Create(issue, userId, projectId);
-        return PartialIssue.FromIssue(createdIssue);
+        return await issueService.Create(request, userId, projectId);
     }
     
     [HttpPatch("{id:int}")]
-    public async Task<IssueResponse> Patch([FromBody] JsonPatchDocument<IssuePatch> patchDoc, int id, string projectId)
+    public async Task<Issue> Patch([FromBody] JsonPatchDocument<IssuePatch> patchDoc, int id, string projectId)
     {
         var userId = JwtHelper.GetId(User); 
         var issue = await issueService.GetById(id, userId, projectId);
+        
         var issuePatch = new IssuePatch()
         {
             Name = issue.Name,
@@ -41,13 +38,14 @@ public class IssueController(IssueService issueService, LaneService laneService)
             Type = issue.Type,
             Lane = issue.Lane
         };
+        
         patchDoc.ApplyTo(issuePatch, ModelState);
-        issue.SetName(issuePatch.Name);
-        issue.SetDescription(issuePatch.Description);
-        issue.SetType(issuePatch.Type);
-        issue.SetLane(issuePatch.Lane);
-        var updated = await issueService.Update(issue, userId, projectId);
-        return IssueResponse.FromIssue(updated);
+        issue.Name = issuePatch.Name;
+        issue.Description = issuePatch.Description;
+        issue.Type = issuePatch.Type;
+        issue.Lane = issuePatch.Lane;
+        
+        return await issueService.Update(issue, userId, projectId);
     }
     
     [HttpDelete("{id:int}")]
