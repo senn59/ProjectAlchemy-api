@@ -1,6 +1,8 @@
+using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using ProjectAlchemy.Core.Dtos;
+using ProjectAlchemy.Core.Helpers;
 using ProjectAlchemy.Core.Services;
 using ProjectAlchemy.Web.Utilities;
 
@@ -45,6 +47,7 @@ public class IssueController(IssueService issueService, LaneService laneService)
         issue.Type = issuePatch.Type;
         issue.Lane = issuePatch.Lane;
         
+        ValidationHelper.Validate(issue);
         return await issueService.Update(issue, userId, projectId);
     }
     
