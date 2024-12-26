@@ -6,6 +6,9 @@ namespace ProjectAlchemy.Core.Services;
 
 public class AuthorizationService(IProjectRepository projectRepository): IAuthorizationService
 {
+    private readonly IReadOnlyCollection<MemberType> _canUpdate = [MemberType.Collaborator, MemberType.Owner];
+    private readonly IReadOnlyCollection<MemberType> _canDelete = [MemberType.Owner];
+    
     public async Task AuthorizeProjectAccess(string userId, string projectId)
     {
         if (! await projectRepository.HasMember(projectId, userId))
@@ -27,7 +30,7 @@ public class AuthorizationService(IProjectRepository projectRepository): IAuthor
             throw new NotAuthorizedException();
         }
         
-        if (member.Type != MemberType.Owner)
+        if (!_canDelete.Contains(member.Type))
         {
             throw new NotAuthorizedException();
         }
@@ -59,9 +62,7 @@ public class AuthorizationService(IProjectRepository projectRepository): IAuthor
             throw new NotAuthorizedException();
         }
 
-        List<MemberType> allowed = [MemberType.Owner, MemberType.Collaborator];
-        
-        if (!allowed.Contains(member.Type))
+        if (!_canUpdate.Contains(member.Type))
         {
             throw new NotAuthorizedException();
         }

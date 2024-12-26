@@ -11,7 +11,7 @@ public class ProjectService(IProjectRepository repository, IAuthorizationService
     private readonly IReadOnlyList<Lane> _defaultLanes = [
         new() { Name = "To do" },
         new() { Name = "In progress" },
-        new() { Name = "Done" },
+        new() { Name = "Done" }
     ];
 
     public async Task<Project> Get(string projectId, string userid)
