@@ -1,4 +1,6 @@
 using ProjectAlchemy.Core.Domain;
+using ProjectAlchemy.Core.Dtos;
+using ProjectAlchemy.Core.Dtos.Issue;
 using ProjectAlchemy.Core.Exceptions;
 using ProjectAlchemy.Core.Interfaces;
 
@@ -6,10 +8,13 @@ namespace ProjectAlchemy.Core.Services;
 
 public class IssueService(IIssueRepository issueRepository, AuthorizationService authService)
 {
-    public async Task<Issue> Create(Issue item, string userId, string projectId)
+    public const int MaxNameLength = 30;
+    public const int MaxDescriptionLength = 200;
+    
+    public async Task<Issue> Create(CreateIssue issue, string userId, string projectId)
     {
         await authService.AuthorizeProjectAccess(userId, projectId);
-        return await issueRepository.Create(item, projectId);
+        return await issueRepository.Create(issue, projectId);
     }
 
     public async Task<Issue> GetById(int issueId, string userId, string projectId )
