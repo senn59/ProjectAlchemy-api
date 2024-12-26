@@ -5,7 +5,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.Models;
-using ProjectAlchemy.Core.Domain;
 using ProjectAlchemy.Core.Enums;
 using ProjectAlchemy.Core.Interfaces;
 using ProjectAlchemy.Core.Services;

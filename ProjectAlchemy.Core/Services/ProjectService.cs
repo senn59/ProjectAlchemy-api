@@ -1,4 +1,3 @@
-using ProjectAlchemy.Core.Domain;
 using ProjectAlchemy.Core.Dtos;
 using ProjectAlchemy.Core.Dtos.Project;
 using ProjectAlchemy.Core.Enums;
@@ -10,7 +9,11 @@ namespace ProjectAlchemy.Core.Services;
 public class ProjectService(IProjectRepository repository, AuthorizationService authService)
 {
     public const int MaxNameLength = 30;
-    private readonly IReadOnlyList<Lane> _defaultLanes = [new("To do"), new("In progress"), new("Done")];
+    private readonly IReadOnlyList<Lane> _defaultLanes = [
+        new() { Name = "To do" },
+        new() { Name = "In progress" },
+        new() { Name = "Done" },
+    ];
 
     public async Task<Project> Get(string projectId, string userid)
     {

@@ -7,5 +7,5 @@ public class PartialIssue
     public required int Id { get; set; }
     public required string Name { get; set; }
     public required IssueType Type { get; set; }
-    public required LaneView Lane { get; set; }
+    public required Lane Lane { get; set; }
 }

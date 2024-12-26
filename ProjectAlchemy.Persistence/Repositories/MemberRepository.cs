@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
-using ProjectAlchemy.Core.Domain;
 using ProjectAlchemy.Core.Dtos;
+using ProjectAlchemy.Core.Dtos.Project;
 using ProjectAlchemy.Core.Interfaces;
 
 namespace ProjectAlchemy.Persistence.Repositories;

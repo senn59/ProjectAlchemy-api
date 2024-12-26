@@ -1,5 +1,4 @@
 using System.ComponentModel.DataAnnotations;
-using ProjectAlchemy.Core.Domain;
 using ProjectAlchemy.Core.Dtos.Issue;
 using ProjectAlchemy.Core.Services;
 

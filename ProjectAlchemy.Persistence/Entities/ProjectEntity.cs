@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
-using ProjectAlchemy.Core.Domain;
+using ProjectAlchemy.Core.Dtos;
+using ProjectAlchemy.Core.Dtos.Project;
 using ProjectAlchemy.Core.Services;
 
 namespace ProjectAlchemy.Persistence.Entities;

@@ -1,4 +1,3 @@
-using ProjectAlchemy.Core.Domain;
 using ProjectAlchemy.Core.Dtos;
 using ProjectAlchemy.Core.Dtos.Issue;
 using ProjectAlchemy.Core.Exceptions;

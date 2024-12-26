@@ -1,5 +1,5 @@
 using System.ComponentModel.DataAnnotations;
-using ProjectAlchemy.Core.Domain;
+using ProjectAlchemy.Core.Dtos;
 using ProjectAlchemy.Core.Enums;
 
 namespace ProjectAlchemy.Persistence.Entities;

@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using ProjectAlchemy.Core.Dtos;
+using ProjectAlchemy.Core.Dtos.Issue;
 using ProjectAlchemy.Core.Services;
 using ProjectAlchemy.Web.Utilities;
 
@@ -19,11 +20,11 @@ public class IssueController(IssueService issueService, LaneService laneService)
     }
 
     [HttpPost]
-    public async Task<PartialIssue> Post(CreateIssueRequest request, string projectId)
+    public async Task<PartialIssue> Post(CreateIssue request, string projectId)
     {
         var userId = JwtHelper.GetId(User);
         var lane = await laneService.GetById(request.LaneId, projectId, userId);
-        var issue = CreateIssueRequest.ToIssue(request, lane);
+        var issue = CreateIssue.ToIssue(request, lane);
         var createdIssue = await issueService.Create(issue, userId, projectId);
         return PartialIssue.FromIssue(createdIssue);
     }
