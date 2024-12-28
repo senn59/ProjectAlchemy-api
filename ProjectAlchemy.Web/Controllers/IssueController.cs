@@ -10,7 +10,7 @@ namespace ProjectAlchemy.Web.Controllers;
 
 [ApiController]
 [Route("api/projects/{projectId}/issues")]
-public class IssueController(IssueService issueService, LaneService laneService) : ControllerBase
+public class IssueController(IssueService issueService) : ControllerBase
 {
     [HttpGet("{id:int}")]
     public async Task<Issue> Get(string projectId, int id)

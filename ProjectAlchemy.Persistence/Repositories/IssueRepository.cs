@@ -38,8 +38,9 @@ public class IssueRepository: IIssueRepository
         entity.ProjectId = projectId;
         _context.ChangeTracker.Clear();
         _context.Update(entity); 
+        var lane = await _context.Lanes.FindAsync(entity.LaneId);
         await _context.SaveChangesAsync();
-        return IssueEntity.ToIssue(entity, updated.Lane);
+        return IssueEntity.ToIssue(entity, LaneEntity.ToLane(lane!));
     }
 
     public async Task DeleteById(int id)
