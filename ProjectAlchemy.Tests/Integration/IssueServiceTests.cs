@@ -72,7 +72,7 @@ public class IssueServiceTests: IDisposable
         };
         var created = await _issueService.Create(issue, UserId, _project.Id);
         
-        var action = () => _issueService.DeleteById(9999, UserId, _project.Id);
+        var action = () => _issueService.DeleteByKey(9999, UserId, _project.Id);
 
         created.Id.Should().NotBe(9999);
         await action.Should().ThrowAsync<NotFoundException>();
@@ -88,7 +88,7 @@ public class IssueServiceTests: IDisposable
             LaneId = _project.Lanes.First().Id
         };
         var created = await _issueService.Create(issue, UserId, _project.Id);
-        await _issueService.DeleteById(created.Id, UserId, _project.Id);
+        await _issueService.DeleteByKey(created.Id, UserId, _project.Id);
         
         var action = () => _issueService.GetById(created.Id, UserId, _project.Id);
         

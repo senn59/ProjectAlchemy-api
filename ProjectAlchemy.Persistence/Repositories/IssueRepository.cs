@@ -14,9 +14,9 @@ public class IssueRepository: IIssueRepository
         _context = context;
     }
 
-    public async Task<Issue?> GetById(int issueId, string projectId)
+    public async Task<Issue?> GetByKey(int issueKey, string projectId)
     {
-        var issue = await _context.Issues.FirstOrDefaultAsync(i => i.Id == issueId && i.ProjectId == projectId);
+        var issue = await _context.Issues.FirstOrDefaultAsync(i => i.Key == issueKey && i.ProjectId == projectId);
         if (issue == null || issue.Deleted)
         {
             return null;
@@ -29,6 +29,7 @@ public class IssueRepository: IIssueRepository
     {
         var entity = IssueEntity.FromIssueCreate(issue);
         entity.ProjectId = projectId;
+        entity.Key = await _context.Issues.CountAsync(i => i.ProjectId == projectId) + 1;
         await _context.Issues.AddAsync(entity);
         await _context.SaveChangesAsync();
         var lane = await _context.Lanes.FindAsync(entity.LaneId);
@@ -50,9 +51,9 @@ public class IssueRepository: IIssueRepository
         return IssueEntity.ToIssue(entity, LaneEntity.ToLane(lane!));
     }
 
-    public async Task DeleteById(int id)
+    public async Task DeleteByKey(int key, string projectId)
     {
-        var issue = await _context.Issues.FindAsync(id);
+        var issue = await _context.Issues.FirstOrDefaultAsync(i => i.ProjectId == projectId && i.Key == key);
         if (issue != null)
         {
             issue.Deleted = true;

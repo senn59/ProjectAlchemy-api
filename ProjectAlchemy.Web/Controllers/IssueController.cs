@@ -55,6 +55,6 @@ public class IssueController(IssueService issueService) : ControllerBase
     public async Task Delete(int id, string projectId)
     {
         var userId = JwtHelper.GetId(User);
-        await issueService.DeleteById(id, userId, projectId);
+        await issueService.DeleteByKey(id, userId, projectId);
     }
 }
