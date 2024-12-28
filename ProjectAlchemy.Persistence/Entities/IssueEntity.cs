@@ -1,7 +1,8 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using ProjectAlchemy.Core.Domain;
+using ProjectAlchemy.Core.Dtos;
 using ProjectAlchemy.Core.Enums;
+using ProjectAlchemy.Core.Services;
 
 namespace ProjectAlchemy.Persistence.Entities;
 
@@ -9,13 +10,13 @@ namespace ProjectAlchemy.Persistence.Entities;
 public class IssueEntity
 {
     [Required]
-    public required int Id { get; init; }
+    public int Id { get; init; }
     [Required]
-    [StringLength(Issue.MaxNameLength, MinimumLength = 1)]
+    [StringLength(IssueService.MaxNameLength, MinimumLength = 1)]
     public required string Name { get; init; }
     [Required]
-    [MaxLength(Issue.MaxDescriptionLength)]
-    public required string Description { get; init; } = "";
+    [MaxLength(IssueService.MaxDescriptionLength)]
+    public string Description { get; init; } = "";
     public IssueType Type { get; init; }
     public int LaneId { get; init; }
     
@@ -25,18 +26,57 @@ public class IssueEntity
 
     public static Issue ToIssue(IssueEntity entity, Lane lane)
     {
-        return new Issue(entity.Id, entity.Name, entity.Type, entity.Description, lane);
+        return new Issue
+        {
+            Id = entity.Id,
+            Description = entity.Description,
+            Lane = lane,
+            Name = entity.Name,
+            Type = entity.Type
+        };
     }
 
     public static IssueEntity FromIssue(Issue issue)
     {
-        return new IssueEntity()
+        return new IssueEntity
         {
             Id = issue.Id,
             Name = issue.Name,
             Description = issue.Description,
             Type = issue.Type,
             LaneId = issue.Lane.Id
+        };
+    }
+    
+    public static IssueEntity FromIssueCreate(IssueCreate issue)
+    {
+        return new IssueEntity
+        {
+            Name = issue.Name,
+            Type = issue.Type,
+            LaneId = issue.LaneId
+        };
+    }
+    
+    public static IssuePartial ToPartial(IssueEntity entity, Lane lane)
+    {
+        return new IssuePartial
+        {
+            Id = entity.Id,
+            Lane = lane,
+            Name = entity.Name,
+            Type = entity.Type
+        };
+    }
+    
+    public static IssueEntity FromPartial(IssuePartial partial)
+    {
+        return new IssueEntity
+        {
+            Id = partial.Id,
+            Name = partial.Name,
+            LaneId = partial.Lane.Id,
+            Type = partial.Type
         };
     }
 }

@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using ProjectAlchemy.Core.Domain;
+using ProjectAlchemy.Core.Dtos;
 using ProjectAlchemy.Core.Interfaces;
 using ProjectAlchemy.Persistence.Entities;
 
@@ -35,6 +35,11 @@ public class ProjectRepository: IProjectRepository
     public async Task<bool> HasMember(string projectId, string userId)
     {
         return await _context.Members.AnyAsync(m => m.ProjectId == projectId && m.UserId == userId);
+    }
+
+    public async Task<bool> HasIssue(string projectId, int issueId)
+    {
+        return await _context.Issues.AnyAsync(i => i.ProjectId == projectId && i.Id == issueId); 
     }
 
     public async Task<Member?> GetMember(string projectId, string userId)

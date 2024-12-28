@@ -1,5 +1,5 @@
 using System.ComponentModel.DataAnnotations;
-using ProjectAlchemy.Core.Domain;
+using ProjectAlchemy.Core.Dtos;
 using ProjectAlchemy.Core.Enums;
 
 namespace ProjectAlchemy.Persistence.Entities;
@@ -18,12 +18,16 @@ public class MemberEntity
 
     public static Member ToMember(MemberEntity entity)
     {
-        return new Member(entity.UserId, entity.Type);
+        return new Member
+        {
+            UserId = entity.UserId,
+            Type = entity.Type
+        };
     }
 
     public static MemberEntity FromMember(Member member)
     {
-        return new MemberEntity()
+        return new MemberEntity
         {
             UserId = member.UserId,
             Type = member.Type

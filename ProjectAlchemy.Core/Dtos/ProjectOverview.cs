@@ -1,6 +1,6 @@
 using ProjectAlchemy.Core.Enums;
 
-namespace ProjectAlchemy.Core.Domain;
+namespace ProjectAlchemy.Core.Dtos;
 
 public class ProjectOverview
 {

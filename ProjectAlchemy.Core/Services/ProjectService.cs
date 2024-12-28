@@ -1,13 +1,18 @@
-using ProjectAlchemy.Core.Domain;
+using ProjectAlchemy.Core.Dtos;
 using ProjectAlchemy.Core.Enums;
 using ProjectAlchemy.Core.Exceptions;
 using ProjectAlchemy.Core.Interfaces;
 
 namespace ProjectAlchemy.Core.Services;
 
-public class ProjectService(IProjectRepository repository, AuthorizationService authService)
+public class ProjectService(IProjectRepository repository, IAuthorizationService authService)
 {
-    private readonly IReadOnlyList<Lane> _defaultLanes = [new("To do"), new("In progress"), new("Done")];
+    public const int MaxNameLength = 30;
+    private readonly IReadOnlyList<Lane> _defaultLanes = [
+        new() { Name = "To do" },
+        new() { Name = "In progress" },
+        new() { Name = "Done" }
+    ];
 
     public async Task<Project> Get(string projectId, string userid)
     {
@@ -23,8 +28,21 @@ public class ProjectService(IProjectRepository repository, AuthorizationService 
 
     public async Task<Project> Create(string projectName, string userId)
     {
-        var creator = new Member(userId, MemberType.Owner);
-        var project = new Project(projectName, [], [creator], _defaultLanes.ToList());
+        var creator = new Member
+        {
+            UserId = userId,
+            Type = MemberType.Owner
+        };
+        
+        var project = new Project
+        {
+            Id = Guid.NewGuid().ToString(),
+            Name = projectName,
+            Issues = [],
+            Lanes = _defaultLanes,
+            Members = [creator]
+        };
+        
         return await repository.Create(project);
     }
 }

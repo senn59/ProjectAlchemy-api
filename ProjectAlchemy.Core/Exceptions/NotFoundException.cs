@@ -1,3 +1,7 @@
 namespace ProjectAlchemy.Core.Exceptions;
 
-public class NotFoundException(): Exception("Not found");
+public class NotFoundException : Exception
+{
+    public NotFoundException(string message): base(message) { }
+    public NotFoundException() { }
+};

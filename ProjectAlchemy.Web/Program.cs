@@ -5,7 +5,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.Models;
-using ProjectAlchemy.Core.Domain;
 using ProjectAlchemy.Core.Enums;
 using ProjectAlchemy.Core.Interfaces;
 using ProjectAlchemy.Core.Services;
@@ -54,6 +53,16 @@ builder.Services.AddSwaggerGen(o =>
 });
 builder.Services.AddSwaggerGenNewtonsoftSupport();
 
+builder.Services.AddCors(o =>
+{
+    o.AddPolicy("AllowSpecificOrigin", b =>
+    {
+        b.WithOrigins("http://localhost:5173")
+            .AllowAnyHeader()
+            .AllowAnyMethod();
+    });
+});
+
 
 var connString = builder.Configuration.GetConnectionString("DefaultConnection");
 if (connString == null)
@@ -78,7 +87,7 @@ builder.Services.AddScoped<IIssueRepository, IssueRepository>();
 builder.Services.AddScoped<IProjectRepository, ProjectRepository>();
 builder.Services.AddScoped<IMemberRepository, MemberRepository>();
 builder.Services.AddScoped<ILaneRepository, LaneRepository>();
-builder.Services.AddScoped<AuthorizationService>();
+builder.Services.AddScoped<IAuthorizationService, AuthorizationService>();
 builder.Services.AddScoped<IssueService>();
 builder.Services.AddScoped<ProjectService>();
 builder.Services.AddScoped<UserService>();
@@ -110,6 +119,7 @@ builder.Services.AddAuthentication(o =>
     });
 
 var app = builder.Build();
+app.UseCors("AllowSpecificOrigin");
 
 using var scope = app.Services.CreateScope();
 await using var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();

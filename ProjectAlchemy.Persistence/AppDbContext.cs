@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using ProjectAlchemy.Core.Domain;
 using ProjectAlchemy.Persistence.Entities;
 
 namespace ProjectAlchemy.Persistence;
