@@ -17,6 +17,9 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
         modelBuilder.Entity<IssueEntity>()
             .Property(p => p.Id)
             .ValueGeneratedOnAdd();
+        modelBuilder.Entity<IssueEntity>()
+            .Property(p => p.Deleted)
+            .HasDefaultValue(false);
         modelBuilder.Entity<LaneEntity>()
             .Property(p => p.Id)
             .ValueGeneratedOnAdd();

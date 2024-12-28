@@ -18,9 +18,10 @@ public class IssueEntity
     [MaxLength(IssueService.MaxDescriptionLength)]
     public string Description { get; init; } = "";
     public IssueType Type { get; init; }
+    public bool Deleted { get; set; }
+        
     public int LaneId { get; init; }
-    
-    [MaxLength(200)]
+    [MaxLength(36)]
     public string? ProjectId { get; set; }
     public ProjectEntity? Project { get; init; }
 

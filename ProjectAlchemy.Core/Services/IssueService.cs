@@ -19,7 +19,7 @@ public class IssueService(IIssueRepository issueRepository, IAuthorizationServic
     {
         await authService.AuthorizeIssueAccess(userId, projectId, issueId);
         
-        var issue = await issueRepository.GetById(issueId);
+        var issue = await issueRepository.GetById(issueId, projectId);
         if (issue == null)
         {
             throw new NotFoundException();

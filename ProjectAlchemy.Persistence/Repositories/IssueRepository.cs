@@ -14,12 +14,15 @@ public class IssueRepository: IIssueRepository
         _context = context;
     }
 
-    public async Task<Issue?> GetById(int id)
+    public async Task<Issue?> GetById(int issueId, string projectId)
     {
-        var issue = await _context.Issues.FindAsync(id);
-        var lane = await _context.Lanes.FirstOrDefaultAsync(l => issue != null && l.Id == issue.LaneId);
-
-        return lane == null || issue == null ? null : IssueEntity.ToIssue(issue, LaneEntity.ToLane(lane));
+        var issue = await _context.Issues.FirstOrDefaultAsync(i => i.Id == issueId && i.ProjectId == projectId);
+        if (issue == null || issue.Deleted)
+        {
+            return null;
+        }
+        var lane = await _context.Lanes.FirstOrDefaultAsync(l => l.Id == issue.LaneId);
+        return lane == null ? null : IssueEntity.ToIssue(issue, LaneEntity.ToLane(lane));
     }
 
     public async Task<IssuePartial> Create(IssueCreate issue, string projectId)
@@ -37,7 +40,11 @@ public class IssueRepository: IIssueRepository
         var entity = IssueEntity.FromIssue(updated);
         entity.ProjectId = projectId;
         _context.ChangeTracker.Clear();
-        _context.Update(entity); 
+        _context.Update(entity);
+        if (entity.Deleted)
+        {
+            return updated;
+        }
         var lane = await _context.Lanes.FindAsync(entity.LaneId);
         await _context.SaveChangesAsync();
         return IssueEntity.ToIssue(entity, LaneEntity.ToLane(lane!));
@@ -48,7 +55,7 @@ public class IssueRepository: IIssueRepository
         var issue = await _context.Issues.FindAsync(id);
         if (issue != null)
         {
-            _context.Remove(issue);
+            issue.Deleted = true;
             await _context.SaveChangesAsync();
         }
     }
