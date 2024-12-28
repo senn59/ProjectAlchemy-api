@@ -16,7 +16,7 @@ public class IssueController(IssueService issueService) : ControllerBase
     public async Task<Issue> Get(string projectId, int id)
     {
         var userId = JwtHelper.GetId(User);
-        var issue =  await issueService.GetById(id, userId, projectId);
+        var issue = await issueService.GetById(id, userId, projectId);
         return issue;
     }
 

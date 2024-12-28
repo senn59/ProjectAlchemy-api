@@ -10,7 +10,7 @@ namespace ProjectAlchemy.Persistence.Entities;
 public class IssueEntity
 {
     [Required]
-    public int Id { get; init; }
+    public int Id { get; set; }
     [Required]
     public int Key { get; set; }
     [Required]
