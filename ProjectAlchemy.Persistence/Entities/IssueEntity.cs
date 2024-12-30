@@ -24,7 +24,8 @@ public class IssueEntity
     [Required]
     public bool Deleted { get; set; }
         
-    public int LaneId { get; init; }
+    [MaxLength(36)]
+    public string LaneId { get; init; }
     [MaxLength(36)]
     public string? ProjectId { get; set; }
     public ProjectEntity? Project { get; init; }

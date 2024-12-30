@@ -5,8 +5,8 @@ namespace ProjectAlchemy.Core.Dtos;
 
 public class Lane
 {
-    public int Id { get; set; }
+    public string Id { get; init; } = Guid.NewGuid().ToString();
     [Required(AllowEmptyStrings = false)]
     [StringLength(LaneService.MaxNameLength)]
-    public string Name { get; set; }
+    public required string Name { get; init; }
 }

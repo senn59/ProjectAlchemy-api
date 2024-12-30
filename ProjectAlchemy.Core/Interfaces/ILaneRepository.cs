@@ -4,5 +4,5 @@ namespace ProjectAlchemy.Core.Interfaces;
 
 public interface ILaneRepository
 {
-    Task<Lane?> GetLaneById(int laneId, string projectId);
+    Task<Lane?> GetLaneById(string laneId, string projectId);
 }

@@ -7,7 +7,8 @@ namespace ProjectAlchemy.Persistence.Entities;
 public class LaneEntity
 {
     [Required]
-    public required int Id { get; init; }
+    [MaxLength(36)]
+    public required string Id { get; init; }
     [MaxLength(LaneService.MaxNameLength)]
     public required string Name { get; init; }
     
