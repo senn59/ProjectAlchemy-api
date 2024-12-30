@@ -15,11 +15,11 @@ public class IssueService(IIssueRepository issueRepository, IAuthorizationServic
         return await issueRepository.Create(issue, projectId);
     }
 
-    public async Task<Issue> GetById(int issueId, string userId, string projectId )
+    public async Task<Issue> GetByKey(int issueKey, string userId, string projectId )
     {
-        await authService.AuthorizeIssueAccess(userId, projectId, issueId);
+        await authService.AuthorizeIssueAccess(userId, projectId, issueKey);
         
-        var issue = await issueRepository.GetByKey(issueId, projectId);
+        var issue = await issueRepository.GetByKey(issueKey, projectId);
         if (issue == null)
         {
             throw new NotFoundException();
@@ -30,7 +30,7 @@ public class IssueService(IIssueRepository issueRepository, IAuthorizationServic
 
     public async Task<Issue> Update(Issue item, string userId, string projectId)
     {
-        await authService.AuthorizeIssueUpdate(userId, projectId, item.Id);
+        await authService.AuthorizeIssueUpdate(userId, projectId, item.Key);
         return await issueRepository.Update(item, projectId);
     }
     

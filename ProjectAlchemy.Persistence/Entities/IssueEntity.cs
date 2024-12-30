@@ -33,7 +33,7 @@ public class IssueEntity
     {
         return new Issue
         {
-            Id = entity.Key,
+            Key = entity.Key,
             Description = entity.Description,
             Lane = lane,
             Name = entity.Name,
@@ -45,7 +45,7 @@ public class IssueEntity
     {
         return new IssueEntity
         {
-            Key = issue.Id,
+            Key = issue.Key,
             Name = issue.Name,
             Description = issue.Description,
             Type = issue.Type,
@@ -67,7 +67,7 @@ public class IssueEntity
     {
         return new IssuePartial
         {
-            Id = entity.Key,
+            Key = entity.Key,
             Lane = lane,
             Name = entity.Name,
             Type = entity.Type
@@ -78,7 +78,7 @@ public class IssueEntity
     {
         return new IssueEntity
         {
-            Key = partial.Id,
+            Key = partial.Key,
             Name = partial.Name,
             LaneId = partial.Lane.Id,
             Type = partial.Type

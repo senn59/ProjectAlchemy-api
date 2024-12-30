@@ -12,11 +12,11 @@ namespace ProjectAlchemy.Web.Controllers;
 [Route("api/projects/{projectId}/issues")]
 public class IssueController(IssueService issueService) : ControllerBase
 {
-    [HttpGet("{id:int}")]
-    public async Task<Issue> Get(string projectId, int id)
+    [HttpGet("{key:int}")]
+    public async Task<Issue> Get(string projectId, int key)
     {
         var userId = JwtHelper.GetId(User);
-        var issue = await issueService.GetById(id, userId, projectId);
+        var issue = await issueService.GetByKey(key, userId, projectId);
         return issue;
     }
 
@@ -27,11 +27,11 @@ public class IssueController(IssueService issueService) : ControllerBase
         return await issueService.Create(request, userId, projectId);
     }
     
-    [HttpPatch("{id:int}")]
-    public async Task<Issue> Patch([FromBody] JsonPatchDocument<IssuePatch> patchDoc, int id, string projectId)
+    [HttpPatch("{key:int}")]
+    public async Task<Issue> Patch([FromBody] JsonPatchDocument<IssuePatch> patchDoc, int key, string projectId)
     {
         var userId = JwtHelper.GetId(User); 
-        var issue = await issueService.GetById(id, userId, projectId);
+        var issue = await issueService.GetByKey(key, userId, projectId);
         
         var issuePatch = new IssuePatch()
         {
@@ -51,10 +51,10 @@ public class IssueController(IssueService issueService) : ControllerBase
         return await issueService.Update(issue, userId, projectId);
     }
     
-    [HttpDelete("{id:int}")]
-    public async Task Delete(int id, string projectId)
+    [HttpDelete("{key:int}")]
+    public async Task Delete(int key, string projectId)
     {
         var userId = JwtHelper.GetId(User);
-        await issueService.DeleteByKey(id, userId, projectId);
+        await issueService.DeleteByKey(key, userId, projectId);
     }
 }

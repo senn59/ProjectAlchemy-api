@@ -39,7 +39,7 @@ public class IssueRepository: IIssueRepository
     public async Task<Issue> Update(Issue updated, string projectId)
     {
         var entity = IssueEntity.FromIssue(updated);
-        var id = _context.Issues.FirstAsync(i => i.Key == updated.Id && i.ProjectId == projectId).Result.Id;
+        var id = _context.Issues.FirstAsync(i => i.Key == updated.Key && i.ProjectId == projectId).Result.Id;
         entity.Id = id;
         entity.ProjectId = projectId;
         _context.ChangeTracker.Clear();
