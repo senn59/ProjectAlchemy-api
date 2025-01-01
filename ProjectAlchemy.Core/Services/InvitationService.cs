@@ -8,7 +8,7 @@ public class InvitationService(IInvitationRepository repo, IAuthorizationService
 {
     public async Task Invite(string inviterId, string emailToInvite, string projectId)
     {
-        await authorizationService.AuthorizeProjectInvitation(inviterId, projectId);
+        await authorizationService.Authorize(Permission.AccessMembers, inviterId, projectId);
         await repo.Create(emailToInvite, projectId);
     }
 

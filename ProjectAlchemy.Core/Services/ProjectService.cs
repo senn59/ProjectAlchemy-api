@@ -11,7 +11,7 @@ public class ProjectService(IProjectRepository repository, IAuthorizationService
 
     public async Task<Project> Get(string projectId, string userid)
     {
-        await authService.AuthorizeProjectAccess(userid, projectId);
+        await authService.Authorize(Permission.ReadProject, userid, projectId);
         var project = await repository.Get(projectId);
         if (project == null)
         {
