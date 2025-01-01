@@ -6,7 +6,7 @@ namespace ProjectAlchemy.Core.Dtos;
 
 public class Issue
 {
-    public required int Id { get; set; }
+    public required int Key { get; set; }
     [Required(AllowEmptyStrings = false)]
     [StringLength(IssueService.MaxNameLength)]
     public required string Name { get; set; }

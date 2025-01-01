@@ -54,7 +54,7 @@ public class IssueServiceTests: IDisposable
         };
         
         var created = await _issueService.Create(issue, UserId, _project.Id);
-        var retrieved = await _issueService.GetById(created.Id, UserId, _project.Id);
+        var retrieved = await _issueService.GetByKey(created.Key, UserId, _project.Id);
 
         created.Name.Should().BeEquivalentTo(issue.Name);
         created.Type.Should().HaveSameValueAs(issue.Type);
@@ -72,9 +72,9 @@ public class IssueServiceTests: IDisposable
         };
         var created = await _issueService.Create(issue, UserId, _project.Id);
         
-        var action = () => _issueService.DeleteById(9999, UserId, _project.Id);
+        var action = () => _issueService.DeleteByKey(9999, UserId, _project.Id);
 
-        created.Id.Should().NotBe(9999);
+        created.Key.Should().NotBe(9999);
         await action.Should().ThrowAsync<NotFoundException>();
     }
     
@@ -88,9 +88,9 @@ public class IssueServiceTests: IDisposable
             LaneId = _project.Lanes.First().Id
         };
         var created = await _issueService.Create(issue, UserId, _project.Id);
-        await _issueService.DeleteById(created.Id, UserId, _project.Id);
+        await _issueService.DeleteByKey(created.Key, UserId, _project.Id);
         
-        var action = () => _issueService.GetById(created.Id, UserId, _project.Id);
+        var action = () => _issueService.GetByKey(created.Key, UserId, _project.Id);
         
         await action.Should().ThrowAsync<NotFoundException>();
     }
@@ -105,7 +105,7 @@ public class IssueServiceTests: IDisposable
             LaneId = _project.Lanes.First().Id
         };
         var created = await _issueService.Create(issue, UserId, _project.Id);
-        var retrieved = await _issueService.GetById(created.Id, UserId, _project.Id);
+        var retrieved = await _issueService.GetByKey(created.Key, UserId, _project.Id);
 
         retrieved.Name = "nottest";
         retrieved.Description = "not empty";

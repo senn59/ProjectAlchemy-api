@@ -10,17 +10,23 @@ namespace ProjectAlchemy.Persistence.Entities;
 public class IssueEntity
 {
     [Required]
-    public int Id { get; init; }
+    public int Id { get; set; }
+    [Required]
+    public int Key { get; set; }
     [Required]
     [StringLength(IssueService.MaxNameLength, MinimumLength = 1)]
     public required string Name { get; init; }
     [Required]
     [MaxLength(IssueService.MaxDescriptionLength)]
     public string Description { get; init; } = "";
-    public IssueType Type { get; init; }
-    public int LaneId { get; init; }
-    
-    [MaxLength(200)]
+    [Required]
+    public required IssueType Type { get; init; }
+    [Required]
+    public bool Deleted { get; set; }
+        
+    [MaxLength(36)]
+    public string LaneId { get; init; }
+    [MaxLength(36)]
     public string? ProjectId { get; set; }
     public ProjectEntity? Project { get; init; }
 
@@ -28,7 +34,7 @@ public class IssueEntity
     {
         return new Issue
         {
-            Id = entity.Id,
+            Key = entity.Key,
             Description = entity.Description,
             Lane = lane,
             Name = entity.Name,
@@ -40,7 +46,7 @@ public class IssueEntity
     {
         return new IssueEntity
         {
-            Id = issue.Id,
+            Key = issue.Key,
             Name = issue.Name,
             Description = issue.Description,
             Type = issue.Type,
@@ -62,7 +68,7 @@ public class IssueEntity
     {
         return new IssuePartial
         {
-            Id = entity.Id,
+            Key = entity.Key,
             Lane = lane,
             Name = entity.Name,
             Type = entity.Type
@@ -73,7 +79,7 @@ public class IssueEntity
     {
         return new IssueEntity
         {
-            Id = partial.Id,
+            Key = partial.Key,
             Name = partial.Name,
             LaneId = partial.Lane.Id,
             Type = partial.Type

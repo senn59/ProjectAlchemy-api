@@ -18,7 +18,7 @@ public class ProjectRepository: IProjectRepository
     {
         var project = await _context.Projects
             .Include(p => p.Members)
-            .Include(p => p.Issues)
+            .Include(p => p.Issues.Where(i => !i.Deleted))
             .Include(p => p.Lanes)
             .FirstOrDefaultAsync(p => p.Id == id);
         return project == null ? null : ProjectEntity.ToProject(project);
@@ -37,9 +37,9 @@ public class ProjectRepository: IProjectRepository
         return await _context.Members.AnyAsync(m => m.ProjectId == projectId && m.UserId == userId);
     }
 
-    public async Task<bool> HasIssue(string projectId, int issueId)
+    public async Task<bool> HasIssue(string projectId, int issueKey)
     {
-        return await _context.Issues.AnyAsync(i => i.ProjectId == projectId && i.Id == issueId); 
+        return await _context.Issues.AnyAsync(i => i.ProjectId == projectId && i.Key == issueKey && !i.Deleted); 
     }
 
     public async Task<Member?> GetMember(string projectId, string userId)

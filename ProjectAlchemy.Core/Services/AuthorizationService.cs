@@ -17,9 +17,9 @@ public class AuthorizationService(IProjectRepository projectRepository): IAuthor
         }
     }
 
-    public async Task AuthorizeIssueDeletion(string userId, string projectId, int issueId)
+    public async Task AuthorizeIssueDeletion(string userId, string projectId, int issueKey)
     {
-        if (!await projectRepository.HasIssue(projectId, issueId))
+        if (!await projectRepository.HasIssue(projectId, issueKey))
         {
             throw new NotFoundException();
         }
@@ -36,9 +36,9 @@ public class AuthorizationService(IProjectRepository projectRepository): IAuthor
         }
     }
     
-    public async Task AuthorizeIssueAccess(string userId, string projectId, int issueId)
+    public async Task AuthorizeIssueAccess(string userId, string projectId, int issueKey)
     {
-        if (!await projectRepository.HasIssue(projectId, issueId))
+        if (!await projectRepository.HasIssue(projectId, issueKey))
         {
             throw new NotFoundException();
         }
@@ -49,9 +49,9 @@ public class AuthorizationService(IProjectRepository projectRepository): IAuthor
         }
     }
     
-    public async Task AuthorizeIssueUpdate(string userId, string projectId, int issueId)
+    public async Task AuthorizeIssueUpdate(string userId, string projectId, int issueKey)
     {
-        if (!await projectRepository.HasIssue(projectId, issueId))
+        if (!await projectRepository.HasIssue(projectId, issueKey))
         {
             throw new NotFoundException();
         }

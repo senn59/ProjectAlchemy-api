@@ -15,11 +15,11 @@ public class IssueService(IIssueRepository issueRepository, IAuthorizationServic
         return await issueRepository.Create(issue, projectId);
     }
 
-    public async Task<Issue> GetById(int issueId, string userId, string projectId )
+    public async Task<Issue> GetByKey(int issueKey, string userId, string projectId )
     {
-        await authService.AuthorizeIssueAccess(userId, projectId, issueId);
+        await authService.AuthorizeIssueAccess(userId, projectId, issueKey);
         
-        var issue = await issueRepository.GetById(issueId);
+        var issue = await issueRepository.GetByKey(issueKey, projectId);
         if (issue == null)
         {
             throw new NotFoundException();
@@ -30,13 +30,13 @@ public class IssueService(IIssueRepository issueRepository, IAuthorizationServic
 
     public async Task<Issue> Update(Issue item, string userId, string projectId)
     {
-        await authService.AuthorizeIssueUpdate(userId, projectId, item.Id);
+        await authService.AuthorizeIssueUpdate(userId, projectId, item.Key);
         return await issueRepository.Update(item, projectId);
     }
     
-    public async Task DeleteById(int issueId, string userId, string projectId)
+    public async Task DeleteByKey(int issueKey, string userId, string projectId)
     {
-        await authService.AuthorizeIssueDeletion(userId, projectId, issueId);
-        await issueRepository.DeleteById(issueId);
+        await authService.AuthorizeIssueDeletion(userId, projectId, issueKey);
+        await issueRepository.DeleteByKey(issueKey, projectId);
     }
 }
