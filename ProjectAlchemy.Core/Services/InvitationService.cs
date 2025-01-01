@@ -1,20 +1,33 @@
 using ProjectAlchemy.Core.Dtos;
 using ProjectAlchemy.Core.Enums;
+using ProjectAlchemy.Core.Exceptions;
 using ProjectAlchemy.Core.Interfaces;
 
 namespace ProjectAlchemy.Core.Services;
 
-public class InvitationService(IInvitationRepository repo, IAuthorizationService authorizationService)
+public class InvitationService(IInvitationRepository repo, IAuthorizationService authorizationService, IProjectRepository projectRepository)
 {
     public async Task Invite(string inviterId, string emailToInvite, string projectId)
     {
-        await authorizationService.Authorize(Permission.AccessMembers, inviterId, projectId);
+        await authorizationService.Authorize(Permission.InviteMembers, inviterId, projectId);
         await repo.Create(emailToInvite, projectId);
     }
 
-    public async Task Accept(string invitationId)
+    public async Task Accept(string invitationId, string email, string userId)
     {
-        await repo.Update(invitationId, InvitationStatus.Accepted);
+        var info = await repo.GetInfo(invitationId);
+        if (info == null || info.Email != email)
+        {
+            throw new NotFoundException();
+        }
+
+        await projectRepository.AddMember(info.ProjectId, new Member()
+        {
+            UserId = userId,
+            Type = MemberType.Collaborator
+        });
+        
+        await repo.Delete(invitationId);
     }
 
     public async Task Reject(string invitationId)
@@ -22,8 +35,14 @@ public class InvitationService(IInvitationRepository repo, IAuthorizationService
         await repo.Delete(invitationId);
     }
 
-    public async Task<List<Invitation>> GetAll(string userId)
+    public async Task Cancel(string invitationId, string userId, string projectId)
     {
-        return await repo.GetAll(userId);
+        await authorizationService.Authorize(Permission.InviteMembers, userId, projectId);
+        await repo.Delete(invitationId);
+    }
+
+    public async Task<List<string>> GetInvitedEmails(string projectId)
+    {
+        return await repo.GetInvitedEmails(projectId);
     }
 }

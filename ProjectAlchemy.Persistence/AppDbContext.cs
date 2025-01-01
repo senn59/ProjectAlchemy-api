@@ -5,10 +5,11 @@ namespace ProjectAlchemy.Persistence;
 
 public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(options)
 {
-    public DbSet<IssueEntity> Issues { get; set; }
-    public DbSet<ProjectEntity> Projects { get; set; }
-    public DbSet<LaneEntity> Lanes { get; set; }
-    public DbSet<MemberEntity> Members { get; set; }
+    public DbSet<IssueEntity> Issues { get; init; }
+    public DbSet<ProjectEntity> Projects { get; init; }
+    public DbSet<LaneEntity> Lanes { get; init; }
+    public DbSet<MemberEntity> Members { get; init; }
+    public DbSet<InvitationEntity> Invitations { get; init; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -22,10 +23,13 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
             .HasDefaultValue(false);
         modelBuilder.Entity<LaneEntity>()
             .Property(p => p.Id)
-            .ValueGeneratedOnAdd();
+            .HasDefaultValue(Guid.NewGuid().ToString());
         modelBuilder.Entity<MemberEntity>()
             .Property(p => p.Id)
             .ValueGeneratedOnAdd();
+        modelBuilder.Entity<InvitationEntity>()
+            .Property(p => p.Id)
+            .HasDefaultValue(Guid.NewGuid().ToString());
 
         modelBuilder.Entity<ProjectEntity>()
             .HasMany(p => p.Issues)

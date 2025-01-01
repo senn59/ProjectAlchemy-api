@@ -36,7 +36,7 @@ public class UserServiceTests: IDisposable
     [Fact]
     public async Task RequestingProjectsOfUnknownMemberReturnsEmptyList()
     {
-        var projects = await _userService.GetUserProjectsList("1");
+        var projects = await _userService.GetProjects("1");
         
         projects.Should().BeEmpty();
     }
@@ -47,7 +47,7 @@ public class UserServiceTests: IDisposable
         var firstProject = await _projectService.Create("test", "1");
         var secondProject = await _projectService.Create("project2", "1");
         
-        var projects = await _userService.GetUserProjectsList("1");
+        var projects = await _userService.GetProjects("1");
         var firstProjectOverview = new ProjectOverview()
         {
             ProjectId = firstProject.Id,

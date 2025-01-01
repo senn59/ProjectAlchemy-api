@@ -8,4 +8,5 @@ public interface IProjectRepository
     public Task<Project> Create(Project project);
     public Task<bool> HasIssue(string projectId, int issueKey);
     public Task<Member?> GetMember(string projectId, string userId);
+    public Task AddMember(string projectId, Member member);
 }

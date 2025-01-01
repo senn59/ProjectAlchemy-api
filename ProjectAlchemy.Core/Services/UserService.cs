@@ -5,8 +5,13 @@ namespace ProjectAlchemy.Core.Services;
 
 public class UserService(IMemberRepository repository)
 {
-    public async Task<List<ProjectOverview>> GetUserProjectsList(string userid)
+    public async Task<List<ProjectOverview>> GetProjects(string userid)
     {
         return await repository.GetProjects(userid);
+    }
+    
+    public async Task<List<UserInvitation>> GetInvitations(string userid)
+    {
+        return await repository.GetInvitations(userid);
     }
 }

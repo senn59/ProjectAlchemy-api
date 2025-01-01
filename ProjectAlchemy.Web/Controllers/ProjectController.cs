@@ -13,7 +13,7 @@ public class ProjectController(ProjectService projectService, UserService userSe
     public async Task<IEnumerable<ProjectOverview>> GetProjectList()
     {
         var userId = JwtHelper.GetId(User);
-        return await userService.GetUserProjectsList(userId);
+        return await userService.GetProjects(userId);
     }
 
     [HttpGet("{id}")]
