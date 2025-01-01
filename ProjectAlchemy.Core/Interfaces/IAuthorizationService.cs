@@ -6,4 +6,5 @@ public interface IAuthorizationService
     Task AuthorizeIssueDeletion(string userId, string projectId, int issueKey);
     Task AuthorizeIssueAccess(string userId, string projectId, int issueKey);
     Task AuthorizeIssueUpdate(string userId, string projectId, int issueKey);
+    Task AuthorizeProjectInvitation(string userId, string projectId);
 }

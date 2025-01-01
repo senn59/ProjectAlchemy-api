@@ -4,16 +4,26 @@ using ProjectAlchemy.Core.Interfaces;
 
 namespace ProjectAlchemy.Core.Services;
 
-public class InvitationService(IInvitationRepository repo)
+public class InvitationService(IInvitationRepository repo, IAuthorizationService authorizationService)
 {
-    public async Task Invite(string inviterId, string email, string projectId)
+    public async Task Invite(string inviterId, string emailToInvite, string projectId)
     {
-        //TODO: auth
-        var invitation = new Invitation
-        {
-            Email = email,
-            Status = InvitationStatus.Sent
-        };
-        await repo.CreateInvitation(invitation, projectId);
+        await authorizationService.AuthorizeProjectInvitation(inviterId, projectId);
+        await repo.Create(emailToInvite, projectId);
+    }
+
+    public async Task Accept(string invitationId)
+    {
+        await repo.Update(invitationId, InvitationStatus.Accepted);
+    }
+
+    public async Task Reject(string invitationId)
+    {
+        await repo.Delete(invitationId);
+    }
+
+    public async Task<List<Invitation>> GetAll(string userId)
+    {
+        return await repo.GetAll(userId);
     }
 }

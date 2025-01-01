@@ -8,6 +8,7 @@ public class AuthorizationService(IProjectRepository projectRepository): IAuthor
 {
     private readonly IReadOnlyCollection<MemberType> _canUpdate = [MemberType.Collaborator, MemberType.Owner];
     private readonly IReadOnlyCollection<MemberType> _canDelete = [MemberType.Owner];
+    private readonly IReadOnlyCollection<MemberType> _canInvite = [MemberType.Owner];
     
     public async Task AuthorizeProjectAccess(string userId, string projectId)
     {
@@ -25,12 +26,7 @@ public class AuthorizationService(IProjectRepository projectRepository): IAuthor
         }
         
         var member = await projectRepository.GetMember(projectId, userId);
-        if (member == null)
-        {
-            throw new NotAuthorizedException();
-        }
-        
-        if (!_canDelete.Contains(member.Type))
+        if (member == null || !_canDelete.Contains(member.Type))
         {
             throw new NotAuthorizedException();
         }
@@ -57,12 +53,16 @@ public class AuthorizationService(IProjectRepository projectRepository): IAuthor
         }
         
         var member = await projectRepository.GetMember(projectId, userId);
-        if (member == null)
+        if (member == null || !_canUpdate.Contains(member.Type))
         {
             throw new NotAuthorizedException();
         }
+    }
 
-        if (!_canUpdate.Contains(member.Type))
+    public async Task AuthorizeProjectInvitation(string userId, string projectId)
+    {
+        var member = await projectRepository.GetMember(projectId, userId);
+        if (member == null || !_canInvite.Contains(member.Type))
         {
             throw new NotAuthorizedException();
         }
