@@ -15,6 +15,7 @@ public class ProjectEntity
     public ICollection<IssueEntity> Issues { get; init; } = new List<IssueEntity>();
     public ICollection<LaneEntity> Lanes { get; init; } = new List<LaneEntity>();
     public ICollection<MemberEntity> Members { get; init; } = new List<MemberEntity>();
+    public ICollection<InvitationEntity> Invitations { get; init; } = new List<InvitationEntity>();
 
     public static Project ToProject(ProjectEntity entity)
     {

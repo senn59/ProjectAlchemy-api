@@ -17,15 +17,20 @@ public class MemberRepository: IMemberRepository
     {
         return await _context.Members
             .Where(m => m.UserId == userId)
-            .Join(
-                _context.Projects,
-                m => m.ProjectId,
-                project => project.Id,
-                (m, project) => new ProjectOverview()
-                {
-                    ProjectId = m.ProjectId!,
-                    ProjectName = project.Name,
-                    MemberType = m.Type
-                }).ToListAsync();
+            .Select(m => new ProjectOverview
+            {
+                ProjectId = m.Project.Id,
+                ProjectName = m.Project.Name,
+                MemberType = m.Type
+            })
+            .ToListAsync();
+    }
+
+    public async Task<List<UserInvitation>> GetInvitations(string userId)
+    {
+        return await _context.Invitations
+            .Where(i => i.Email == userId)
+            .Select(i => new UserInvitation{ ProjectName = i.Project.Name })
+            .ToListAsync();
     }
 }

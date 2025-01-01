@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using ProjectAlchemy.Core.Dtos;
+using ProjectAlchemy.Core.Exceptions;
 using ProjectAlchemy.Core.Interfaces;
 using ProjectAlchemy.Persistence.Entities;
 
@@ -47,5 +48,17 @@ public class ProjectRepository: IProjectRepository
         var member = await _context.Members
             .FirstOrDefaultAsync(m => m.ProjectId == projectId && m.UserId == userId);
         return member == null ? null : MemberEntity.ToMember(member);
+    }
+
+    public async Task AddMember(string projectId, Member member)
+    {
+        var project = await _context.Projects.FindAsync(projectId);
+        if (project == null)
+        {
+            throw new NotFoundException();
+        }
+        project.Members.Add(MemberEntity.FromMember(member));
+        _context.Update(project);
+        await _context.SaveChangesAsync();
     }
 }

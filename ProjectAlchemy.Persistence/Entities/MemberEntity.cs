@@ -13,8 +13,8 @@ public class MemberEntity
     public required MemberType Type { get; init; }
     
     [MaxLength(200)]
-    public string? ProjectId { get; init; }
-    public ProjectEntity? Project { get; init; }
+    public string ProjectId { get; init; }
+    public ProjectEntity Project { get; init; }
 
     public static Member ToMember(MemberEntity entity)
     {
