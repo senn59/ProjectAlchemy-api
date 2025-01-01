@@ -8,6 +8,11 @@ namespace ProjectAlchemy.Core.Services;
 public class ProjectService(IProjectRepository repository, IAuthorizationService authService)
 {
     public const int MaxNameLength = 30;
+    private readonly IReadOnlyList<Lane> _defaultLanes = [
+        new() {Name = "To do"},
+        new() {Name = "In progress"},
+        new() {Name = "Done"}
+    ];
 
     public async Task<Project> Get(string projectId, string userid)
     {
@@ -34,7 +39,7 @@ public class ProjectService(IProjectRepository repository, IAuthorizationService
             Id = Guid.NewGuid().ToString(),
             Name = projectName,
             Issues = [],
-            Lanes = LaneService.GetDefaultLanes(),
+            Lanes = _defaultLanes,
             Members = [creator]
         };
         
