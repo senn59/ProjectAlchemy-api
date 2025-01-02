@@ -16,7 +16,7 @@ public class IssueServiceTests: IDisposable
     private readonly IssueService _issueService;
     private readonly ProjectService _projectService;
     private Project _project = null!;
-    private const string UserId = "1";
+    private readonly Guid _userId = Guid.NewGuid();
     
     public IssueServiceTests()
     {
@@ -34,7 +34,7 @@ public class IssueServiceTests: IDisposable
 
     private async Task CreateProject()
     {
-        _project = await _projectService.Create("test", "1");
+        _project = await _projectService.Create("test", _userId);
     }
 
     public void Dispose()
@@ -53,8 +53,8 @@ public class IssueServiceTests: IDisposable
             LaneId = _project.Lanes.First().Id
         };
         
-        var created = await _issueService.Create(issue, UserId, _project.Id);
-        var retrieved = await _issueService.GetByKey(created.Key, UserId, _project.Id);
+        var created = await _issueService.Create(issue, _userId, _project.Id);
+        var retrieved = await _issueService.GetByKey(created.Key, _userId, _project.Id);
 
         created.Name.Should().BeEquivalentTo(issue.Name);
         created.Type.Should().HaveSameValueAs(issue.Type);
@@ -70,9 +70,9 @@ public class IssueServiceTests: IDisposable
             Type = IssueType.Task,
             LaneId = _project.Lanes.First().Id
         };
-        var created = await _issueService.Create(issue, UserId, _project.Id);
+        var created = await _issueService.Create(issue, _userId, _project.Id);
         
-        var action = () => _issueService.DeleteByKey(9999, UserId, _project.Id);
+        var action = () => _issueService.DeleteByKey(9999, _userId, _project.Id);
 
         created.Key.Should().NotBe(9999);
         await action.Should().ThrowAsync<NotFoundException>();
@@ -87,10 +87,10 @@ public class IssueServiceTests: IDisposable
             Type = IssueType.Task,
             LaneId = _project.Lanes.First().Id
         };
-        var created = await _issueService.Create(issue, UserId, _project.Id);
-        await _issueService.DeleteByKey(created.Key, UserId, _project.Id);
+        var created = await _issueService.Create(issue, _userId, _project.Id);
+        await _issueService.DeleteByKey(created.Key, _userId, _project.Id);
         
-        var action = () => _issueService.GetByKey(created.Key, UserId, _project.Id);
+        var action = () => _issueService.GetByKey(created.Key, _userId, _project.Id);
         
         await action.Should().ThrowAsync<NotFoundException>();
     }
@@ -104,14 +104,14 @@ public class IssueServiceTests: IDisposable
             Type = IssueType.Task,
             LaneId = _project.Lanes.First().Id
         };
-        var created = await _issueService.Create(issue, UserId, _project.Id);
-        var retrieved = await _issueService.GetByKey(created.Key, UserId, _project.Id);
+        var created = await _issueService.Create(issue, _userId, _project.Id);
+        var retrieved = await _issueService.GetByKey(created.Key, _userId, _project.Id);
 
         retrieved.Name = "nottest";
         retrieved.Description = "not empty";
         retrieved.Type = IssueType.Bug;
         ValidationHelper.Validate(retrieved);
-        var updated = await _issueService.Update(retrieved, UserId, _project.Id);
+        var updated = await _issueService.Update(retrieved, _userId, _project.Id);
         
         updated.Should().BeEquivalentTo(retrieved);
         created.Name.Should().NotBeEquivalentTo(updated.Name);

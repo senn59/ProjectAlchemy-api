@@ -14,9 +14,9 @@ public class ProjectService(IProjectRepository repository, IAuthorizationService
         new() {Name = "Done"}
     ];
 
-    public async Task<Project> Get(string projectId, string userid)
+    public async Task<Project> Get(Guid projectId, Guid userId)
     {
-        await authService.Authorize(Permission.ReadProject, userid, projectId);
+        await authService.Authorize(Permission.ReadProject, userId, projectId);
         var project = await repository.Get(projectId);
         if (project == null)
         {
@@ -26,7 +26,7 @@ public class ProjectService(IProjectRepository repository, IAuthorizationService
         return project;
     }
 
-    public async Task<Project> Create(string projectName, string userId)
+    public async Task<Project> Create(string projectName, Guid userId)
     {
         var creator = new Member
         {
@@ -36,7 +36,7 @@ public class ProjectService(IProjectRepository repository, IAuthorizationService
         
         var project = new Project
         {
-            Id = Guid.NewGuid().ToString(),
+            Id = Guid.NewGuid(),
             Name = projectName,
             Issues = [],
             Lanes = _defaultLanes,

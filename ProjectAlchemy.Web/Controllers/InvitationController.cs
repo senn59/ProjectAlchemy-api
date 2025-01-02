@@ -12,44 +12,41 @@ public class InvitationController(InvitationService inviteService, UserService u
     [HttpGet("invitations")]
     public async Task<List<InvitationUserView>> GetUserInvitations()
     {
-        var userId = JwtHelper.GetId(User);
-        return await userService.GetInvitations(userId);
+        var email = JwtHelper.GetEmail(User);
+        return await userService.GetInvitations(email);
     }
     
-    [HttpPost("invitations/{invitationId}/accept")]
-    public async Task<List<InvitationUserView>> PostAcceptInvitation(string invitationId)
+    [HttpPost("invitations/{invitationId:guid}/accept")]
+    public async Task PostAcceptInvitation(Guid invitationId)
     {
         var userId = JwtHelper.GetId(User);
         var email = JwtHelper.GetEmail(User);
         await inviteService.Accept(invitationId, email, userId);
-        return await userService.GetInvitations(userId);
     }
     
-    [HttpPost("invitations/{invitationId}/reject")]
-    public async Task<List<InvitationUserView>> PostRejectInvitation(string invitationId)
+    [HttpPost("invitations/{invitationId:guid}/reject")]
+    public async Task PostRejectInvitation(Guid invitationId)
     {
-        var userId = JwtHelper.GetId(User);
         var email = JwtHelper.GetEmail(User);
         await inviteService.Reject(invitationId, email);
-        return await userService.GetInvitations(userId);
     }
     
-    [HttpGet("projects/{projectId}/invitations")]
-    public async Task<List<string>> GetProjectInvitations(string projectId)
+    [HttpGet("projects/{projectId:guid}/invitations")]
+    public async Task<List<string>> GetProjectInvitations(Guid projectId)
     {
         var userId = JwtHelper.GetId(User);
         return await inviteService.GetInvitedEmails(projectId, userId);
     }
 
-    [HttpPost("projects/{projectId}/invitations")]
-    public async Task Post(InvitationRequest request, string projectId)
+    [HttpPost("projects/{projectId:guid}/invitations")]
+    public async Task Post(InvitationRequest request, Guid projectId)
     {
         var userId = JwtHelper.GetId(User);
         await inviteService.Invite(userId, request.Email, projectId);
     }
     
-    [HttpDelete("projects/{projectId}/invitations/{invitationId}")]
-    public async Task Delete(string invitationId, string projectId)
+    [HttpDelete("projects/{projectId:guid}/invitations/{invitationId:guid}")]
+    public async Task Delete(Guid invitationId, Guid projectId)
     {
         var userId = JwtHelper.GetId(User);
         await inviteService.Cancel(invitationId, userId, projectId);

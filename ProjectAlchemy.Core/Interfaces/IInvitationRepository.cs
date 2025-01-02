@@ -4,8 +4,8 @@ namespace ProjectAlchemy.Core.Interfaces;
 
 public interface IInvitationRepository
 {
-   public Task Create(string email, string projectId);
-   public Task<List<string>> GetInvitedEmails(string projectId);
-   public Task<InvitationDetails?> GetInfo(string invitationId);
-   public Task Delete(string invitationId);
+   public Task Create(string email, Guid projectId);
+   public Task<List<string>> GetInvitedEmails(Guid projectId);
+   public Task<InvitationDetails?> GetInfo(Guid invitationId);
+   public Task Delete(Guid invitationId);
 }

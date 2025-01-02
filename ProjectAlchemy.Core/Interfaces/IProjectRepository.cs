@@ -4,9 +4,9 @@ namespace ProjectAlchemy.Core.Interfaces;
 
 public interface IProjectRepository
 {
-    public Task<Project?> Get(string id);
+    public Task<Project?> Get(Guid id);
     public Task<Project> Create(Project project);
-    public Task<bool> HasIssue(string projectId, int issueKey);
-    public Task<Member?> GetMember(string projectId, string userId);
-    public Task AddMember(string projectId, Member member);
+    public Task<bool> HasIssue(Guid projectId, int issueKey);
+    public Task<Member?> GetMember(Guid projectId, Guid userId);
+    public Task AddMember(Guid projectId, Member member);
 }

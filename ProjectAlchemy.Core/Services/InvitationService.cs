@@ -7,21 +7,21 @@ namespace ProjectAlchemy.Core.Services;
 
 public class InvitationService(IInvitationRepository repo, IAuthorizationService authorizationService, IProjectRepository projectRepository)
 {
-    public async Task Invite(string inviterId, string emailToInvite, string projectId)
+    public async Task Invite(Guid inviterId, string emailToInvite, Guid projectId)
     {
         await authorizationService.Authorize(Permission.InviteMembers, inviterId, projectId);
         await repo.Create(emailToInvite, projectId);
     }
 
-    public async Task Accept(string invitationId, string email, string userId)
+    public async Task Accept(Guid invitationId, string email, Guid userId)
     {
-        var info = await repo.GetInfo(invitationId);
-        if (info == null || info.Email != email)
+        var details = await repo.GetInfo(invitationId);
+        if (details == null || details.Email != email)
         {
             throw new NotFoundException();
         }
 
-        await projectRepository.AddMember(info.ProjectId, new Member()
+        await projectRepository.AddMember(details.ProjectId, new Member()
         {
             UserId = userId,
             Type = MemberType.Collaborator
@@ -30,7 +30,7 @@ public class InvitationService(IInvitationRepository repo, IAuthorizationService
         await repo.Delete(invitationId);
     }
 
-    public async Task Reject(string invitationId, string email)
+    public async Task Reject(Guid invitationId, string email)
     {
         var info = await repo.GetInfo(invitationId);
         if (info == null || info.Email != email)
@@ -41,13 +41,13 @@ public class InvitationService(IInvitationRepository repo, IAuthorizationService
         await repo.Delete(invitationId);
     }
 
-    public async Task Cancel(string invitationId, string userId, string projectId)
+    public async Task Cancel(Guid invitationId, Guid userId, Guid projectId)
     {
         await authorizationService.Authorize(Permission.InviteMembers, userId, projectId);
         await repo.Delete(invitationId);
     }
 
-    public async Task<List<string>> GetInvitedEmails(string projectId, string userId)
+    public async Task<List<string>> GetInvitedEmails(Guid projectId, Guid userId)
     {
         await authorizationService.Authorize(Permission.InviteMembers, userId, projectId);
         return await repo.GetInvitedEmails(projectId);

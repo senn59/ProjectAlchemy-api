@@ -15,7 +15,7 @@ public class AuthorizationService(IProjectRepository projectRepository): IAuthor
         Permission.UpdateIssues
     ];
 
-    public async Task Authorize(Permission permission, string userId, string projectId)
+    public async Task Authorize(Permission permission, Guid userId, Guid projectId)
     {
         var member = await projectRepository.GetMember(projectId, userId);
         if (member == null)
@@ -38,7 +38,7 @@ public class AuthorizationService(IProjectRepository projectRepository): IAuthor
         }
     }
     
-    public async Task Authorize(Permission permission, string userId, string projectId, int issueKey)
+    public async Task Authorize(Permission permission, Guid userId, Guid projectId, int issueKey)
     {
         if (!await projectRepository.HasIssue(projectId, issueKey))
         {

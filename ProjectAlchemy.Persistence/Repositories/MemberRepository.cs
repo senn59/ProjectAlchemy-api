@@ -13,7 +13,7 @@ public class MemberRepository: IMemberRepository
         _context = context;
     }
     
-    public async Task<List<ProjectOverview>> GetProjects(string userId)
+    public async Task<List<ProjectOverview>> GetProjects(Guid userId)
     {
         return await _context.Members
             .Where(m => m.UserId == userId)
@@ -26,10 +26,10 @@ public class MemberRepository: IMemberRepository
             .ToListAsync();
     }
 
-    public async Task<List<InvitationUserView>> GetInvitations(string userId)
+    public async Task<List<InvitationUserView>> GetInvitations(string email)
     {
         return await _context.Invitations
-            .Where(i => i.Email == userId)
+            .Where(i => i.Email == email)
             .Select(i => new InvitationUserView
             {
                 InviteId = i.Id,

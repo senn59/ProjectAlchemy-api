@@ -4,8 +4,8 @@ namespace ProjectAlchemy.Core.Interfaces;
 
 public interface IIssueRepository
 {
-    public Task<Issue?> GetByKey(int issueKey, string projectId);
-    public Task<IssuePartial> Create(IssueCreate issue, string projectId);
-    public Task<Issue> Update(Issue updated, string projectId);
-    public Task DeleteByKey(int key, string projectId);
+    public Task<Issue?> GetByKey(int issueKey, Guid projectId);
+    public Task<IssuePartial> Create(IssueCreate issue, Guid projectId);
+    public Task<Issue> Update(Issue updated, Guid projectId);
+    public Task DeleteByKey(int key, Guid projectId);
 }

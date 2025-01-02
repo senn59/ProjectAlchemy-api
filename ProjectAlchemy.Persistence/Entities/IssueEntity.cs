@@ -10,6 +10,7 @@ namespace ProjectAlchemy.Persistence.Entities;
 public class IssueEntity
 {
     [Required]
+    [Key]
     public int Id { get; set; }
     [Required]
     public int Key { get; set; }
@@ -25,9 +26,9 @@ public class IssueEntity
     public bool Deleted { get; set; }
         
     [MaxLength(36)]
-    public string LaneId { get; init; }
+    public Guid LaneId { get; init; }
     [MaxLength(36)]
-    public string? ProjectId { get; set; }
+    public Guid? ProjectId { get; set; }
     public ProjectEntity? Project { get; init; }
 
     public static Issue ToIssue(IssueEntity entity, Lane lane)

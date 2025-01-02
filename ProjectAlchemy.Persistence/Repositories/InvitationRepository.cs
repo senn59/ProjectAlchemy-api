@@ -14,17 +14,17 @@ public class InvitationRepository: IInvitationRepository
         _context = context;
     }
     
-    public async Task Create(string email, string projectId)
+    public async Task Create(string email, Guid projectId)
     {
         _ = await _context.Invitations.AddAsync(new InvitationEntity
         {
-            Id = Guid.NewGuid().ToString(),
+            Id = Guid.NewGuid(),
             Email = email,
             ProjectId = projectId
         });
     }
 
-    public async Task<List<string>> GetInvitedEmails(string projectId)
+    public async Task<List<string>> GetInvitedEmails(Guid projectId)
     {
         return await _context.Invitations
             .Where(i => i.ProjectId == projectId)
@@ -32,13 +32,13 @@ public class InvitationRepository: IInvitationRepository
             .ToListAsync();
     }
 
-    public async Task<InvitationDetails?> GetInfo(string invitationId)
+    public async Task<InvitationDetails?> GetInfo(Guid invitationId)
     {
         var entity = await _context.Invitations.FindAsync(invitationId);
         return entity == null ? null : InvitationEntity.ToInvitationInfo(entity);
     }
 
-    public Task Delete(string invitationId)
+    public Task Delete(Guid invitationId)
     {
         throw new NotImplementedException();
     }
