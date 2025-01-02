@@ -30,8 +30,14 @@ public class InvitationService(IInvitationRepository repo, IAuthorizationService
         await repo.Delete(invitationId);
     }
 
-    public async Task Reject(string invitationId)
+    public async Task Reject(string invitationId, string email)
     {
+        var info = await repo.GetInfo(invitationId);
+        if (info == null || info.Email != email)
+        {
+            throw new NotFoundException();
+        }
+        
         await repo.Delete(invitationId);
     }
 

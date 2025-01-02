@@ -22,14 +22,12 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
             .Property(p => p.Deleted)
             .HasDefaultValue(false);
         modelBuilder.Entity<LaneEntity>()
-            .Property(p => p.Id)
-            .HasDefaultValue(Guid.NewGuid().ToString());
+            .HasKey(l => l.Id);
         modelBuilder.Entity<MemberEntity>()
             .Property(p => p.Id)
             .ValueGeneratedOnAdd();
         modelBuilder.Entity<InvitationEntity>()
-            .Property(p => p.Id)
-            .HasDefaultValue(Guid.NewGuid().ToString());
+            .HasKey(i => i.Id);
 
         modelBuilder.Entity<ProjectEntity>()
             .HasMany(p => p.Issues)
