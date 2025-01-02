@@ -1,4 +1,3 @@
-using System.Security.Permissions;
 using ProjectAlchemy.Core.Enums;
 using ProjectAlchemy.Core.Exceptions;
 using ProjectAlchemy.Core.Interfaces;
@@ -7,7 +6,7 @@ namespace ProjectAlchemy.Core.Services;
 
 public class AuthorizationService(IProjectRepository projectRepository): IAuthorizationService
 {
-    private readonly HashSet<Permission> _collaboratorPermissions =
+    private readonly IReadOnlyCollection<Permission> _collaboratorPermissions =
     [
         Permission.ReadProject,
         Permission.CreateIssues,
