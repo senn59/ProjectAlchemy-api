@@ -28,6 +28,10 @@ public class ProjectRepository: IProjectRepository
     public async Task<Project> Create(Project project)
     {
         var entity = ProjectEntity.FromProject(project);
+        foreach (var lane in entity.Lanes)
+        {
+            lane.Id = Guid.NewGuid().ToString();
+        }
         await _context.Projects.AddAsync(entity);
         await _context.SaveChangesAsync();
         return ProjectEntity.ToProject(entity);

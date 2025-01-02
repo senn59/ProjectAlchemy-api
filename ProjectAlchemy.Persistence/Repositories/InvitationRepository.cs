@@ -18,6 +18,7 @@ public class InvitationRepository: IInvitationRepository
     {
         _ = await _context.Invitations.AddAsync(new InvitationEntity
         {
+            Id = Guid.NewGuid().ToString(),
             Email = email,
             ProjectId = projectId
         });
