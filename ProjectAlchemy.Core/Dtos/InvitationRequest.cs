@@ -1,6 +1,6 @@
 namespace ProjectAlchemy.Core.Dtos;
 
-public class InviteRequest
+public class InvitationRequest
 {
     public string Email { get; set; }
 }

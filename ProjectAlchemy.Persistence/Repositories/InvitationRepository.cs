@@ -32,7 +32,7 @@ public class InvitationRepository: IInvitationRepository
             .ToListAsync();
     }
 
-    public async Task<InvitationInfo?> GetInfo(string invitationId)
+    public async Task<InvitationDetails?> GetInfo(string invitationId)
     {
         var entity = await _context.Invitations.FindAsync(invitationId);
         return entity == null ? null : InvitationEntity.ToInvitationInfo(entity);

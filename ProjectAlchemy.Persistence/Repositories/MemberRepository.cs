@@ -26,13 +26,13 @@ public class MemberRepository: IMemberRepository
             .ToListAsync();
     }
 
-    public async Task<List<UserInvitation>> GetInvitations(string userId)
+    public async Task<List<InvitationUserView>> GetInvitations(string userId)
     {
         return await _context.Invitations
             .Where(i => i.Email == userId)
-            .Select(i => new UserInvitation
+            .Select(i => new InvitationUserView
             {
-                InvitationId = i.Id,
+                InviteId = i.Id,
                 ProjectName = i.Project.Name
             })
             .ToListAsync();

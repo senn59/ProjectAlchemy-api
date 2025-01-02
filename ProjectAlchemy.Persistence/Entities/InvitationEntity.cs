@@ -16,9 +16,9 @@ public class InvitationEntity
     [MaxLength(36)]
     public string ProjectId { get; init; }
 
-    public static InvitationInfo ToInvitationInfo(InvitationEntity entity)
+    public static InvitationDetails ToInvitationInfo(InvitationEntity entity)
     {
-        return new InvitationInfo
+        return new InvitationDetails
         {
             Id = entity.Id,
             Email = entity.Email,

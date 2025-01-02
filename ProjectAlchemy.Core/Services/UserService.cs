@@ -10,7 +10,7 @@ public class UserService(IMemberRepository repository)
         return await repository.GetProjects(userid);
     }
     
-    public async Task<List<UserInvitation>> GetInvitations(string userid)
+    public async Task<List<InvitationUserView>> GetInvitations(string userid)
     {
         return await repository.GetInvitations(userid);
     }

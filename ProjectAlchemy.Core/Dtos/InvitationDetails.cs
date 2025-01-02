@@ -1,6 +1,6 @@
 namespace ProjectAlchemy.Core.Dtos;
 
-public class InvitationInfo
+public class InvitationDetails
 {
     public string Id { get; set; }
     public string Email { get; set; }

@@ -12,7 +12,7 @@ public class InvitationController(InvitationService inviteService, UserService u
 {
     [HttpGet]
     [Route("api/invitations")]
-    public async Task<List<UserInvitation>> GetUserInvitations(string projectId, int key)
+    public async Task<List<InvitationUserView>> GetUserInvitations(string projectId, int key)
     {
         var userId = JwtHelper.GetId(User);
         return await userService.GetInvitations(userId);
@@ -28,7 +28,7 @@ public class InvitationController(InvitationService inviteService, UserService u
 
     [HttpPost]
     [Route("api/projects/{projectId}/invitations")]
-    public async Task Post(InviteRequest request, string projectId)
+    public async Task Post(InvitationRequest request, string projectId)
     {
         var userId = JwtHelper.GetId(User);
         await inviteService.Invite(userId, request.Email, projectId);
