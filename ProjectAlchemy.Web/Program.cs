@@ -92,6 +92,7 @@ builder.Services.AddScoped<IssueService>();
 builder.Services.AddScoped<ProjectService>();
 builder.Services.AddScoped<UserService>();
 builder.Services.AddScoped<LaneService>();
+builder.Services.AddScoped<InvitationService>();
 
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 builder.Services.AddProblemDetails();

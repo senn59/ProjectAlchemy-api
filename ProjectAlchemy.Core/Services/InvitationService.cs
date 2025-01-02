@@ -41,8 +41,9 @@ public class InvitationService(IInvitationRepository repo, IAuthorizationService
         await repo.Delete(invitationId);
     }
 
-    public async Task<List<string>> GetInvitedEmails(string projectId)
+    public async Task<List<string>> GetInvitedEmails(string projectId, string userId)
     {
+        await authorizationService.Authorize(Permission.InviteMembers, userId, projectId);
         return await repo.GetInvitedEmails(projectId);
     }
 }

@@ -30,7 +30,11 @@ public class MemberRepository: IMemberRepository
     {
         return await _context.Invitations
             .Where(i => i.Email == userId)
-            .Select(i => new UserInvitation{ ProjectName = i.Project.Name })
+            .Select(i => new UserInvitation
+            {
+                InvitationId = i.Id,
+                ProjectName = i.Project.Name
+            })
             .ToListAsync();
     }
 }
