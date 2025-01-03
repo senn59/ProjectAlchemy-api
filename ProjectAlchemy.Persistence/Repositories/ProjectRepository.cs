@@ -61,6 +61,12 @@ public class ProjectRepository: IProjectRepository
         {
             throw new NotFoundException();
         }
+
+        if (await _context.Members.AnyAsync(m => m.ProjectId == projectId && m.UserId == member.UserId))
+        {
+            return;
+        }
+        
         project.Members.Add(MemberEntity.FromMember(member));
         _context.Update(project);
         await _context.SaveChangesAsync();

@@ -17,11 +17,11 @@ public class InvitationController(InvitationService inviteService, UserService u
     }
     
     [HttpPost("invitations/{invitationId:guid}/accept")]
-    public async Task PostAcceptInvitation(Guid invitationId)
+    public async Task<Guid> PostAcceptInvitation(Guid invitationId)
     {
         var userId = JwtHelper.GetId(User);
         var email = JwtHelper.GetEmail(User);
-        await inviteService.Accept(invitationId, email, userId);
+        return await inviteService.Accept(invitationId, email, userId);
     }
     
     [HttpPost("invitations/{invitationId:guid}/reject")]

@@ -32,7 +32,7 @@ public class MemberRepository: IMemberRepository
             .Where(i => i.Email == email)
             .Select(i => new InvitationUserView
             {
-                InviteId = i.Id,
+                InvitationId = i.Id,
                 ProjectName = i.Project.Name
             })
             .ToListAsync();

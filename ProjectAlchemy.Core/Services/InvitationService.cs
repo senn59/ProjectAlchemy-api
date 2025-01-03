@@ -13,7 +13,7 @@ public class InvitationService(IInvitationRepository repo, IAuthorizationService
         return await repo.Create(emailToInvite, projectId);
     }
 
-    public async Task Accept(Guid invitationId, string email, Guid userId)
+    public async Task<Guid> Accept(Guid invitationId, string email, Guid userId)
     {
         var details = await repo.GetInfo(invitationId);
         if (details == null || details.Email != email)
@@ -28,6 +28,7 @@ public class InvitationService(IInvitationRepository repo, IAuthorizationService
         });
         
         await repo.Delete(invitationId);
+        return details.ProjectId;
     }
 
     public async Task Reject(Guid invitationId, string email)
