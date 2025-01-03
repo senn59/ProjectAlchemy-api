@@ -14,13 +14,17 @@ public class AuthorizationTests
     [Fact]
     public async Task ValidMemberTryingToAccessProjectSucceeds()
     {
-        var userId = Guid.NewGuid().ToString();
-        var projectId = Guid.NewGuid().ToString();
+        var projectId = Guid.NewGuid();
+        var memberId = Guid.NewGuid();
         var mock = new Mock<IProjectRepository>();
-        mock.Setup(p => p.HasMember(projectId, userId)).ReturnsAsync(true);
+        mock.Setup(p => p.GetMember(projectId, memberId)).ReturnsAsync(new Member
+        {
+            UserId = memberId,
+            Type = MemberType.Collaborator
+        });
         var service = new AuthorizationService(mock.Object);
         
-        var act = () => service.AuthorizeProjectAccess(userId, projectId);
+        var act = () => service.Authorize(Permission.ReadProject, memberId, projectId);
         
         await act.Should().NotThrowAsync();
     }
@@ -28,15 +32,12 @@ public class AuthorizationTests
     [Fact]
     public async Task InvalidMemberTryingToAccessProjectThrowsNotAuthorizedException()
     {
-        var validUser = Guid.NewGuid().ToString();
-        var projectId = Guid.NewGuid().ToString();
-        var invalidUser = Guid.NewGuid().ToString();
+        var projectId = Guid.NewGuid();
+        var invalidUser = Guid.NewGuid();
         var mock = new Mock<IProjectRepository>();
-        mock.Setup(p => p.HasMember(projectId, validUser)).ReturnsAsync(true);
-        mock.Setup(p => p.HasMember(projectId, invalidUser)).ReturnsAsync(false);
         var service = new AuthorizationService(mock.Object);
         
-        var act = () => service.AuthorizeProjectAccess(projectId, invalidUser);
+        var act = () => service.Authorize(Permission.ReadProject, projectId, invalidUser);
 
         await act.Should().ThrowAsync<NotAuthorizedException>();
     }
@@ -44,16 +45,18 @@ public class AuthorizationTests
     [Fact]
     public async Task ProjectOwnerTryingToAccessIssueInAnotherProjectThrowsNotFound()
     {
+        var projectId = Guid.NewGuid();
+        var memberId = Guid.NewGuid();
         var mock = new Mock<IProjectRepository>();
-        mock.Setup(p => p.HasIssue("project", 1)).ReturnsAsync(false);
-        mock.Setup(p => p.GetMember("project", "owner")).ReturnsAsync(new Member
+        mock.Setup(p => p.HasIssue(projectId, 1)).ReturnsAsync(false);
+        mock.Setup(p => p.GetMember(projectId, memberId)).ReturnsAsync(new Member
         {
-            UserId = "owner",
+            UserId = memberId,
             Type = MemberType.Owner
         });
         var service = new AuthorizationService(mock.Object);
         
-        var act = () => service.AuthorizeIssueDeletion("owner", "project", 1);
+        var act = () => service.Authorize(Permission.DeleteIssues, memberId, projectId, 1);
 
         await act.Should().ThrowAsync<NotFoundException>();
     }
@@ -61,16 +64,18 @@ public class AuthorizationTests
     [Fact]
     public async Task CollaboratorWantingToDeleteIssueThrowsNotAuthorizedException()
     {
+        var projectId = Guid.NewGuid();
+        var memberId = Guid.NewGuid();
         var mock = new Mock<IProjectRepository>();
-        mock.Setup(p => p.HasIssue("project", 1)).ReturnsAsync(true);
-        mock.Setup(p => p.GetMember("project", "owner")).ReturnsAsync(new Member
+        mock.Setup(p => p.HasIssue(projectId, 1)).ReturnsAsync(true);
+        mock.Setup(p => p.GetMember(projectId, memberId)).ReturnsAsync(new Member
         {
-            UserId = "collaborator",
+            UserId = memberId,
             Type = MemberType.Collaborator
         });
         var service = new AuthorizationService(mock.Object);
         
-        var act = () => service.AuthorizeIssueDeletion("collaborator", "project", 1);
+        var act = () => service.Authorize(Permission.DeleteIssues, memberId, projectId, 1);
         
         await act.Should().ThrowAsync<NotAuthorizedException>();
     }
@@ -78,16 +83,18 @@ public class AuthorizationTests
     [Fact]
     public async Task OwnerWantingToDeleteIssueSucceeds()
     {
+        var projectId = Guid.NewGuid();
+        var memberId = Guid.NewGuid();
         var mock = new Mock<IProjectRepository>();
-        mock.Setup(p => p.HasIssue("project", 1)).ReturnsAsync(true);
-        mock.Setup(p => p.GetMember("project", "owner")).ReturnsAsync(new Member
+        mock.Setup(p => p.HasIssue(projectId, 1)).ReturnsAsync(true);
+        mock.Setup(p => p.GetMember(projectId, memberId)).ReturnsAsync(new Member
         {
-            UserId = "owner",
+            UserId = memberId,
             Type = MemberType.Owner
         });
         var service = new AuthorizationService(mock.Object);
         
-        var act = () => service.AuthorizeIssueDeletion("owner", "project", 1);
+        var act = () => service.Authorize(Permission.DeleteIssues, memberId, projectId, 1);
         
         await act.Should().NotThrowAsync();
     }
@@ -95,16 +102,18 @@ public class AuthorizationTests
     [Fact]
     public async Task CollaboratorWantingToUpdateIssueSucceeds()
     {
+        var projectId = Guid.NewGuid();
+        var memberId = Guid.NewGuid();
         var mock = new Mock<IProjectRepository>();
-        mock.Setup(p => p.HasIssue("project", 1)).ReturnsAsync(true);
-        mock.Setup(p => p.GetMember("project", "collaborator")).ReturnsAsync(new Member
+        mock.Setup(p => p.HasIssue(projectId, 1)).ReturnsAsync(true);
+        mock.Setup(p => p.GetMember(projectId, memberId)).ReturnsAsync(new Member
         {
-            UserId = "collaborator",
+            UserId = memberId,
             Type = MemberType.Collaborator
         });
         var service = new AuthorizationService(mock.Object);
         
-        var act = () => service.AuthorizeIssueUpdate("collaborator", "project", 1);
+        var act = () => service.Authorize(Permission.UpdateIssues, memberId, projectId, 1);
 
         await act.Should().NotThrowAsync();
     }

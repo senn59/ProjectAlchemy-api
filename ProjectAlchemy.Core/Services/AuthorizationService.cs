@@ -6,65 +6,43 @@ namespace ProjectAlchemy.Core.Services;
 
 public class AuthorizationService(IProjectRepository projectRepository): IAuthorizationService
 {
-    private readonly IReadOnlyCollection<MemberType> _canUpdate = [MemberType.Collaborator, MemberType.Owner];
-    private readonly IReadOnlyCollection<MemberType> _canDelete = [MemberType.Owner];
-    
-    public async Task AuthorizeProjectAccess(string userId, string projectId)
-    {
-        if (! await projectRepository.HasMember(projectId, userId))
-        {
-            throw new NotAuthorizedException();
-        }
-    }
+    private readonly IReadOnlyCollection<Permission> _collaboratorPermissions =
+    [
+        Permission.ReadProject,
+        Permission.CreateIssues,
+        Permission.ReadIssues,
+        Permission.UpdateIssues
+    ];
 
-    public async Task AuthorizeIssueDeletion(string userId, string projectId, int issueKey)
+    public async Task Authorize(Permission permission, Guid userId, Guid projectId)
     {
-        if (!await projectRepository.HasIssue(projectId, issueKey))
-        {
-            throw new NotFoundException();
-        }
-        
-        var member = await projectRepository.GetMember(projectId, userId);
-        if (member == null)
-        {
-            throw new NotAuthorizedException();
-        }
-        
-        if (!_canDelete.Contains(member.Type))
-        {
-            throw new NotAuthorizedException();
-        }
-    }
-    
-    public async Task AuthorizeIssueAccess(string userId, string projectId, int issueKey)
-    {
-        if (!await projectRepository.HasIssue(projectId, issueKey))
-        {
-            throw new NotFoundException();
-        }
-        
-        if (!await projectRepository.HasMember(projectId, userId))
-        {
-            throw new NotAuthorizedException();
-        }
-    }
-    
-    public async Task AuthorizeIssueUpdate(string userId, string projectId, int issueKey)
-    {
-        if (!await projectRepository.HasIssue(projectId, issueKey))
-        {
-            throw new NotFoundException();
-        }
-        
         var member = await projectRepository.GetMember(projectId, userId);
         if (member == null)
         {
             throw new NotAuthorizedException();
         }
 
-        if (!_canUpdate.Contains(member.Type))
+        switch (member.Type)
         {
-            throw new NotAuthorizedException();
+            case MemberType.Owner:
+                return;
+            case MemberType.Collaborator:
+                if (!_collaboratorPermissions.Contains(permission))
+                {
+                    throw new NotAuthorizedException();
+                }
+                break;
+            default:
+                throw new NotAuthorizedException();
         }
+    }
+    
+    public async Task Authorize(Permission permission, Guid userId, Guid projectId, int issueKey)
+    {
+        if (!await projectRepository.HasIssue(projectId, issueKey))
+        {
+            throw new NotFoundException();
+        }
+        await Authorize(permission, userId, projectId);
     }
 }

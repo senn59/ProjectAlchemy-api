@@ -5,10 +5,11 @@ namespace ProjectAlchemy.Persistence;
 
 public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(options)
 {
-    public DbSet<IssueEntity> Issues { get; set; }
-    public DbSet<ProjectEntity> Projects { get; set; }
-    public DbSet<LaneEntity> Lanes { get; set; }
-    public DbSet<MemberEntity> Members { get; set; }
+    public DbSet<IssueEntity> Issues { get; init; }
+    public DbSet<ProjectEntity> Projects { get; init; }
+    public DbSet<LaneEntity> Lanes { get; init; }
+    public DbSet<MemberEntity> Members { get; init; }
+    public DbSet<InvitationEntity> Invitations { get; init; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -21,11 +22,12 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
             .Property(p => p.Deleted)
             .HasDefaultValue(false);
         modelBuilder.Entity<LaneEntity>()
-            .Property(p => p.Id)
-            .ValueGeneratedOnAdd();
+            .HasKey(l => l.Id);
         modelBuilder.Entity<MemberEntity>()
             .Property(p => p.Id)
             .ValueGeneratedOnAdd();
+        modelBuilder.Entity<InvitationEntity>()
+            .HasKey(i => i.Id);
 
         modelBuilder.Entity<ProjectEntity>()
             .HasMany(p => p.Issues)
@@ -45,6 +47,13 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
             .HasMany(p => p.Members)
             .WithOne(i => i.Project)
             .HasForeignKey(m => m.ProjectId)
+            .OnDelete(DeleteBehavior.Cascade)
+            .IsRequired();
+        
+        modelBuilder.Entity<ProjectEntity>()
+            .HasMany(p => p.Invitations)
+            .WithOne(i => i.Project)
+            .HasForeignKey(i => i.ProjectId)
             .OnDelete(DeleteBehavior.Cascade)
             .IsRequired();
     }

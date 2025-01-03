@@ -34,6 +34,13 @@ public class GlobalExceptionHandler(ILogger<GlobalExceptionHandler> logger) : IE
                     Detail = exception.Message
                 };
                 break;
+            case AlreadyExistsException:
+                problemDetails = new ProblemDetails
+                {
+                    Status = StatusCodes.Status422UnprocessableEntity,
+                    Detail = "Already exists"
+                };
+                break;
             default:
                 problemDetails = new ProblemDetails
                 {

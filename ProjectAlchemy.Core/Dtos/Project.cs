@@ -5,7 +5,7 @@ namespace ProjectAlchemy.Core.Dtos;
 
 public class Project
 {
-    public required string Id { get; init; }
+    public required Guid Id { get; init; }
     [Required(AllowEmptyStrings = false)]
     [MaxLength(ProjectService.MaxNameLength)]
     public required string Name { get; set; }

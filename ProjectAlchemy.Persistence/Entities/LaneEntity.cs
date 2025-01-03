@@ -7,13 +7,13 @@ namespace ProjectAlchemy.Persistence.Entities;
 public class LaneEntity
 {
     [Required]
-    [MaxLength(36)]
-    public required string Id { get; init; }
+    [Key]
+    public required Guid Id { get; set; }
     [MaxLength(LaneService.MaxNameLength)]
     public required string Name { get; init; }
     
     [MaxLength(200)]
-    public string? ProjectId { get; init; }
+    public Guid? ProjectId { get; init; }
     public ProjectEntity? Project { get; init; }
 
     public static Lane ToLane(LaneEntity entity)

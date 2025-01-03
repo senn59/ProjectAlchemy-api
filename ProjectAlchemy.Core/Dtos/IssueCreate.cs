@@ -10,5 +10,5 @@ public class IssueCreate
     [MaxLength(IssueService.MaxNameLength)]
     public required string Name { get; set; }
     public required IssueType Type { get; set; }
-    public required string LaneId { get; set; }
+    public required Guid LaneId { get; set; }
 }
