@@ -7,10 +7,10 @@ namespace ProjectAlchemy.Core.Services;
 
 public class InvitationService(IInvitationRepository repo, IAuthorizationService authorizationService, IProjectRepository projectRepository)
 {
-    public async Task Invite(Guid inviterId, string emailToInvite, Guid projectId)
+    public async Task<InvitationOutgoingView> Invite(Guid inviterId, string emailToInvite, Guid projectId)
     {
         await authorizationService.Authorize(Permission.InviteMembers, inviterId, projectId);
-        await repo.Create(emailToInvite, projectId);
+        return await repo.Create(emailToInvite, projectId);
     }
 
     public async Task Accept(Guid invitationId, string email, Guid userId)
@@ -47,7 +47,7 @@ public class InvitationService(IInvitationRepository repo, IAuthorizationService
         await repo.Delete(invitationId);
     }
 
-    public async Task<List<string>> GetInvitedEmails(Guid projectId, Guid userId)
+    public async Task<List<InvitationOutgoingView>> GetInvitedEmails(Guid projectId, Guid userId)
     {
         await authorizationService.Authorize(Permission.InviteMembers, userId, projectId);
         return await repo.GetInvitedEmails(projectId);

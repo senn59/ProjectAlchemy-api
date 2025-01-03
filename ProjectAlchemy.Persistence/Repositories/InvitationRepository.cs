@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using ProjectAlchemy.Core.Dtos;
+using ProjectAlchemy.Core.Exceptions;
 using ProjectAlchemy.Core.Interfaces;
 using ProjectAlchemy.Persistence.Entities;
 
@@ -14,21 +15,38 @@ public class InvitationRepository: IInvitationRepository
         _context = context;
     }
     
-    public async Task Create(string email, Guid projectId)
+    public async Task<InvitationOutgoingView> Create(string email, Guid projectId)
     {
-        _ = await _context.Invitations.AddAsync(new InvitationEntity
+        var alreadyExists = await _context.Invitations.AnyAsync(i => i.Email == email && i.ProjectId == projectId);
+        if (alreadyExists)
+        {
+            throw new AlreadyExistsException();
+        }
+        
+        var invitation = await _context.Invitations.AddAsync(new InvitationEntity
         {
             Id = Guid.NewGuid(),
             Email = email,
             ProjectId = projectId
         });
+        
+        await _context.SaveChangesAsync();
+        return new InvitationOutgoingView
+        {
+            InvitationId = invitation.Entity.Id,
+            Email = invitation.Entity.Email
+        };
     }
 
-    public async Task<List<string>> GetInvitedEmails(Guid projectId)
+    public async Task<List<InvitationOutgoingView>> GetInvitedEmails(Guid projectId)
     {
         return await _context.Invitations
             .Where(i => i.ProjectId == projectId)
-            .Select(i => i.Email)
+            .Select(i => new InvitationOutgoingView
+            {
+                InvitationId = i.Id,
+                Email = i.Email
+            })
             .ToListAsync();
     }
 
@@ -38,8 +56,14 @@ public class InvitationRepository: IInvitationRepository
         return entity == null ? null : InvitationEntity.ToInvitationInfo(entity);
     }
 
-    public Task Delete(Guid invitationId)
+    public async Task Delete(Guid invitationId)
     {
-        throw new NotImplementedException();
+        var entity = await _context.Invitations.FindAsync(invitationId);
+        if (entity == null)
+        {
+            return;
+        }
+        _context.Invitations.Remove(entity);
+        await _context.SaveChangesAsync();
     }
 }
