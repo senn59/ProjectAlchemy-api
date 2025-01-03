@@ -21,7 +21,7 @@ public class IssueServiceTests: IDisposable
     public IssueServiceTests()
     {
         var options = new DbContextOptionsBuilder<AppDbContext>()
-            .UseInMemoryDatabase("issueServiceTests")
+            .UseInMemoryDatabase(Guid.NewGuid().ToString())
             .Options;
         _context = new AppDbContext(options);
         var issueRepo = new IssueRepository(_context);

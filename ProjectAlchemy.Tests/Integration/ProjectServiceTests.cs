@@ -15,7 +15,7 @@ public class ProjectServiceTests: IDisposable
     public ProjectServiceTests()
     {
         var options = new DbContextOptionsBuilder<AppDbContext>()
-            .UseInMemoryDatabase("projectServiceTests")
+            .UseInMemoryDatabase(Guid.NewGuid().ToString())
             .Options;
         _context = new AppDbContext(options);
         var projectRepository = new ProjectRepository(_context);

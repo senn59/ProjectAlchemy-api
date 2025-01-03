@@ -16,7 +16,7 @@ public class LaneServiceTests: IDisposable
     public LaneServiceTests()
     {
         var options = new DbContextOptionsBuilder<AppDbContext>()
-            .UseInMemoryDatabase("laneServiceTests")
+            .UseInMemoryDatabase(Guid.NewGuid().ToString())
             .Options;
         _context = new AppDbContext(options);
         var laneRepo = new LaneRepository(_context);

@@ -15,13 +15,13 @@ public class InvitationServiceTests: IDisposable
     private readonly InvitationService _inviteService;
     private readonly ProjectService _projectService;
     private readonly UserService _userService;
-    private readonly Guid _ownerId = Guid.NewGuid();
+    private readonly Guid _ownerId;
     private Project _project;
     
     public InvitationServiceTests()
     {
         var options = new DbContextOptionsBuilder<AppDbContext>()
-            .UseInMemoryDatabase("laneServiceTests")
+            .UseInMemoryDatabase(Guid.NewGuid().ToString())
             .Options;
         _context = new AppDbContext(options);
         var inviteRepo = new InvitationRepository(_context);
@@ -31,13 +31,13 @@ public class InvitationServiceTests: IDisposable
         _inviteService = new InvitationService(inviteRepo, authService, projectRepo);
         _projectService = new ProjectService(projectRepo, authService);
         _userService = new UserService(memberRepo);
+        _ownerId = Guid.NewGuid();
         CreateProject().GetAwaiter().GetResult();
     }
 
     private async Task CreateProject()
     {
         _project = await _projectService.Create("test", _ownerId);
-        
     }
 
     public void Dispose()

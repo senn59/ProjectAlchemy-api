@@ -19,7 +19,7 @@ public class UserServiceTests: IDisposable
     public UserServiceTests()
     {
         var options = new DbContextOptionsBuilder<AppDbContext>()
-            .UseInMemoryDatabase("userServiceTests")
+            .UseInMemoryDatabase(Guid.NewGuid().ToString())
             .Options;
         _context = new AppDbContext(options);
         var memberRepo = new MemberRepository(_context);
