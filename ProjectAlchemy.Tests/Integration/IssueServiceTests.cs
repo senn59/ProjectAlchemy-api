@@ -29,7 +29,7 @@ public class IssueServiceTests: IDisposable
         var authService = new AuthorizationService(projectRepo);
         _issueService = new IssueService(issueRepo, authService);
         _projectService = new ProjectService(projectRepo, authService);
-        _ = CreateProject();
+        CreateProject().GetAwaiter().GetResult();
     }
 
     private async Task CreateProject()

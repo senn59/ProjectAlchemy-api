@@ -15,7 +15,7 @@ public class InvitationServiceTests: IDisposable
     private readonly InvitationService _inviteService;
     private readonly ProjectService _projectService;
     private readonly UserService _userService;
-    private Guid _ownerId = Guid.NewGuid();
+    private readonly Guid _ownerId = Guid.NewGuid();
     private Project _project;
     
     public InvitationServiceTests()
@@ -31,10 +31,10 @@ public class InvitationServiceTests: IDisposable
         _inviteService = new InvitationService(inviteRepo, authService, projectRepo);
         _projectService = new ProjectService(projectRepo, authService);
         _userService = new UserService(memberRepo);
-        CreateProject();
+        CreateProject().GetAwaiter().GetResult();
     }
 
-    private async void CreateProject()
+    private async Task CreateProject()
     {
         _project = await _projectService.Create("test", _ownerId);
         
