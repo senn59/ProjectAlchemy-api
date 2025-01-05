@@ -12,13 +12,18 @@ public class ProjectNotifier
         _hubContext = hubContext;
     }
 
-    public async Task NotifyNewIssue(Guid projectId, IssuePartial issue)
+    public async Task NotifyIssueNew(Guid projectId, IssuePartial issue)
     {
         await _hubContext.Clients.Group(projectId.ToString()).SendAsync("IssueNew", issue);
     }
 
-    public async Task NotifyUpdatedIssue(Guid projectId, Issue issue)
+    public async Task NotifyIssueUpdate(Guid projectId, Issue issue)
     {
         await _hubContext.Clients.Group(projectId.ToString()).SendAsync("IssueUpdate", issue);
+    }
+    
+    public async Task NotifyIssueDelete(Guid projectId, int issueKey)
+    {
+        await _hubContext.Clients.Group(projectId.ToString()).SendAsync("IssueDelete", issueKey);
     }
 }

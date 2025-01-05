@@ -26,7 +26,7 @@ public class IssueController(IssueService issueService, ProjectNotifier notifier
     {
         var userId = JwtHelper.GetId(User);
         var created = await issueService.Create(request, userId, projectId);
-        await notifier.NotifyNewIssue(projectId, created);
+        await notifier.NotifyIssueNew(projectId, created);
         return created;
     }
     
@@ -52,7 +52,7 @@ public class IssueController(IssueService issueService, ProjectNotifier notifier
         
         ValidationHelper.Validate(issue);
         var updated = await issueService.Update(issue, userId, projectId);
-        await notifier.NotifyUpdatedIssue(projectId, updated);
+        await notifier.NotifyIssueUpdate(projectId, updated);
         return updated;
     }
     
@@ -61,5 +61,6 @@ public class IssueController(IssueService issueService, ProjectNotifier notifier
     {
         var userId = JwtHelper.GetId(User);
         await issueService.DeleteByKey(key, userId, projectId);
+        await notifier.NotifyIssueDelete(projectId, key);
     }
 }
