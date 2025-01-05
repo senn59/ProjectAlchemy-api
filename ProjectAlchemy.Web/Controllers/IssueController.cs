@@ -5,12 +5,13 @@ using ProjectAlchemy.Core.Dtos;
 using ProjectAlchemy.Core.Helpers;
 using ProjectAlchemy.Core.Services;
 using ProjectAlchemy.Web.Utilities;
+using ProjectAlchemy.Web.Websockets;
 
 namespace ProjectAlchemy.Web.Controllers;
 
 [ApiController]
 [Route("api/projects/{projectId:guid}/issues")]
-public class IssueController(IssueService issueService) : ControllerBase
+public class IssueController(IssueService issueService, ProjectNotifier notifier) : ControllerBase
 {
     [HttpGet("{key:int}")]
     public async Task<Issue> Get(Guid projectId, int key)
@@ -24,7 +25,9 @@ public class IssueController(IssueService issueService) : ControllerBase
     public async Task<IssuePartial> Post(IssueCreate request, Guid projectId)
     {
         var userId = JwtHelper.GetId(User);
-        return await issueService.Create(request, userId, projectId);
+        var created = await issueService.Create(request, userId, projectId);
+        await notifier.NotifyNewIssue(projectId, created);
+        return created;
     }
     
     [HttpPatch("{key:int}")]
@@ -48,7 +51,9 @@ public class IssueController(IssueService issueService) : ControllerBase
         issue.Lane = issuePatch.Lane;
         
         ValidationHelper.Validate(issue);
-        return await issueService.Update(issue, userId, projectId);
+        var updated = await issueService.Update(issue, userId, projectId);
+        await notifier.NotifyUpdatedIssue(projectId, updated);
+        return updated;
     }
     
     [HttpDelete("{key:int}")]
