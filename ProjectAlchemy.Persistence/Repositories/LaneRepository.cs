@@ -14,7 +14,7 @@ public class LaneRepository: ILaneRepository
         _context = context;
     }
     
-    public async Task<Lane?> GetLaneById(string laneId, string projectId)
+    public async Task<Lane?> GetLaneById(Guid laneId, Guid projectId)
     {
         var entity = await _context.Lanes.FirstOrDefaultAsync(l => l.Id == laneId && l.ProjectId == projectId);
         return entity == null ? null : LaneEntity.ToLane(entity);

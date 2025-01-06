@@ -1,17 +1,16 @@
 using System.Text;
-using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.Models;
-using ProjectAlchemy.Core.Enums;
+using Newtonsoft.Json.Converters;
 using ProjectAlchemy.Core.Interfaces;
 using ProjectAlchemy.Core.Services;
 using ProjectAlchemy.Persistence;
 using ProjectAlchemy.Persistence.Repositories;
 using ProjectAlchemy.Web;
 using ProjectAlchemy.Web.Utilities;
+using ProjectAlchemy.Web.Websockets;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,8 +18,15 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers().AddNewtonsoftJson(options =>
 {
-    options.SerializerSettings.Converters.Add(new Newtonsoft.Json.Converters.StringEnumConverter());
+    options.SerializerSettings.Converters.Add(new StringEnumConverter());
 });
+
+builder.Services
+    .AddSignalR()
+    .AddNewtonsoftJsonProtocol(o =>
+    {
+        o.PayloadSerializerSettings.Converters.Add(new StringEnumConverter());
+    });
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(o =>
@@ -63,7 +69,6 @@ builder.Services.AddCors(o =>
     });
 });
 
-
 var connString = builder.Configuration.GetConnectionString("DefaultConnection");
 if (connString == null)
 {
@@ -87,11 +92,14 @@ builder.Services.AddScoped<IIssueRepository, IssueRepository>();
 builder.Services.AddScoped<IProjectRepository, ProjectRepository>();
 builder.Services.AddScoped<IMemberRepository, MemberRepository>();
 builder.Services.AddScoped<ILaneRepository, LaneRepository>();
+builder.Services.AddScoped<IInvitationRepository, InvitationRepository>();
 builder.Services.AddScoped<IAuthorizationService, AuthorizationService>();
 builder.Services.AddScoped<IssueService>();
 builder.Services.AddScoped<ProjectService>();
 builder.Services.AddScoped<UserService>();
 builder.Services.AddScoped<LaneService>();
+builder.Services.AddScoped<InvitationService>();
+builder.Services.AddScoped<ProjectNotifier>();
 
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 builder.Services.AddProblemDetails();
@@ -116,6 +124,20 @@ builder.Services.AddAuthentication(o =>
             ValidateAudience = true,
             ValidAudience = "authenticated",
         };
+        o.Events = new JwtBearerEvents
+        {
+            OnMessageReceived = context =>
+            {
+                var accessToken = context.Request.Query["access_token"];
+
+                var path = context.HttpContext.Request.Path;
+                if (!string.IsNullOrEmpty(accessToken) && path.StartsWithSegments("/projectHub"))
+                {
+                    context.Token = accessToken;
+                }
+                return Task.CompletedTask;
+            }
+        };
     });
 
 var app = builder.Build();
@@ -139,5 +161,6 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers().RequireAuthorization();
+app.MapHub<ProjectHub>("/projectHub").RequireAuthorization();
 
 app.Run();

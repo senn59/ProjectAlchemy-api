@@ -14,11 +14,12 @@ public class UserServiceTests: IDisposable
     private readonly AppDbContext _context;
     private readonly UserService _userService;
     private readonly ProjectService _projectService;
+    private readonly Guid _userId = Guid.NewGuid();
     
     public UserServiceTests()
     {
         var options = new DbContextOptionsBuilder<AppDbContext>()
-            .UseInMemoryDatabase("userServiceTests")
+            .UseInMemoryDatabase(Guid.NewGuid().ToString())
             .Options;
         _context = new AppDbContext(options);
         var memberRepo = new MemberRepository(_context);
@@ -36,7 +37,7 @@ public class UserServiceTests: IDisposable
     [Fact]
     public async Task RequestingProjectsOfUnknownMemberReturnsEmptyList()
     {
-        var projects = await _userService.GetUserProjectsList("1");
+        var projects = await _userService.GetProjects(_userId);
         
         projects.Should().BeEmpty();
     }
@@ -44,10 +45,10 @@ public class UserServiceTests: IDisposable
     [Fact]
     public async Task MemberListOfKnownMemberWithProjectsReturnsValidList()
     {
-        var firstProject = await _projectService.Create("test", "1");
-        var secondProject = await _projectService.Create("project2", "1");
+        var firstProject = await _projectService.Create("test", _userId);
+        var secondProject = await _projectService.Create("project2", _userId);
         
-        var projects = await _userService.GetUserProjectsList("1");
+        var projects = await _userService.GetProjects(_userId);
         var firstProjectOverview = new ProjectOverview()
         {
             ProjectId = firstProject.Id,

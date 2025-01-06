@@ -1,9 +1,9 @@
+using ProjectAlchemy.Core.Enums;
+
 namespace ProjectAlchemy.Core.Interfaces;
 
 public interface IAuthorizationService
 {
-    Task AuthorizeProjectAccess(string userId, string projectId);
-    Task AuthorizeIssueDeletion(string userId, string projectId, int issueKey);
-    Task AuthorizeIssueAccess(string userId, string projectId, int issueKey);
-    Task AuthorizeIssueUpdate(string userId, string projectId, int issueKey);
+    Task Authorize(Permission permission, Guid userId, Guid projectId);
+    Task Authorize(Permission permission, Guid userId, Guid projectId, int issueKey);
 }

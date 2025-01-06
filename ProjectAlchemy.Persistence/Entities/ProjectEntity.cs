@@ -7,14 +7,15 @@ namespace ProjectAlchemy.Persistence.Entities;
 public class ProjectEntity
 {
     [Required]
-    [StringLength(36)]
-    public required string Id { get; init; }
+    [Key]
+    public required Guid Id { get; init; }
     [Required]
     [StringLength(ProjectService.MaxNameLength, MinimumLength = 1)]
     public required string Name { get; init; }
     public ICollection<IssueEntity> Issues { get; init; } = new List<IssueEntity>();
     public ICollection<LaneEntity> Lanes { get; init; } = new List<LaneEntity>();
     public ICollection<MemberEntity> Members { get; init; } = new List<MemberEntity>();
+    public ICollection<InvitationEntity> Invitations { get; init; } = new List<InvitationEntity>();
 
     public static Project ToProject(ProjectEntity entity)
     {

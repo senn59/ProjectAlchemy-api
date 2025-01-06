@@ -15,7 +15,7 @@ public class ProjectServiceTests: IDisposable
     public ProjectServiceTests()
     {
         var options = new DbContextOptionsBuilder<AppDbContext>()
-            .UseInMemoryDatabase("projectServiceTests")
+            .UseInMemoryDatabase(Guid.NewGuid().ToString())
             .Options;
         _context = new AppDbContext(options);
         var projectRepository = new ProjectRepository(_context);
@@ -31,10 +31,12 @@ public class ProjectServiceTests: IDisposable
     [Fact]
     public async Task TryingToAccessProjectWhereUserIsNotAMemberThrowsUnauthorizedException()
     {
-        var memberOneProject = await _service.Create("test", "1");
-        await _service.Create("test2", "2");
+        var member1 = Guid.NewGuid();
+        var member2 = Guid.NewGuid();
+        var memberOneProject = await _service.Create("test", member1);
+        await _service.Create("test2", member2);
 
-        var action = () => _service.Get(memberOneProject.Id, "2");
+        var action = () => _service.Get(memberOneProject.Id, member2);
         
         await action.Should().ThrowAsync<NotAuthorizedException>();
     }
@@ -42,8 +44,9 @@ public class ProjectServiceTests: IDisposable
     [Fact]
     public async Task UserCanCreateProjectAndAccessItLaterOn()
     {
-        var project = await _service.Create("test", "1");
-        var retrieved = await _service.Get(project.Id, "1");
+        var memberId = Guid.NewGuid();
+        var project = await _service.Create("test", memberId);
+        var retrieved = await _service.Get(project.Id, memberId);
         
         retrieved.Should().BeEquivalentTo(project);
     }
