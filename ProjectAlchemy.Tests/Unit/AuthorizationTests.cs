@@ -20,6 +20,7 @@ public class AuthorizationTests
         mock.Setup(p => p.GetMember(projectId, memberId)).ReturnsAsync(new Member
         {
             UserId = memberId,
+            UserName = "test",
             Type = MemberType.Collaborator
         });
         var service = new AuthorizationService(mock.Object);
@@ -52,6 +53,7 @@ public class AuthorizationTests
         mock.Setup(p => p.GetMember(projectId, memberId)).ReturnsAsync(new Member
         {
             UserId = memberId,
+            UserName = "test",
             Type = MemberType.Owner
         });
         var service = new AuthorizationService(mock.Object);
@@ -71,6 +73,7 @@ public class AuthorizationTests
         mock.Setup(p => p.GetMember(projectId, memberId)).ReturnsAsync(new Member
         {
             UserId = memberId,
+            UserName = "test",
             Type = MemberType.Collaborator
         });
         var service = new AuthorizationService(mock.Object);
@@ -90,6 +93,7 @@ public class AuthorizationTests
         mock.Setup(p => p.GetMember(projectId, memberId)).ReturnsAsync(new Member
         {
             UserId = memberId,
+            UserName = "test",
             Type = MemberType.Owner
         });
         var service = new AuthorizationService(mock.Object);
@@ -109,6 +113,7 @@ public class AuthorizationTests
         mock.Setup(p => p.GetMember(projectId, memberId)).ReturnsAsync(new Member
         {
             UserId = memberId,
+            UserName = "test",
             Type = MemberType.Collaborator
         });
         var service = new AuthorizationService(mock.Object);

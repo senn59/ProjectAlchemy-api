@@ -34,7 +34,7 @@ public class IssueServiceTests: IDisposable
 
     private async Task CreateProject()
     {
-        _project = await _projectService.Create("test", _userId);
+        _project = await _projectService.Create("test", _userId, "test@test.com");
     }
 
     public void Dispose()

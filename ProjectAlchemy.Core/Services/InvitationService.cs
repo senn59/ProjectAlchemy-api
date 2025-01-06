@@ -24,6 +24,7 @@ public class InvitationService(IInvitationRepository repo, IAuthorizationService
         await projectRepository.AddMember(details.ProjectId, new Member()
         {
             UserId = userId,
+            UserName = email.Split("@").First(),
             Type = MemberType.Collaborator
         });
         

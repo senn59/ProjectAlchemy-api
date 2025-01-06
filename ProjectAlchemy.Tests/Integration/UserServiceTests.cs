@@ -45,8 +45,8 @@ public class UserServiceTests: IDisposable
     [Fact]
     public async Task MemberListOfKnownMemberWithProjectsReturnsValidList()
     {
-        var firstProject = await _projectService.Create("test", _userId);
-        var secondProject = await _projectService.Create("project2", _userId);
+        var firstProject = await _projectService.Create("test", _userId, "test@test.com");
+        var secondProject = await _projectService.Create("project2", _userId, "test@test.com");
         
         var projects = await _userService.GetProjects(_userId);
         var firstProjectOverview = new ProjectOverview()

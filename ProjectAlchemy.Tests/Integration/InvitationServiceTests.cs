@@ -37,7 +37,7 @@ public class InvitationServiceTests: IDisposable
 
     private async Task CreateProject()
     {
-        _project = await _projectService.Create("test", _ownerId);
+        _project = await _projectService.Create("test", _ownerId, "test@test.com");
     }
 
     public void Dispose()
@@ -86,6 +86,7 @@ public class InvitationServiceTests: IDisposable
         project.Members.Should().ContainEquivalentOf(new Member
         {
             Type = MemberType.Collaborator,
+            UserName = "test",
             UserId = newMemberId
         });
     }

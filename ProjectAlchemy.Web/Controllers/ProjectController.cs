@@ -27,6 +27,7 @@ public class ProjectController(ProjectService projectService, UserService userSe
     public async Task<Project> CreateProject(ProjectCreate request)
     {
         var userId = JwtHelper.GetId(User);
-        return await projectService.Create(request.Name, userId);
+        var email = JwtHelper.GetEmail(User);
+        return await projectService.Create(request.Name, userId, email);
     }
 }

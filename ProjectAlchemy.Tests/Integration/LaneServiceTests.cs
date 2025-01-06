@@ -36,7 +36,7 @@ public class LaneServiceTests: IDisposable
     public async Task RetrievingLaneFromProjectWhereUserIsNotAMemberThrowsNotAuthorized()
     {
         var projectId = Guid.NewGuid();
-        var project = await _projectService.Create("test", projectId);
+        var project = await _projectService.Create("test", projectId, "test@test.com");
         var lane = project.Lanes.First();
         
         var action = () => _laneService.GetById(lane.Id, project.Id, Guid.NewGuid());
@@ -48,7 +48,7 @@ public class LaneServiceTests: IDisposable
     public async Task RetrievingLaneFromValidProjectWhereUserIsAMemberSucceeds()
     {
         var projectId = Guid.NewGuid();
-        var project = await _projectService.Create("test", projectId);
+        var project = await _projectService.Create("test", projectId, "test@test.com");
         
         var laneFromReturn = project.Lanes.First();
         var lane = await _laneService.GetById(laneFromReturn.Id, project.Id, projectId);
