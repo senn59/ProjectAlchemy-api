@@ -30,6 +30,7 @@ public class IssueEntity
     [MaxLength(36)]
     public Guid? ProjectId { get; set; }
     public ProjectEntity? Project { get; init; }
+    public ICollection<IssueEntity> RelatedIssues { get; set; } = [];
 
     public static Issue ToIssue(IssueEntity entity, Lane lane)
     {

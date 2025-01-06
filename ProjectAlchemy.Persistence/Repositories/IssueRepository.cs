@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using ProjectAlchemy.Core.Dtos;
+using ProjectAlchemy.Core.Exceptions;
 using ProjectAlchemy.Core.Interfaces;
 using ProjectAlchemy.Persistence.Entities;
 
@@ -16,7 +17,9 @@ public class IssueRepository: IIssueRepository
 
     public async Task<Issue?> GetByKey(int issueKey, Guid projectId)
     {
-        var issue = await _context.Issues.FirstOrDefaultAsync(i => i.Key == issueKey && i.ProjectId == projectId);
+        var issue = await _context.Issues
+            .Include(i => i.RelatedIssues)
+            .FirstOrDefaultAsync(i => i.Key == issueKey && i.ProjectId == projectId);
         if (issue == null || issue.Deleted)
         {
             return null;
@@ -61,5 +64,18 @@ public class IssueRepository: IIssueRepository
             issue.Deleted = true;
             await _context.SaveChangesAsync();
         }
+    }
+
+    public async Task LinkIssues(int issueKey, IEnumerable<int> issueKeysToLink, Guid projectId)
+    {
+        var sourceIssue = await _context.Issues.FirstOrDefaultAsync(i => i.Key == issueKey && i.ProjectId == projectId);
+        if (sourceIssue == null)
+        {
+            throw new NotFoundException();
+        }
+        var issuesToLink = await _context.Issues
+            .Where(i => issueKeysToLink.Contains(i.Key) && i.ProjectId == projectId)
+            .ToListAsync();
+        sourceIssue.RelatedIssues = issuesToLink;
     }
 }
