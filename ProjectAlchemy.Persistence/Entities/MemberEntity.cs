@@ -11,6 +11,8 @@ public class MemberEntity
     [Required]
     [StringLength(36)]
     public required Guid UserId { get; init; }
+    [StringLength(120)]
+    public required string UserName { get; set; }
     public required MemberType Type { get; init; }
     
     [MaxLength(200)]
@@ -22,6 +24,7 @@ public class MemberEntity
         return new Member
         {
             UserId = entity.UserId,
+            UserName = entity.UserName,
             Type = entity.Type
         };
     }
@@ -31,6 +34,7 @@ public class MemberEntity
         return new MemberEntity
         {
             UserId = member.UserId,
+            UserName = member.UserName,
             Type = member.Type
         };
     }

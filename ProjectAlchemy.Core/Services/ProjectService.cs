@@ -26,12 +26,13 @@ public class ProjectService(IProjectRepository repository, IAuthorizationService
         return project;
     }
 
-    public async Task<Project> Create(string projectName, Guid userId)
+    public async Task<Project> Create(string projectName, Guid userId, string email)
     {
         var creator = new Member
         {
             UserId = userId,
-            Type = MemberType.Owner
+            Type = MemberType.Owner,
+            UserName = email.Split("@").First()
         };
         
         var project = new Project

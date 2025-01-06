@@ -33,8 +33,8 @@ public class ProjectServiceTests: IDisposable
     {
         var member1 = Guid.NewGuid();
         var member2 = Guid.NewGuid();
-        var memberOneProject = await _service.Create("test", member1);
-        await _service.Create("test2", member2);
+        var memberOneProject = await _service.Create("test", member1, "test@test.com");
+        await _service.Create("test2", member2, "test2@test.com");
 
         var action = () => _service.Get(memberOneProject.Id, member2);
         
@@ -45,7 +45,7 @@ public class ProjectServiceTests: IDisposable
     public async Task UserCanCreateProjectAndAccessItLaterOn()
     {
         var memberId = Guid.NewGuid();
-        var project = await _service.Create("test", memberId);
+        var project = await _service.Create("test", memberId, "test@test.com");
         var retrieved = await _service.Get(project.Id, memberId);
         
         retrieved.Should().BeEquivalentTo(project);
