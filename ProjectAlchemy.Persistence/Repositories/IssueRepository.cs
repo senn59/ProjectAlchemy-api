@@ -18,14 +18,14 @@ public class IssueRepository: IIssueRepository
     public async Task<Issue?> GetByKey(int issueKey, Guid projectId)
     {
         var issue = await _context.Issues
-            .Include(i => i.RelatedIssues)
+            .Include(i => i.Lane)
             .FirstOrDefaultAsync(i => i.Key == issueKey && i.ProjectId == projectId);
+        Console.WriteLine($"is null: {issue}");
         if (issue == null || issue.Deleted)
         {
             return null;
         }
-        var lane = await _context.Lanes.FirstOrDefaultAsync(l => l.Id == issue.LaneId);
-        return lane == null ? null : IssueEntity.ToIssue(issue, LaneEntity.ToLane(lane));
+        return IssueEntity.ToIssue(issue);
     }
 
     public async Task<IssuePartial> Create(IssueCreate issue, Guid projectId)
@@ -42,7 +42,8 @@ public class IssueRepository: IIssueRepository
     public async Task<Issue> Update(Issue updated, Guid projectId)
     {
         var entity = IssueEntity.FromIssue(updated);
-        var id = _context.Issues.FirstAsync(i => i.Key == updated.Key && i.ProjectId == projectId).Result.Id;
+        var id = _context.Issues
+            .FirstAsync(i => i.Key == updated.Key && i.ProjectId == projectId).Result.Id;
         entity.Id = id;
         entity.ProjectId = projectId;
         _context.ChangeTracker.Clear();
@@ -52,8 +53,9 @@ public class IssueRepository: IIssueRepository
             return updated;
         }
         var lane = await _context.Lanes.FindAsync(entity.LaneId);
+        entity.Lane = lane!;
         await _context.SaveChangesAsync();
-        return IssueEntity.ToIssue(entity, LaneEntity.ToLane(lane!));
+        return IssueEntity.ToIssue(entity);
     }
 
     public async Task DeleteByKey(int key, Guid projectId)
@@ -73,9 +75,18 @@ public class IssueRepository: IIssueRepository
         {
             throw new NotFoundException();
         }
+
+        issueKeysToLink = issueKeysToLink.Where(i => i != issueKey).Distinct();
         var issuesToLink = await _context.Issues
             .Where(i => issueKeysToLink.Contains(i.Key) && i.ProjectId == projectId)
             .ToListAsync();
+        foreach (var issueEntity in issuesToLink)
+        {
+            issueEntity.RelatedIssues = issueEntity.RelatedIssues
+                .Append(sourceIssue)
+                .Distinct()
+                .ToList();
+        }
         sourceIssue.RelatedIssues = issuesToLink;
     }
 }

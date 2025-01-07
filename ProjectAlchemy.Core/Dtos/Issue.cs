@@ -14,4 +14,5 @@ public class Issue
     public string Description { get;  set; } = "";
     public required IssueType Type { get; set; }
     public required Lane Lane { get; set; }
+    public IEnumerable<IssueLink> RelatedIssues = [];
 }

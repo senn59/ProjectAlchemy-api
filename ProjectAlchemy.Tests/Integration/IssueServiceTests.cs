@@ -7,19 +7,22 @@ using ProjectAlchemy.Core.Helpers;
 using ProjectAlchemy.Core.Services;
 using ProjectAlchemy.Persistence;
 using ProjectAlchemy.Persistence.Repositories;
+using Xunit.Abstractions;
 
 namespace ProjectAlchemy.Tests.Integration;
 
 public class IssueServiceTests: IDisposable
 {
+    private readonly ITestOutputHelper _testOutputHelper;
     private readonly AppDbContext _context;
     private readonly IssueService _issueService;
     private readonly ProjectService _projectService;
     private Project _project = null!;
     private readonly Guid _userId = Guid.NewGuid();
     
-    public IssueServiceTests()
+    public IssueServiceTests(ITestOutputHelper testOutputHelper)
     {
+        _testOutputHelper = testOutputHelper;
         var options = new DbContextOptionsBuilder<AppDbContext>()
             .UseInMemoryDatabase(Guid.NewGuid().ToString())
             .Options;
@@ -116,5 +119,40 @@ public class IssueServiceTests: IDisposable
         updated.Should().BeEquivalentTo(retrieved);
         created.Name.Should().NotBeEquivalentTo(updated.Name);
         created.Type.Should().NotHaveSameValueAs(updated.Type);
+    }
+
+    [Fact]
+    public async Task LinkingMultipleIssuesTogetherProperlyLinksThemAll()
+    {
+        List<IssueLink> linkObjects = [];
+        for (var i = 0; i < 5; i++)
+        {
+            var newIssue = new IssueCreate
+            {
+                Name = "Test" + i,
+                LaneId = _project.Lanes.First().Id,
+                Type = IssueType.Task
+            };
+            var created = await _issueService.Create(newIssue, _userId, _project.Id);
+            linkObjects.Add(new IssueLink
+            {
+                Key = created.Key,
+                Name = created.Name,
+                Type = created.Type
+            });
+        }
+        _project = await _projectService.Get(_project.Id, _userId);
+        var toLink = _project.Issues.Skip(1).Select(i => i.Key).ToList();
+        var sourceIssue = _project.Issues.First();
+        
+        await _issueService.LinkIssues(sourceIssue.Key, toLink, _userId, _project.Id);
+        
+        var retrieved = await _issueService.GetByKey(sourceIssue.Key, _userId, _project.Id);
+        retrieved.RelatedIssues.Should().BeEquivalentTo(linkObjects.Skip(1));
+        foreach (var i in linkObjects.Skip(1))
+        {
+            var issue = await _issueService.GetByKey(i.Key, _userId, _project.Id);
+            issue.RelatedIssues.Should().BeEquivalentTo([linkObjects.First()]);
+        }
     }
 }

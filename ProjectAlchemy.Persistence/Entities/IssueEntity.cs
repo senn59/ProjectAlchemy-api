@@ -26,21 +26,23 @@ public class IssueEntity
     public bool Deleted { get; set; }
         
     [MaxLength(36)]
-    public Guid LaneId { get; init; }
+    public Guid LaneId { get; set; }
+    public LaneEntity Lane { get; set; }
     [MaxLength(36)]
     public Guid? ProjectId { get; set; }
     public ProjectEntity? Project { get; init; }
     public ICollection<IssueEntity> RelatedIssues { get; set; } = [];
 
-    public static Issue ToIssue(IssueEntity entity, Lane lane)
+    public static Issue ToIssue(IssueEntity entity)
     {
         return new Issue
         {
             Key = entity.Key,
             Description = entity.Description,
-            Lane = lane,
+            Lane = LaneEntity.ToLane(entity.Lane),
             Name = entity.Name,
-            Type = entity.Type
+            Type = entity.Type,
+            RelatedIssues = entity.RelatedIssues.Select(i => ToLinked(i))
         };
     }
 
@@ -53,6 +55,16 @@ public class IssueEntity
             Description = issue.Description,
             Type = issue.Type,
             LaneId = issue.Lane.Id
+        };
+    }
+
+    public static IssueLink ToLinked(IssueEntity entity)
+    {
+        return new IssueLink
+        {
+            Key = entity.Key,
+            Name = entity.Name,
+            Type = entity.Type
         };
     }
     
