@@ -15,13 +15,15 @@ public class LaneEntity
     [MaxLength(200)]
     public Guid? ProjectId { get; init; }
     public ProjectEntity? Project { get; init; }
+    
+    public ICollection<IssueEntity> Issues { get; init; }
 
     public static Lane ToLane(LaneEntity entity)
     {
         return new Lane
         {
             Id = entity.Id,
-            Name = entity.Name,
+            Name = entity.Name
         };
     }
 

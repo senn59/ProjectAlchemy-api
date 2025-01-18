@@ -40,4 +40,10 @@ public class IssueService(IIssueRepository issueRepository, IAuthorizationServic
         await authService.Authorize(Permission.DeleteIssues, userId, projectId, issueKey);
         await issueRepository.DeleteByKey(issueKey, projectId);
     }
+
+    public async Task LinkIssues(int issueKey, IEnumerable<int> issueKeysToLink, Guid userId, Guid projectId)
+    {
+        await authService.Authorize(Permission.CreateIssues, userId, projectId, issueKey);
+        await issueRepository.LinkIssues(issueKey, issueKeysToLink, projectId);
+    }
 }

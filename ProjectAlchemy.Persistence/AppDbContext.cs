@@ -56,5 +56,14 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
             .HasForeignKey(i => i.ProjectId)
             .OnDelete(DeleteBehavior.Cascade)
             .IsRequired();
+
+        modelBuilder.Entity<IssueEntity>()
+            .HasMany(i => i.RelatedIssues)
+            .WithMany();
+        
+        modelBuilder.Entity<IssueEntity>()
+            .HasOne(i => i.Lane)
+            .WithMany(l => l.Issues);
+
     }
 }
